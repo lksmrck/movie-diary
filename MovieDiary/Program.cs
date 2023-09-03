@@ -8,6 +8,8 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        builder.Services.AddTransient<Seed>();
+
         builder.Services.AddDbContext<ApplicationDbContext>(opt =>
         {
             opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection"));
@@ -17,7 +19,29 @@ public class Program
 
         builder.Services.AddControllersWithViews();
 
+ 
+
+
+
+
+
         var app = builder.Build();
+
+        // Seed DB context before app starts
+        if (args.Length == 1 && args[0].ToLower() == "seeddata")
+            SeedData(app);
+
+        void SeedData(IHost app)
+        {
+            var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+
+            using (var scope = scopedFactory.CreateScope())
+            {
+                var service = scope.ServiceProvider.GetService<Seed>();
+                service.SeedData();
+            }
+        }
+
 
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
@@ -34,6 +58,26 @@ public class Program
         app.MapControllerRoute(
             name: "default",
             pattern: "{controller}/{action=Index}/{id?}");
+
+        //using var scope = app.Services.CreateScope();
+
+        //var services = scope.ServiceProvider;
+
+
+       
+
+        //try
+        //{
+        //    var context = services.GetRequiredService<ApplicationDbContext>();
+
+        //     context.Database.MigrateAsync();
+        //     Seed.SeedData(context);
+        //}
+        //catch (Exception ex)
+        //{
+        //    var logger = services.GetRequiredService <ILogger<Program>>();
+        //    logger.LogError(ex, "An error occured during migration");
+        //}
 
         app.MapFallbackToFile("index.html"); ;
 

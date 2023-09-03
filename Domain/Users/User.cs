@@ -9,9 +9,10 @@ namespace Domain.Users
 {
     public class User
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
-        public ICollection<Movie> Movies { get; set; }
-        public ICollection <Comment> Comments { get; set; }
-        public ICollection <Rating> Ratings { get; set; }
+        public ICollection<MovieUser> MovieUsers { get; set; }
+        public ICollection <MovieComment> MovieComments { get; set; }
+        public ICollection <MovieRating> MovieRatings { get; set; }
     }
 }

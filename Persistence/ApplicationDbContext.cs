@@ -28,8 +28,79 @@ namespace Persistence
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Movie>();
-           //TODO
+            //modelBuilder.Entity<Movie>(b =>
+            //{
+            //    b.HasMany(e => e.Categories)
+            //    .WithMany(e => e.Movies)
+            //    .HasForeignKey()
+
+            //})
+
+            //OK - MANY TO MANY
+            modelBuilder.Entity<MovieCategory>()
+                .HasKey(mc => new { mc.MovieID, mc.CategoryID });
+
+            modelBuilder.Entity<MovieCategory>()
+                .HasOne(m => m.Movie)
+                .WithMany(mc => mc.MovieCategories)
+                .HasForeignKey(m => m.MovieID);
+
+            modelBuilder.Entity<MovieCategory>()
+                .HasOne(m => m.Category)
+                .WithMany(mc => mc.MovieCategories)
+                .HasForeignKey(m => m.CategoryID);
+            //////////////////////////////////////////////////////
+
+            //OK - ONE TO MANY
+            modelBuilder.Entity<MovieUser>()
+                .HasOne(m => m.User)
+                .WithMany(mc => mc.MovieUsers)
+                .HasForeignKey(m => m.UserID);
+
+            modelBuilder.Entity<MovieUser>()
+               .HasOne(m => m.Movie)
+               .WithOne(mc => mc.MovieUser)
+               .HasForeignKey<MovieUser>(m => m.MovieID);
+            //////////////////////////////////////////////////////
+
+
+            //OK - ONE TO ONE (and one to many with User)
+            modelBuilder.Entity<MovieRating>()
+                .HasOne(m => m.Movie)
+                .WithOne(mc => mc.MovieRating)
+                .HasForeignKey<MovieRating>(m => m.MovieID);
+
+            modelBuilder.Entity<MovieRating>()
+                .HasOne(m => m.Rating)
+                .WithOne(mc => mc.MovieRating)
+                .HasForeignKey<MovieRating>(m => m.RatingID);
+
+            modelBuilder.Entity<MovieRating>()
+            .HasOne(m => m.User)
+            .WithMany(mc => mc.MovieRatings)
+            .HasForeignKey(m => m.UserID);
+            //////////////////////////////////////////////////////
+
+            //OK - ONE TO ONE (and one to many with User)
+            modelBuilder.Entity<MovieComment>()
+                .HasOne(m => m.Movie)
+                .WithOne(mc => mc.MovieComment)
+                .HasForeignKey<MovieComment>(m => m.MovieID);
+
+            modelBuilder.Entity<MovieComment>()
+               .HasOne(m => m.Comment)
+               .WithOne(mc => mc.MovieComment)
+               .HasForeignKey<MovieComment>(m => m.CommentID);
+
+            modelBuilder.Entity<MovieComment>()
+             .HasOne(m => m.User)
+             .WithMany(mc => mc.MovieComments)
+             .HasForeignKey(m => m.UserID);
+            
+            //////////////////////////////////////////////////////
+
+
+           
 
         }
     }

@@ -17,10 +17,10 @@ namespace Domain.Movies
         //public ICollection<Category> Category { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateWatched { get; set; }
-        public User Owner { get; set; }
-        public ICollection<Rating> Rating { get; set; }
-        public ICollection<Comment> Comment { get; set; }
-        public ICollection<Category> Categories { get; set; }
+        public MovieUser MovieUser { get; set; }
+        public MovieRating MovieRating { get; set; }
+        public MovieComment MovieComment { get; set; }
+        public ICollection<MovieCategory> MovieCategories { get; set; }
 
     }
 }
