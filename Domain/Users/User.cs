@@ -11,8 +11,8 @@ namespace Domain.Users
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public ICollection<MovieUser> MovieUsers { get; set; }
-        public ICollection <MovieComment> MovieComments { get; set; }
-        public ICollection <MovieRating> MovieRatings { get; set; }
+        public ICollection<MovieRating> Ratings { get; set; }
+        public ICollection<MovieUser> Movies { get; set; }
+        public ICollection<MovieComment> Comments { get; set; }
     }
 }

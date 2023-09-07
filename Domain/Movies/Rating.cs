@@ -11,7 +11,6 @@ namespace Domain.Movies
     {
         public Guid Id { get; set; }
         public int Value { get; set; }
-        public MovieRating MovieRating { get; set; }
-        
+        public MovieRating Movie { get; set; }
     }
 }

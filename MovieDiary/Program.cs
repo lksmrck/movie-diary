@@ -1,6 +1,8 @@
 using Persistence;
 using Microsoft.EntityFrameworkCore;
-
+using Application.Interfaces;
+using Application.Services;
+using System.Text.Json.Serialization;
 
 public class Program
 {
@@ -8,18 +10,31 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddTransient<Seed>();
+
 
         builder.Services.AddDbContext<ApplicationDbContext>(opt =>
         {
-            opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection"));
+            opt/*.UseLazyLoadingProxies()*/.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection"), b =>
+            {
+                b.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+            });
         });
 
+
+
         // Add services to the container.
+        builder.Services.AddScoped<IMoviesService, MoviesService>();
+        builder.Services.AddScoped<ICommentsService, CommentsService>();
 
-        builder.Services.AddControllersWithViews();
 
- 
+        builder.Services.AddTransient<Seed>();
+        builder.Services.AddControllersWithViews()
+         .AddNewtonsoftJson(options =>
+          options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+        );
+
+        //builder.Services.AddEndpointsApiExplorer();
+        //builder.Services.AddSwaggerGen();
 
 
 
@@ -48,6 +63,10 @@ public class Program
         {
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
+            //app.UseSwagger();
+            //app.UseSwaggerUI(c => {
+            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V2");
+            //});
         }
 
         app.UseHttpsRedirection();
@@ -59,25 +78,7 @@ public class Program
             name: "default",
             pattern: "{controller}/{action=Index}/{id?}");
 
-        //using var scope = app.Services.CreateScope();
 
-        //var services = scope.ServiceProvider;
-
-
-       
-
-        //try
-        //{
-        //    var context = services.GetRequiredService<ApplicationDbContext>();
-
-        //     context.Database.MigrateAsync();
-        //     Seed.SeedData(context);
-        //}
-        //catch (Exception ex)
-        //{
-        //    var logger = services.GetRequiredService <ILogger<Program>>();
-        //    logger.LogError(ex, "An error occured during migration");
-        //}
 
         app.MapFallbackToFile("index.html"); ;
 

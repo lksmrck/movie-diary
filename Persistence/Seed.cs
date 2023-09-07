@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using Domain;
 using Domain.Movies;
@@ -20,11 +21,21 @@ namespace Persistence
 
         public void SeedData()
         {
-            //if (!_context.Movies.Any())
-            //{
-            //    Console.WriteLine("Neseeduju");
-            //    return;
-            //};
+            if (_context.Movies.Any()) return;
+
+            var users = new List<User>
+            {
+                new User
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Jan Novák"
+                },
+                 new User
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Dana Drábová"
+                }
+            };
 
             var movies = new List<Movie>
             {
@@ -35,26 +46,50 @@ namespace Persistence
                     Category = "users specific category",
                     DateCreated = DateTime.UtcNow.AddMonths(-2),
                     DateWatched = DateTime.UtcNow.AddMonths(-1),
-                    MovieUser = new MovieUser {  User = new User {Name = "Pavel Novák" } },
-                    //MovieRating = new MovieRating { Rating = new Rating {Value = 5 } },
-                    //MovieComment = new MovieComment {  Comment = new Comment { Text = "Good movie" } },
-                    MovieCategories = new List<MovieCategory> {new MovieCategory { Category = new Category { Name = "Akční" } }, new MovieCategory { Category = new Category { Name = "Komedie" } } }
+                    User = new MovieUser{User = users[0] },
+                    Rating = new MovieRating {UserID = users[0].Id,  Rating = new Rating { Value = 5 } } ,
+                    Comment = new MovieComment { UserID = users[0].Id, Comment = new Comment{ Text = "Good movie" }  },
+                    Categories = new List<Category> {new Category { Name = "Akční" }, new Category { Name = "Komedie" } } 
                 },
                 new Movie
                 {
-                    Title = "Past Movie 1",
-                    Description = "Movie about ninjas.",
+                    Title = "Past Movie 2",
+                    Description = "Movie about turtles.",
                     Category = "users specific category2",
                     DateCreated = DateTime.UtcNow.AddMonths(-2),
                     DateWatched = DateTime.UtcNow.AddMonths(-1),
-                    MovieUser = new MovieUser { User = new User {Name = "Pavel Novák" } },
-                    //MovieRating = new MovieRating { Rating = new Rating {Value = 5 } },
-                    //MovieComment = new MovieComment { Comment = new Comment { Text = "Sračka" } },
-                    MovieCategories = new List<MovieCategory> {new MovieCategory { Category = new Category { Name = "Drama" } }, new MovieCategory { Category = new Category { Name = "Horor" } } }
+                    User = new MovieUser{User = users[1] } ,
+                    Rating = new MovieRating {UserID = users[0].Id, Rating = new Rating { Value = 5 }  },
+                    Comment = new MovieComment {UserID = users[1].Id,Comment = new Comment{ Text = "Sračka" } } ,
+                    Categories = new List<Category> { new Category { Name = "Komedie" } ,new Category { Name = "Horor" } , new Category { Name = "Krimi" }  }
                 },
+                //new Movie
+                //{
+                //    Title = "Past Movie 3",
+                //    Description = "Movie about dinosaurs.",
+                //    Category = "users specific category3",
+                //    DateCreated = DateTime.UtcNow.AddMonths(-2),
+                //    DateWatched = DateTime.UtcNow.AddMonths(-1),
+                //    User = new MovieUser { User = users[1] },
+                //    Rating = new Rating {UserId = users[1].Id, Value = 5  },
+                //    Comment = new Comment {UserId = users[1].Id, Text = "Ale jo, libil se mi" } ,
+                //    Categories = new List<MovieCategory> {new MovieCategory { Category = new Category { Name = "Drama" } }, new MovieCategory { Category = new Category { Name = "Horor" } }, new MovieCategory { Category = new Category { Name = "Animovaný" } } }
+                //},
+                //new Movie
+                //{
+                //    Title = "Past Movie 4",
+                //    Description = "Movie about airplanes.",
+                //    Category = "users specific category4",
+                //    DateCreated = DateTime.UtcNow.AddMonths(-2),
+                //    DateWatched = DateTime.UtcNow.AddMonths(-1),
+                //    User = new MovieUser { User = users[0] },
+                //    Rating = new Rating {UserId = users[0].Id, Value = 5  },
+                //    Comment = new Comment {UserId = users[0].Id, Text = "Velmi dobry film" } ,
+                //    Categories = new List<MovieCategory> {new MovieCategory { Category = new Category { Name = "Drama" } }, new MovieCategory { Category = new Category { Name = "Thriller" } } }
+                //},
 
             };
-
+            _context.Users.AddRange(users);
             _context.Movies.AddRange(movies);
             _context.SaveChanges();
         }
