@@ -1,4 +1,6 @@
 ﻿using Application.Interfaces;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Domain.DTOs;
 using Domain.Movies;
 using Domain.Users;
@@ -16,12 +18,12 @@ namespace Application.Services
     public class MoviesService : IMoviesService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-
-        public MoviesService(ApplicationDbContext context)
+        public MoviesService(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
-
+            _mapper = mapper;
         }
         public async Task<Movie> CreateMovie(Movie movie)
         {
@@ -51,11 +53,10 @@ namespace Application.Services
             throw new NotImplementedException();
         }
 
-        public async Task<List<Movie>> GetMovies()
+        public async Task<List<MovieDto>> GetMovies()
         {
             return await _context.Movies
-              
-
+                .ProjectTo<MovieDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
         }
 

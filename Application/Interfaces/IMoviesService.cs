@@ -10,7 +10,7 @@ namespace Application.Interfaces
 {
     public interface IMoviesService
     {
-        Task<List<Movie>> GetMovies();
+        Task<List<MovieDto>> GetMovies();
         Movie GetMovie(int id);
         Movie GetMovie(string name);
         Task<Movie> CreateMovie(Movie movie);

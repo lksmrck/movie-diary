@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "3nPKUoq1Sr+TWhRX/aGtPD4/DqvZd78xLkc478APM4+E4k1/xNySnLnnDMkiJyBFxeSCpBh7H/Tduzz35uMDsw==",
+  "dgSpecHash": "LlYdG8gYUIEuTMCBKSLhK0gWJe9x8rXXVsJDY/GykLCjQa9zNoBq6Zk6FjbGAdv5K5yOJzZLfYwmJ7zyV9dnJg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Lukas\\Desktop\\05_MovieDiary_dotnet\\MovieDiary\\Application\\Application.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Lukas\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
+    "C:\\Users\\Lukas\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "C:\\Users\\Lukas\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\Lukas\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
     "C:\\Users\\Lukas\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\6.0.21\\microsoft.aspnetcore.jsonpatch.6.0.21.nupkg.sha512",

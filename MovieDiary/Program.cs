@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Application.Interfaces;
 using Application.Services;
 using System.Text.Json.Serialization;
+using Application.Core;
 
 public class Program
 {
@@ -36,7 +37,7 @@ public class Program
         //builder.Services.AddEndpointsApiExplorer();
         //builder.Services.AddSwaggerGen();
 
-
+        builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
 
 

@@ -76,7 +76,7 @@ namespace Persistence
 
             //OK - ONE TO ONE (and one to many with User)
             modelBuilder.Entity<MovieComment>()
-         .HasKey(mc => new { mc.MovieID, mc.CommentID });
+                .HasKey(mc => new { mc.MovieID, mc.CommentID });
 
             modelBuilder.Entity<MovieComment>()
                 .HasOne(m => m.Movie)
