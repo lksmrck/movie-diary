@@ -1,8 +1,11 @@
 ﻿using Application.Interfaces;
+using Domain;
+using Domain.DTOs;
 using Domain.Movies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
+using System.Net;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -13,6 +16,7 @@ namespace API.Controllers
     public class MoviesController : ControllerBase
     {
         private readonly IMoviesService _movies;
+        protected APIResponse _response = new APIResponse();
 
         public MoviesController(IMoviesService movies)
         {
@@ -22,38 +26,96 @@ namespace API.Controllers
 
         // GET: api/<MoviesController>
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Movie>))]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetMovies()
         {
-            return Ok(await _movies.GetMovies());
+            try
+            {
+                IEnumerable<MovieDto> moviesList;
+
+                moviesList = await _movies.GetMovies();
+
+                _response.StatusCode = HttpStatusCode.OK;
+                _response.Result = moviesList;
+
+                return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string>() { ex.ToString() };
+            }
+
+            return BadRequest(_response);
         }
 
         // GET api/<MoviesController>/5
+
         [HttpGet("{id}")]
-        public string Get(int id)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetMovie(Guid id)
         {
-            return "value";
+            try
+            {
+                if (id  == Guid.Empty) 
+                {
+                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    return BadRequest(_response);
+                }
+
+                MovieDto movie = await _movies.GetMovie(id);
+
+                if (movie == null)
+                {
+                    _response.StatusCode = HttpStatusCode.NotFound;
+                    return NotFound(_response);
+                }
+                
+                _response.StatusCode = HttpStatusCode.OK;   
+                _response.Result = movie;
+
+                return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string>() { ex.ToString() };
+            }
+
+            return BadRequest(_response);
+            
         }
 
         // POST api/<MoviesController>
         [HttpPost]
-        public async Task<IActionResult> CreateMovie([FromBody] Movie movie)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CreateMovie([FromBody] MovieDto movie)
         {
-
-            var movieToAdd = new Movie
+            try
             {
-                Title = movie.Title,
-                Description = movie.Description,
-                Category = movie.Category,
-                DateCreated = DateTime.Now,
-                DateWatched = DateTime.Now,
-                User = movie.User,
-                Rating = movie.Rating,
-                Comment = movie.Comment,
-                Categories = movie.Categories,
-            };
+                MovieDto createdMovie = await _movies.CreateMovie(movie);
 
-            return Ok(await _movies.CreateMovie(movieToAdd));
+                _response.Result = createdMovie;
+                _response.StatusCode = HttpStatusCode.Created;
+
+                return Ok(_response);   
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string>() { ex.ToString() };
+            }
+
+            return BadRequest(_response);
         }
 
         // PUT api/<MoviesController>/5

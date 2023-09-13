@@ -1,4 +1,5 @@
-﻿using Domain.Movies;
+﻿using Application.DTOs.Comments;
+using Domain.Movies;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,6 @@ namespace Application.Interfaces
     public interface ICommentsService
     {
         Task<List<Comment>> GetComments();
+        Task<List<CommentDto>> GetCommentsForUser(Guid userId);
     }
 }

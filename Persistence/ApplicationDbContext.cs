@@ -20,7 +20,10 @@ namespace Persistence
         public DbSet<Category> Categories { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Rating> Ratings { get; set; }
+
+        // Comments
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<MovieComment> MovieComments { get; set; }
 
 
         

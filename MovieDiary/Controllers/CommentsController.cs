@@ -33,6 +33,13 @@ namespace API.Controllers
             return "value";
         }
 
+        // GET api/<CommentsController>/5
+        [HttpGet("user/{userId}")]
+        public async Task<IActionResult> GetCommentsForUser(Guid userId)
+        {
+            return Ok(await _comments.GetCommentsForUser(userId));
+        }
+
         // POST api/<CommentsController>
         [HttpPost]
         public void Post([FromBody] string value)

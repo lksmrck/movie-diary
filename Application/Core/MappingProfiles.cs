@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Application.DTOs.Comments;
+using AutoMapper;
 using Domain.DTOs;
 using Domain.Movies;
 using Domain.Users;
@@ -18,23 +19,44 @@ namespace Application.Core
         {
 
             CreateMap<Movie, Movie>();
-            CreateMap<Movie, MovieDto>();
+            CreateMap<Movie, MovieDto>().ReverseMap();
                
             CreateMap<MovieUser, DTOs.Movies.Profile>()
                 .ForMember(d => d.Id, o => o.MapFrom(s => s.User.Id))
-                .ForMember(d => d.Name, o => o.MapFrom(s => s.User.Name));
+                .ForMember(d => d.Name, o => o.MapFrom(s => s.User.Name))
+                .ReverseMap();
 
-            CreateMap<MovieComment, DTOs.Movies.ShortComment>()
-                .ForMember(d => d.Id, o => o.MapFrom(s => s.Comment.Id))
-                .ForMember(d => d.Text, o => o.MapFrom(s => s.Comment.Text));
+         
 
             CreateMap<MovieRating, DTOs.Movies.ShortRating>()
                 .ForMember(d => d.Id, o => o.MapFrom(s => s.Rating.Id))
-                .ForMember(d => d.Value, o => o.MapFrom(s => s.Rating.Value));
+                .ForMember(d => d.Value, o => o.MapFrom(s => s.Rating.Value))
+                .ReverseMap();
 
             CreateMap<Category, DTOs.Movies.ShortCategory>()
                 .ForMember(d => d.Id, o => o.MapFrom(s => s.Id))
-                .ForMember(d => d.Name, o => o.MapFrom(s => s.Name));
+                .ForMember(d => d.Name, o => o.MapFrom(s => s.Name))
+                .ReverseMap();
+
+            // Comments
+            CreateMap<MovieComment, DTOs.Movies.ShortComment>()
+             .ForMember(d => d.Id, o => o.MapFrom(s => s.Comment.Id))
+             .ForMember(d => d.Text, o => o.MapFrom(s => s.Comment.Text))
+             .ReverseMap();
+
+            CreateMap<MovieComment, CommentDto>()
+             .ForMember(d => d.Id, o => o.MapFrom(s => s.Comment.Id))
+             .ForMember(d => d.Text, o => o.MapFrom(s => s.Comment.Text))
+             .ForMember(d => d.Movie, o => o.MapFrom(s => s.Movie))
+             //.ForMember(d => d.Movie, o => o.MapFrom(s => s.Movie))
+             .ReverseMap();
+
+            CreateMap<Movie, ShortMovie>()
+            .ForMember(d => d.Id, o => o.MapFrom(s => s.Id))
+            .ForMember(d => d.Name, o => o.MapFrom(s => s.Title))
+            .ForMember(d => d.Categories, o => o.MapFrom(s => s.Categories))
+            .ReverseMap();
+
         }
     }
 }

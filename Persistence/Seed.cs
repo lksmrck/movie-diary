@@ -37,6 +37,26 @@ namespace Persistence
                 }
             };
 
+            var categories = new List<Category>
+            {
+               new Category
+               { Id = Guid.NewGuid(),
+                 Name = "Komedie"
+               },
+               new Category
+               { Id = Guid.NewGuid(),
+                 Name = "Krimi"
+               },
+               new Category
+               { Id = Guid.NewGuid(),
+                 Name = "Horor"
+               },
+               new Category
+               { Id = Guid.NewGuid(),
+                 Name = "Akční"
+               }
+            };
+
             var movies = new List<Movie>
             {
                 new Movie
@@ -49,7 +69,7 @@ namespace Persistence
                     User = new MovieUser{User = users[0] },
                     Rating = new MovieRating {UserID = users[0].Id,  Rating = new Rating { Value = 5 } } ,
                     Comment = new MovieComment { UserID = users[0].Id, Comment = new Comment{ Text = "Good movie" }  },
-                    Categories = new List<Category> {new Category { Name = "Akční" }, new Category { Name = "Komedie" } } 
+                    Categories = new List<Category> {categories[0], categories[1] } 
                 },
                 new Movie
                 {
@@ -59,34 +79,34 @@ namespace Persistence
                     DateCreated = DateTime.UtcNow.AddMonths(-2),
                     DateWatched = DateTime.UtcNow.AddMonths(-1),
                     User = new MovieUser{User = users[1] } ,
-                    Rating = new MovieRating {UserID = users[0].Id, Rating = new Rating { Value = 5 }  },
+                    Rating = new MovieRating {UserID = users[1].Id, Rating = new Rating { Value = 5 }  },
                     Comment = new MovieComment {UserID = users[1].Id,Comment = new Comment{ Text = "Sračka" } } ,
-                    Categories = new List<Category> { new Category { Name = "Komedie" } ,new Category { Name = "Horor" } , new Category { Name = "Krimi" }  }
+                    Categories = new List<Category> {categories[1] }
                 },
-                //new Movie
-                //{
-                //    Title = "Past Movie 3",
-                //    Description = "Movie about dinosaurs.",
-                //    Category = "users specific category3",
-                //    DateCreated = DateTime.UtcNow.AddMonths(-2),
-                //    DateWatched = DateTime.UtcNow.AddMonths(-1),
-                //    User = new MovieUser { User = users[1] },
-                //    Rating = new Rating {UserId = users[1].Id, Value = 5  },
-                //    Comment = new Comment {UserId = users[1].Id, Text = "Ale jo, libil se mi" } ,
-                //    Categories = new List<MovieCategory> {new MovieCategory { Category = new Category { Name = "Drama" } }, new MovieCategory { Category = new Category { Name = "Horor" } }, new MovieCategory { Category = new Category { Name = "Animovaný" } } }
-                //},
-                //new Movie
-                //{
-                //    Title = "Past Movie 4",
-                //    Description = "Movie about airplanes.",
-                //    Category = "users specific category4",
-                //    DateCreated = DateTime.UtcNow.AddMonths(-2),
-                //    DateWatched = DateTime.UtcNow.AddMonths(-1),
-                //    User = new MovieUser { User = users[0] },
-                //    Rating = new Rating {UserId = users[0].Id, Value = 5  },
-                //    Comment = new Comment {UserId = users[0].Id, Text = "Velmi dobry film" } ,
-                //    Categories = new List<MovieCategory> {new MovieCategory { Category = new Category { Name = "Drama" } }, new MovieCategory { Category = new Category { Name = "Thriller" } } }
-                //},
+                new Movie
+                {
+                    Title = "Past Movie 3",
+                    Description = "Movie about elephants.",
+                    Category = "users specific category3",
+                    DateCreated = DateTime.UtcNow.AddMonths(-2),
+                    DateWatched = DateTime.UtcNow.AddMonths(-1),
+                    User = new MovieUser{User = users[1] } ,
+                    Rating = new MovieRating {UserID = users[1].Id, Rating = new Rating { Value = 5 }  },
+                    Comment = new MovieComment {UserID = users[1].Id,Comment = new Comment{ Text = "Super film" } } ,
+                    Categories = new List<Category> {categories[1], categories[2] }
+                },
+                new Movie
+                {
+                    Title = "Past Movie 4",
+                    Description = "Movie about turtles.",
+                    Category = "users specific category4",
+                    DateCreated = DateTime.UtcNow.AddMonths(-2),
+                    DateWatched = DateTime.UtcNow.AddMonths(-1),
+                    User = new MovieUser{User = users[0] } ,
+                    Rating = new MovieRating {UserID = users[0].Id, Rating = new Rating { Value = 5 }  },
+                    Comment = new MovieComment {UserID = users[0].Id,Comment = new Comment{ Text = "Boží" } } ,
+                    Categories = new List<Category> {categories[0], categories[1], categories[3] }
+                },
 
             };
             _context.Users.AddRange(users);
