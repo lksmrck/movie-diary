@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs
 {
-    public class MovieDto
+    public record MovieDto
     {
         public Guid Id { get; set; }
         public string Title { get; set; }

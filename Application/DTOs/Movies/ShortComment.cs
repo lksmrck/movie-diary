@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.DTOs.Movies
 {
-    public class ShortComment
+    public record ShortComment
     {
         public Guid Id { get; set; }
         public string Text { get; set; }

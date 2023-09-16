@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.DTOs.Comments
 {
-    public class ShortMovie
+    public record ShortMovie
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

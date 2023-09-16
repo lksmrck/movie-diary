@@ -50,23 +50,26 @@ namespace Application.Services
             await _context.AddAsync(movieToAdd);
             await _context.SaveChangesAsync();
 
-            return movie;
+            MovieDto addedMovie = _mapper.Map<MovieDto>(movieToAdd);
+
+            return addedMovie;
 
         }
 
-        public void DeleteMovie(int id)
+        //TODO: nesmaže se Comment z tab Comments, jen join z MovieComments - jinak ale funguje a zobrazuje jak má.
+        public async Task DeleteMovie(Guid id)
         {
-            throw new NotImplementedException();
+            //Movie movieToDelete = _mapper.Map<Movie>(movie);
+
+            Movie movieToDelete = await _context.Movies.FirstOrDefaultAsync(x => x.Id == id);
+
+            _context.Remove(movieToDelete);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<MovieDto> GetMovie(Guid id)
         {
-            //var movie = await _context.Movies
-            //    .Include(m => m.User).ThenInclude(u=>u.User)
-            //    .Include(m=> m.Rating).ThenInclude(r=>r.Rating)
-            //    .Include(m=> m.Comment).ThenInclude(c=>c.Comment)
-            //    .FirstOrDefaultAsync(m => m.Id == id);
-
+         
             var movie = await _context.Movies
                 .ProjectTo<MovieDto>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(x => x.Id == id);
@@ -86,9 +89,17 @@ namespace Application.Services
                 .ToListAsync();
         }
 
-        public Movie UpdateMovie(int id, Movie movie)
+        public async Task<MovieDto> UpdateMovie(MovieDto movie)
         {
-            throw new NotImplementedException();
+
+            Movie model = _mapper.Map<Movie>(movie);
+
+            _context.Movies.Update(model);
+
+            await _context.SaveChangesAsync();
+
+            return movie;
+
         }
     }
 }

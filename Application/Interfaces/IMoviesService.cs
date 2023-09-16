@@ -14,7 +14,7 @@ namespace Application.Interfaces
         Task<MovieDto> GetMovie(Guid id);
         Task<MovieDto> GetMovie(string name);
         Task<MovieDto> CreateMovie(MovieDto movie);
-        Movie UpdateMovie(int id, Movie movie);
-        void DeleteMovie(int id);
+        Task<MovieDto> UpdateMovie(MovieDto movie);
+        Task DeleteMovie(Guid id);
     }
 }

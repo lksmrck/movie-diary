@@ -1,4 +1,6 @@
-﻿using Application.DTOs.Comments;
+﻿using Application.Core;
+using Application.DTOs.Comments;
+using Domain.DTOs;
 using Domain.Movies;
 using System;
 using System.Collections.Generic;
@@ -10,7 +12,16 @@ namespace Application.Interfaces
 {
     public interface ICommentsService
     {
-        Task<List<Comment>> GetComments();
+        Task<List<CommentDto>> GetComments();
+
+        /// <summary>
+        /// Gets all comments of specific user.
+        /// </summary>
+        /// <param name="userId">Specific user id</param>
+        /// /// <returns> Returs list of comments</returns>
         Task<List<CommentDto>> GetCommentsForUser(Guid userId);
+        Task<CreateCommentDto> CreateComment(CreateCommentDto commentDto);
+        Task<ServiceResponse<CommentDto>> DeleteComment(Guid commentId);
+        Task<ServiceResponse<CommentDto>> DeleteComment(MovieDto movie);
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.DTOs.Comments
 {
-    public class CommentDto
+    public record CommentDto
     {
         public Guid Id { get; set; }
         public string Text { get; set; }

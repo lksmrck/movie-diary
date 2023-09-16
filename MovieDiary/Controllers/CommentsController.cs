@@ -1,4 +1,6 @@
-﻿using Application.Interfaces;
+﻿using Application.DTOs.Comments;
+using Application.Interfaces;
+using Domain.DTOs;
 using Domain.Movies;
 using Microsoft.AspNetCore.Mvc;
 
@@ -42,8 +44,9 @@ namespace API.Controllers
 
         // POST api/<CommentsController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> CreateComment([FromBody] CreateCommentDto commentDto)
         {
+            return Ok(await _comments.CreateComment(commentDto));
         }
 
         // PUT api/<CommentsController>/5
@@ -53,9 +56,17 @@ namespace API.Controllers
         }
 
         // DELETE api/<CommentsController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("delete/{commentId}")]
+        public async Task<IActionResult> DeleteComment(Guid commentId)
         {
+            return Ok(await _comments.DeleteComment(commentId));
+        }
+
+      
+        [HttpDelete("delete")]
+        public async Task<IActionResult> DeleteComment(MovieDto movie)
+        {
+            return Ok(await _comments.DeleteComment(movie));
         }
     }
 }
