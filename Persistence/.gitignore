@@ -16,7 +16,7 @@
 *.user
 _ReSharper.*
 bin
-obj
+obj/
 packages
 
 # Mono auto generated files

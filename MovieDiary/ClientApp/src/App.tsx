@@ -1,16 +1,21 @@
-import React, { Component } from "react";
-import { Route, Routes } from "react-router-dom";
-import AppRoutes from "./AppRoutes.tsx";
-// import { Layout } from './components/Layout';
+import { useLocation, Outlet } from "react-router-dom";
+import Navbar from "./components/Navbar.tsx";
+import Landing from "./pages/Landing.tsx";
 
 const App = () => {
+  const location = useLocation();
+
   return (
-    <Routes>
-      {AppRoutes.map((route, index) => {
-        const { element, ...rest } = route;
-        return <Route key={index} {...rest} element={element} />;
-      })}
-    </Routes>
+    <>
+      {location.pathname === "/" ? (
+        <Landing />
+      ) : (
+        <>
+          <Navbar />
+          <Outlet />
+        </>
+      )}
+    </>
   );
 };
 

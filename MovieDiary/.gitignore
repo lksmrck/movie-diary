@@ -10,7 +10,7 @@
 *.user
 _ReSharper.*
 bin
-obj
+obj/
 packages
 
 # User-specific files (MonoDevelop/Xamarin Studio)
