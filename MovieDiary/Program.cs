@@ -4,6 +4,7 @@ using Application.Interfaces;
 using Application.Services;
 using System.Text.Json.Serialization;
 using Application.Core;
+using API.Config;
 
 public class Program
 {
@@ -11,33 +12,33 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        builder.Services.RegisterServices(builder.Configuration);
 
-
-        builder.Services.AddDbContext<ApplicationDbContext>(opt =>
-        {
-            opt/*.UseLazyLoadingProxies()*/.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection"), b =>
-            {
-                b.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
-            });
-        });
+        //builder.Services.AddDbContext<ApplicationDbContext>(opt =>
+        //{
+        //    opt/*.UseLazyLoadingProxies()*/.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection"), b =>
+        //    {
+        //        b.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+        //    });
+        //});
 
 
 
         // Add services to the container.
-        builder.Services.AddScoped<IMoviesService, MoviesService>();
-        builder.Services.AddScoped<ICommentsService, CommentsService>();
+        //builder.Services.AddScoped<IMoviesService, MoviesService>();
+        //builder.Services.AddScoped<ICommentsService, CommentsService>();
 
 
-        builder.Services.AddTransient<Seed>();
-        builder.Services.AddControllersWithViews()
-         .AddNewtonsoftJson(options =>
-          options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-        );
+        //builder.Services.AddTransient<Seed>();
+        //builder.Services.AddControllersWithViews()
+        // .AddNewtonsoftJson(options =>
+        //  options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+        //);
 
-        //builder.Services.AddEndpointsApiExplorer();
-        //builder.Services.AddSwaggerGen();
+        ////builder.Services.AddEndpointsApiExplorer();
+        ////builder.Services.AddSwaggerGen();
 
-        builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+        //builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
 
 

@@ -8,6 +8,7 @@ import MyMovies from "./pages/MyMovies";
 import NotFound from "./pages/errors/NotFound";
 import ServerError from "./pages/errors/ServerError";
 import Discover from "./pages/Discover";
+import Statistics from "./pages/Statistics";
 
 export const routes: RouteObject[] = [
   {
@@ -18,6 +19,7 @@ export const routes: RouteObject[] = [
       { path: "my-movies", element: <MyMovies /> },
       { path: "add-movie", element: <AddMovie /> },
       { path: "discover", element: <Discover /> },
+      { path: "statistics", element: <Statistics /> },
       { path: "login", element: <Login /> },
       { path: "not-found", element: <NotFound /> },
       { path: "server-error", element: <ServerError /> },

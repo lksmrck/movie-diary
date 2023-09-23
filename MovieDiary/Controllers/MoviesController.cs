@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using System.Net;
+using System.Xml.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -47,7 +48,7 @@ namespace API.Controllers
                 _response.IsSuccess = false;
                 _response.ErrorMessages = new List<string>() { ex.ToString() };
             }
-            
+
             return BadRequest(_response);
         }
 
@@ -63,7 +64,7 @@ namespace API.Controllers
         {
             try
             {
-                if (id  == Guid.Empty) 
+                if (id == Guid.Empty)
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
@@ -76,8 +77,8 @@ namespace API.Controllers
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
                 }
-                
-                _response.StatusCode = HttpStatusCode.OK;   
+
+                _response.StatusCode = HttpStatusCode.OK;
                 _response.Result = movie;
 
                 return Ok(_response);
@@ -90,7 +91,18 @@ namespace API.Controllers
             }
 
             return BadRequest(_response);
-            
+
+        }
+
+        // GET api/movies/userId
+        [HttpGet("user/{userId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetMoviesForUser(Guid userId)
+        {
+            return Ok(await _movies.GetMoviesForUser(userId));
         }
 
         // POST api/<MoviesController>
@@ -107,7 +119,7 @@ namespace API.Controllers
                 _response.Result = createdMovie;
                 _response.StatusCode = HttpStatusCode.Created;
 
-                return Ok(_response);   
+                return Ok(_response);
             }
             catch (Exception ex)
             {

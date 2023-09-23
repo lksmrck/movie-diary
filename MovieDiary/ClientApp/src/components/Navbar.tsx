@@ -26,6 +26,7 @@ const Navbar = () => {
     { title: "My movies", link: "/my-movies" },
     { title: "Add movie", link: "/add-movie" },
     { title: "Discover", link: "/discover" },
+    { title: "Statistics", link: "/statistics" },
   ];
   const settings = ["Profile", "Account", "Dashboard", "Logout"];
 

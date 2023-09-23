@@ -1,8 +1,10 @@
-﻿using Application.Interfaces;
+﻿using Application.DTOs.Comments;
+using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain.DTOs;
 using Domain.Movies;
+using Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -22,8 +24,8 @@ namespace Application.Services
         public async Task<MovieDto> CreateMovie(MovieDto movie)
         {
 
-            Movie movieToAdd = _mapper.Map<Movie>(movie); 
-            
+            Movie movieToAdd = _mapper.Map<Movie>(movie);
+
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == movie.User.Id);
 
             if (user != null)
@@ -33,9 +35,9 @@ namespace Application.Services
                 movieToAdd.Rating.UserID = user.Id;
             }
 
-           List<Category> categories = new List<Category>();
+            List<Category> categories = new List<Category>();
 
-           foreach (var cat in movie.Categories )
+            foreach (var cat in movie.Categories)
             {
                 var category = await _context.Categories.FirstOrDefaultAsync(u => u.Id == cat.Id);
 
@@ -69,7 +71,7 @@ namespace Application.Services
 
         public async Task<MovieDto> GetMovie(Guid id)
         {
-         
+
             var movie = await _context.Movies
                 .ProjectTo<MovieDto>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(x => x.Id == id);
@@ -89,6 +91,16 @@ namespace Application.Services
                 .ToListAsync();
         }
 
+        public async Task<List<MovieDto>> GetMoviesForUser(Guid userId)
+        {
+            var movies = await _context.Movies
+                .Where(c => c.User.UserID == userId)
+                .ProjectTo<MovieDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            return movies;
+        }
+
         public async Task<MovieDto> UpdateMovie(MovieDto movie)
         {
 
@@ -99,7 +111,8 @@ namespace Application.Services
             await _context.SaveChangesAsync();
 
             return movie;
-
         }
+
+
     }
 }

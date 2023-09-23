@@ -1,4 +1,5 @@
 ﻿using Application.DTOs.Comments;
+using Application.DTOs.Users;
 using AutoMapper;
 using Domain.DTOs;
 using Domain.Movies;
@@ -18,20 +19,24 @@ namespace Application.Core
         public MappingProfiles()
         {
 
+            //Users
+            CreateMap<User, UserDto>().ReverseMap();
+
+            //Movies
             CreateMap<Movie, Movie>();
             CreateMap<Movie, MovieDto>();
 
             CreateMap<MovieDto, Movie>()
                 .ForMember(d => d.Id, opt => opt.Ignore());
-               
-                
-               
+
+
+
             CreateMap<MovieUser, DTOs.Movies.Profile>()
                 .ForMember(d => d.Id, o => o.MapFrom(s => s.User.Id))
                 .ForMember(d => d.Name, o => o.MapFrom(s => s.User.Name))
                 .ReverseMap();
 
-         
+
 
             CreateMap<MovieRating, DTOs.Movies.ShortRating>()
                 .ForMember(d => d.Id, o => o.MapFrom(s => s.Rating.Id))
@@ -48,7 +53,7 @@ namespace Application.Core
              .ForMember(d => d.Id, o => o.MapFrom(s => s.Comment.Id))
              .ForMember(d => d.Text, o => o.MapFrom(s => s.Comment.Text)).ReverseMap();
 
-            CreateMap<DTOs.Movies.ShortComment, Comment >()
+            CreateMap<DTOs.Movies.ShortComment, Comment>()
           .ForMember(d => d.Id, o => o.MapFrom(s => s.Id))
           .ForMember(d => d.Text, o => o.MapFrom(s => s.Text)).ReverseMap();
 

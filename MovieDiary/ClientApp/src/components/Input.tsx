@@ -4,11 +4,14 @@ import { Theme } from "../common/theme";
 
 type Props = {
   color: string;
+  label: string;
 };
 
-const Input = ({ color }: Props) => {
+const Input = ({ color, label }: Props) => {
   return (
     <MuiInput
+      variant="outlined"
+      label={label}
       sx={{
         "& label.Mui-focused": { color: color },
         "& .MuiInput-underline:after": {

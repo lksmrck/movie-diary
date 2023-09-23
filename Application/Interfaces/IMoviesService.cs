@@ -13,6 +13,7 @@ namespace Application.Interfaces
         Task<List<MovieDto>> GetMovies();
         Task<MovieDto> GetMovie(Guid id);
         Task<MovieDto> GetMovie(string name);
+        Task<List<MovieDto>> GetMoviesForUser(Guid userId);
         Task<MovieDto> CreateMovie(MovieDto movie);
         Task<MovieDto> UpdateMovie(MovieDto movie);
         Task DeleteMovie(Guid id);
