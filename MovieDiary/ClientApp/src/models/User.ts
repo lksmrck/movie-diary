@@ -1,4 +1,7 @@
 export type User = {};
 
-export type LoginFormValues = {};
+export type LoginFormValues = {
+  username: string;
+  password: string;
+};
 export type RegisterFormValues = {};

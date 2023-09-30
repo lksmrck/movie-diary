@@ -1,12 +1,12 @@
-const color = {
+const Color = {
   primary: "#35a99f",
 };
 
-const fontSize = {
+const FontSize = {
   M: "1rem",
 };
 
-const spacing = {
+const Spacing = {
   S: ".25rem",
   M: ".5rem",
   L: "1rem",
@@ -14,8 +14,15 @@ const spacing = {
   XXL: "1.5rem",
 };
 
+const CardWidth = {
+  S: 20,
+  M: 30,
+  L: 40,
+};
+
 export const Theme = {
-  color,
-  fontSize,
-  spacing,
+  Color,
+  FontSize,
+  Spacing,
+  CardWidth,
 };

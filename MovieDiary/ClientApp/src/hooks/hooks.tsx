@@ -18,7 +18,7 @@ export const useFetch = (url: string, defaultData: {}) => {
         setIsLoading(false);
       }
     } catch (error) {
-      if (!axios.isCancel()) {
+      if (!axios.isCancel(error)) {
         if (isMounted.current) {
           setError(error);
           setIsLoading(false);

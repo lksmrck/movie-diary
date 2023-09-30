@@ -1,12 +1,17 @@
 import axios from "axios";
 import { AxiosResponse, AxiosError } from "axios";
 import { router } from "../routes";
-import { Movie, MovieFormValues } from "../models/Movie";
+import { Movie } from "../models/Movie";
 import { LoginFormValues, RegisterFormValues, User } from "../models/User";
 
 axios.defaults.baseURL = "http://localhost:5000/api";
 
-const responseBody = <T>(response: AxiosResponse<T>) => response.data;
+const responseBody = <T>(response: AxiosResponse<T>) => {
+  console.log(response.data);
+  return response.data;
+};
+
+//const callWithoutInterceptors = axios.request({url});
 
 axios.interceptors.request.use((config) => {
   // const token = store.commonStore.token;
@@ -67,11 +72,15 @@ const requests = {
 const Movies = {
   getAll: () => requests.get<Movie[]>(`/movies`),
   getOne: (id: string) => requests.get<Movie>(`/movies/${id}`),
-  create: (movie: MovieFormValues) => requests.post<void>(`/movies`, movie),
+  create: (movie: Movie) => requests.post<void>(`/movies`, movie),
   //   update: (movie: MovieFormValues) =>
   //     requests.put<void>(`/movies/${movie.id}`, movie),
   delete: (id: string) => requests.del<void>(`/movies/${id}`),
 };
+
+const Comments = {};
+
+const Categories = {};
 
 const Account = {
   current: () => requests.get<User>("account"),
@@ -80,9 +89,26 @@ const Account = {
     requests.post<User>("/account/register", user),
 };
 
+// Vypnuté req i res interceptory, pak přidat res!
+const Search = {
+  movie: (searchTerm: string) => {
+    return axios
+      .request({
+        baseURL: process.env.REACT_APP_MOVIES_SEARCH_URL,
+        url: searchTerm,
+        method: "get",
+        validateStatus: null,
+      })
+      .then(responseBody);
+  },
+};
+
 const agent = {
   Movies,
+  Comments,
+  Categories,
   Account,
+  Search,
 };
 
 export default agent;

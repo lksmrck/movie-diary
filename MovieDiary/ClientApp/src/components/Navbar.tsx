@@ -50,7 +50,7 @@ const Navbar = () => {
       <AppBar
         position="fixed"
         sx={{
-          backgroundColor: Theme.color.primary,
+          backgroundColor: Theme.Color.primary,
         }}
       >
         <Toolbar>
