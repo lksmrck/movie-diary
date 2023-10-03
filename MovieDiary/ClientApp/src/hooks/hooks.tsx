@@ -62,3 +62,22 @@ const useRequest = (
     } catch (error) {}
   };
 };
+
+export const useTypingDebounce = (callback: () => void, time: number) => {
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("" as any);
+
+  useEffect(() => {
+    const debounce = setTimeout(() => {
+      if (debouncedSearchTerm) callback();
+    }, time);
+
+    return () => {
+      clearTimeout(debounce);
+    };
+  }, [debouncedSearchTerm]);
+
+  return {
+    debouncedSearchTerm,
+    setDebouncedSearchTerm,
+  };
+};

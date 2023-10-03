@@ -15,24 +15,14 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Button from "../components/Button";
 import AddMovieModal from "../components/addMovie/AddMovieModal";
 import agent from "../api/agent";
+import SearchMovieCard from "../components/searchMovie/SearchMovieCard";
 
 const AddMovie = () => {
-  const width = 30;
-
-  const [searchTerm, setSearchTerm] = useState<string>("");
+  const width = 50;
 
   const [opened, setOpened] = useState(false);
 
   const handleClick = () => setOpened(true);
-
-  const handleChangeSearchTerm = async (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-
-    setTimeout(async () => {
-      const res = await agent.Search.movie(searchTerm);
-      console.log("res", res);
-    }, 800);
-  };
 
   return (
     <div className="flex justify-center items-center flex-col">
@@ -41,13 +31,14 @@ const AddMovie = () => {
       >
         <Typography variant="h4">Find your movie!</Typography>
         <CardContent>
-          <Input
+          {/* <Input
             name="search"
             label="Movie"
             color={Theme.Color.primary}
             value={searchTerm}
             onChange={handleChangeSearchTerm}
-          />
+          /> */}
+          <SearchMovieCard />
         </CardContent>
         {/* <CardActions>
        

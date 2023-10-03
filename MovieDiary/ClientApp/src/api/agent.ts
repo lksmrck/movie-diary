@@ -99,7 +99,26 @@ const Search = {
         method: "get",
         validateStatus: null,
       })
-      .then(responseBody);
+      .then((res) =>
+        res.data.results.map((m: any) =>
+          // Destructuring and take only few properties from whole object
+          (({
+            title,
+            poster_path,
+            release_date,
+            vote_average,
+            overview,
+            backdrop_path,
+          }) => ({
+            title,
+            poster_path,
+            release_date,
+            vote_average,
+            overview,
+            backdrop_path,
+          }))(m)
+        )
+      );
   },
 };
 

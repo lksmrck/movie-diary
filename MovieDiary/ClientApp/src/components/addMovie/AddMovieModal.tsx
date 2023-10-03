@@ -1,18 +1,11 @@
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  Modal,
-  Typography,
-} from "@mui/material";
-import React, { useState } from "react";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { Box, Modal, Typography } from "@mui/material";
+import { useState } from "react";
 import Input from "../Input";
 import { Theme } from "../../common/theme";
 import Rating from "../Rating";
 import { Movie } from "../../models/Movie";
 import Select from "../Select";
+import Accordion from "../Accordion";
 
 type Props = {
   open: boolean;
@@ -35,7 +28,7 @@ const style = {
 };
 
 const AddMovieModal = ({ open, handleClose }: Props) => {
-  const [formValues, setFormValues] = useState<any>({} as any); //bude <Movie>
+  const [formValues, setFormValues] = useState<any>({ categories: [] } as any); //bude <Movie>
   const { comment, rating, categories, user } = formValues;
 
   const handleChange = (
@@ -86,48 +79,60 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
-          Text in a modal
+        <Typography id="title" variant="h6" component="h2">
+          Save your personal information about the movie.
         </Typography>
-        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-          Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+        <Typography id="description" sx={{ mt: 2 }}>
+          Below you can add your own comment, rating or assign the movie to you
+          own categories.
         </Typography>
-        <Accordion sx={{ marginTop: "1rem" }}>
-          <AccordionSummary
-            id="add-comment"
-            aria-controls="add-comment"
-            expandIcon={<ExpandMoreIcon />}
-          >
-            <Typography>Add comment</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Input
-              name="comment"
-              label="Comment"
-              color={Theme.Color.primary}
-              value={comment?.text}
-              onChange={(e) =>
-                handleChange(e.target.name, e.target.value, "text")
-              }
-            />
-          </AccordionDetails>
+        <Accordion
+          sx={{ marginTop: "1rem" }}
+          id="add-comment"
+          heading="Add comment"
+        >
+          <Input
+            name="comment"
+            label="Comment"
+            color={Theme.Color.primary}
+            value={comment?.text}
+            onChange={(e) =>
+              handleChange(e.target.name, e.target.value, "text")
+            }
+          />
         </Accordion>
-        <Rating
-          name="rating"
-          value={rating?.value}
-          onChange={(e) => handleChange(e.target.name, e.target.value, "value")}
-        />
+        <Accordion
+          sx={{ marginTop: "1rem" }}
+          id="add-rating"
+          heading="Add rating"
+        >
+          <Rating
+            name="rating"
+            value={rating?.value}
+            onChange={(e) =>
+              handleChange(e.target.name, e.target.value, "value")
+            }
+          />
+        </Accordion>
+        <Accordion
+          sx={{ marginTop: "1rem" }}
+          id="add-categories"
+          heading="Add categories"
+        >
+          <Select
+            name="categories"
+            value={categories}
+            onChange={(e) => {
+              console.log(e.target.value);
+              handleChange(e.target.name, e.target.value, undefined);
+            }}
+            label="Categories"
+            options={dummy_list}
+          />
+        </Accordion>
+
         {/* toto bude user specific category */}
-        <Select
-          name="categories"
-          value={categories}
-          onChange={(e) => {
-            console.log(e.target.value);
-            handleChange(e.target.name, e.target.value, undefined);
-          }}
-          label="Categories"
-          options={dummy_list}
-        />
+
         {/* <Input name="comment" label="Comment" color={Theme.color.primary} value={} /> */}
       </Box>
     </Modal>
