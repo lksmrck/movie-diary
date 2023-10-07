@@ -4,12 +4,9 @@ import { router } from "../routes";
 import { Movie } from "../models/Movie";
 import { LoginFormValues, RegisterFormValues, User } from "../models/User";
 
-axios.defaults.baseURL = "http://localhost:5000/api";
+axios.defaults.baseURL = "https://localhost:7173/api";
 
-const responseBody = <T>(response: AxiosResponse<T>) => {
-  console.log(response.data);
-  return response.data;
-};
+const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 //const callWithoutInterceptors = axios.request({url});
 
@@ -70,8 +67,8 @@ const requests = {
 };
 
 const Movies = {
-  getAll: () => requests.get<Movie[]>(`/movies`),
-  getOne: (id: string) => requests.get<Movie>(`/movies/${id}`),
+  getAll: (userId: string) => requests.get<Movie[]>(`/movies/user/${userId}`),
+  getOne: (movieId: string) => requests.get<Movie>(`/movies/${movieId}`),
   create: (movie: Movie) => requests.post<void>(`/movies`, movie),
   //   update: (movie: MovieFormValues) =>
   //     requests.put<void>(`/movies/${movie.id}`, movie),

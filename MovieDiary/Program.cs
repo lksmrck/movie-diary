@@ -84,6 +84,8 @@ public class Program
 
         app.MapFallbackToFile("index.html"); ;
 
+        app.UseCors("ReactAppPolicy"); // Apply the CORS policy
+
         app.Run();
     }
 }

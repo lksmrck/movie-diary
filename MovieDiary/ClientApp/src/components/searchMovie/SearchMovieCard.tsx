@@ -17,6 +17,7 @@ const SearchMovieCard = () => {
     }
   );
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [selectedValue, setSelectedValue] = useState<string>("");
   const [options, setOptions] = useState([] as any);
 
   const fetchMovies = async () => {
@@ -39,9 +40,7 @@ const SearchMovieCard = () => {
     <Autocomplete
       id="search-movie"
       sx={{ width: 500 }}
-      getOptionLabel={(option) =>
-        typeof option === "string" ? option : option.title
-      }
+      getOptionLabel={(option) => option.title ?? "Search for a movie"}
       filterOptions={(x) => x}
       options={options}
       autoComplete
@@ -49,9 +48,10 @@ const SearchMovieCard = () => {
       filterSelectedOptions
       value={selectedMovie}
       noOptionsText="Start typing to search for a movie"
-      onChange={(e: any) => {
-        // setOptions(newValue ? [newValue, ...options] : options);
-        setSelectedMovie(e.target.value);
+      onChange={(e: any, newValue: any) => {
+        console.log(newValue);
+        setOptions(newValue ? [newValue, ...options] : options);
+        setSelectedMovie(newValue);
       }}
       onInputChange={(event, newInputValue) => {
         handleChangeSearchTerm(newInputValue);
@@ -73,7 +73,7 @@ const SearchMovieCard = () => {
       )}
       renderOption={(props, option) => {
         const matches = [] as any;
-        // console.log(option);
+        console.log(option);
         // const parts = parse(
         //   option.name,
         //   matches.map((match: any) => [
@@ -86,7 +86,14 @@ const SearchMovieCard = () => {
             <Grid
               container
               alignItems="center"
-              sx={{ height: "5rem", borderBottom: "1px solid grey" }}
+              sx={{
+                height: "5rem",
+                borderBottom: "1px solid grey",
+                "&:hover": {
+                  backgroundColor: "grey",
+                  cursor: "pointer",
+                },
+              }}
             >
               <Grid item sx={{ display: "flex", width: 44 }}>
                 <Box
@@ -117,6 +124,7 @@ const SearchMovieCard = () => {
                 <Typography variant="body2" color="text.secondary">
                   {option.release_date}
                 </Typography>
+                <Typography>{option.vote_average}</Typography>
               </Grid>
             </Grid>
           </li>

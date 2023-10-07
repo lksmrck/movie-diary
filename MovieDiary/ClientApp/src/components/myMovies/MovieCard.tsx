@@ -8,7 +8,13 @@ import {
 } from "@mui/material";
 import Card from "@mui/material/Card";
 
-const MovieCard = () => {
+type Props = {
+  title: string;
+  imgPath?: string;
+  description: string;
+};
+
+const MovieCard = ({ title, imgPath, description }: Props) => {
   return (
     <Card sx={{ maxWidth: 400 }}>
       <div className="flex">
@@ -22,11 +28,10 @@ const MovieCard = () => {
         </CardActionArea>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            Harry Potter and Philosophers Stone
+            {title}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica
+            {description}
           </Typography>
         </CardContent>
       </div>

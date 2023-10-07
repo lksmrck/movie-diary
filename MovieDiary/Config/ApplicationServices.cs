@@ -63,6 +63,18 @@ namespace API.Config
                 };
             });
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("ReactAppPolicy", builder =>
+                {
+                    builder
+                        .WithOrigins("https://localhost:44460") // Replace with your React app's URL
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
+
+
 
             //FluentValidation
             //services.AddControllers().AddFluentValidation(fv =>
