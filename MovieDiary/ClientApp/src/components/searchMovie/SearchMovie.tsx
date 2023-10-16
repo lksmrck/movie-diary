@@ -4,7 +4,11 @@ import { Theme } from "../../common/theme";
 import agent from "../../api/agent";
 import { useTypingDebounce } from "../../hooks/hooks";
 
-const SearchMovieCard = () => {
+type Props = {
+  onClickSearchedMovie: (movie: any) => void;
+};
+
+const SearchMovie = ({ onClickSearchedMovie }: Props) => {
   const [selectedMovie, setSelectedMovie] = useState(
     {} as {
       poster_path: string;
@@ -36,6 +40,11 @@ const SearchMovieCard = () => {
     setDebouncedSearchTerm(setTimeout(() => value, 1000));
   };
 
+  const handleSelectMovie = (movie: any) => {
+    setSelectedMovie(movie);
+    onClickSearchedMovie(movie);
+  };
+
   return (
     <Autocomplete
       id="search-movie"
@@ -49,7 +58,8 @@ const SearchMovieCard = () => {
       value={selectedMovie}
       noOptionsText="Start typing to search for a movie"
       onChange={(e: any, newValue: any) => {
-        console.log(newValue);
+        console.log("YOOOOO");
+        console.log("newvalue", newValue);
         setOptions(newValue ? [newValue, ...options] : options);
         setSelectedMovie(newValue);
       }}
@@ -73,7 +83,6 @@ const SearchMovieCard = () => {
       )}
       renderOption={(props, option) => {
         const matches = [] as any;
-        console.log(option);
         // const parts = parse(
         //   option.name,
         //   matches.map((match: any) => [
@@ -95,7 +104,11 @@ const SearchMovieCard = () => {
                 },
               }}
             >
-              <Grid item sx={{ display: "flex", width: 44 }}>
+              <Grid
+                item
+                sx={{ display: "flex", width: 44 }}
+                onClick={() => handleSelectMovie(option)}
+              >
                 <Box
                   component="img"
                   sx={{
@@ -134,4 +147,4 @@ const SearchMovieCard = () => {
   );
 };
 
-export default SearchMovieCard;
+export default SearchMovie;

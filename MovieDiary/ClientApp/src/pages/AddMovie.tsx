@@ -15,14 +15,20 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Button from "../components/Button";
 import AddMovieModal from "../components/addMovie/AddMovieModal";
 import agent from "../api/agent";
-import SearchMovieCard from "../components/searchMovie/SearchMovieCard";
+import SearchMovie from "../components/searchMovie/SearchMovie";
+import { Movie } from "../models/Movie";
 
 const AddMovie = () => {
+  const [movieToAdd, setMovieToAdd] = useState({} as Movie);
+
   const width = 50;
 
   const [opened, setOpened] = useState(false);
 
-  const handleClick = () => setOpened(true);
+  const handleOpenForm = (movie: any = {}) => {
+    setOpened(true);
+    setMovieToAdd(movie);
+  };
 
   return (
     <div className="flex justify-center items-center flex-col">
@@ -31,22 +37,12 @@ const AddMovie = () => {
       >
         <Typography variant="h4">Find your movie!</Typography>
         <CardContent>
-          {/* <Input
-            name="search"
-            label="Movie"
-            color={Theme.Color.primary}
-            value={searchTerm}
-            onChange={handleChangeSearchTerm}
-          /> */}
-          <SearchMovieCard />
+          <SearchMovie onClickSearchedMovie={handleOpenForm} />
         </CardContent>
-        {/* <CardActions>
-       
-        </CardActions> */}
       </Card>
       <Button
         variant="contained"
-        handleClick={handleClick}
+        handleClick={handleOpenForm}
         text="Otevřít form"
       />
       <AddMovieModal open={opened} handleClose={() => setOpened(false)} />
