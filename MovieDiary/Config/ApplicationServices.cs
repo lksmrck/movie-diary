@@ -1,4 +1,5 @@
-﻿using Application.Core;
+﻿using API.Services;
+using Application.Core;
 using Application.Interfaces;
 using Application.Services;
 using Domain.Users;
@@ -24,14 +25,14 @@ namespace API.Config
                 });
             });
 
-            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddScoped<DbContext, ApplicationDbContext>();
 
             services.AddScoped<IMoviesService, MoviesService>();
             services.AddScoped<ICommentsService, CommentsService>();
             services.AddScoped<IUsersService, UsersService>();
-
+            services.AddScoped<TokenService>();
 
             services.AddTransient<Seed>();
             services.AddControllersWithViews()
@@ -62,6 +63,9 @@ namespace API.Config
                     ValidateAudience = false
                 };
             });
+
+
+
 
             services.AddCors(options =>
             {

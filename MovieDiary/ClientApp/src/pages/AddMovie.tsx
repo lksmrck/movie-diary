@@ -1,14 +1,11 @@
-import React, { ChangeEvent, useState } from "react";
-import Input from "../components/Input";
-import { Theme } from "../common/theme";
+import { useState } from "react";
+
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
   Card,
-  CardActions,
   CardContent,
-  CardMedia,
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -17,6 +14,7 @@ import AddMovieModal from "../components/addMovie/AddMovieModal";
 import agent from "../api/agent";
 import SearchMovie from "../components/searchMovie/SearchMovie";
 import { Movie } from "../models/Movie";
+import SearchMovieWorking from "../components/searchMovie/SearchMovieWorking";
 
 const AddMovie = () => {
   const [movieToAdd, setMovieToAdd] = useState({} as Movie);
@@ -37,7 +35,8 @@ const AddMovie = () => {
       >
         <Typography variant="h4">Find your movie!</Typography>
         <CardContent>
-          <SearchMovie onClickSearchedMovie={handleOpenForm} />
+          {/* <SearchMovie onClickSearchedMovie={handleOpenForm} /> */}
+          <SearchMovieWorking onClickSearchedMovie={handleOpenForm} />
         </CardContent>
       </Card>
       <Button

@@ -1,11 +1,15 @@
-import { Box, Modal, Typography } from "@mui/material";
+import { Box, Chip, MenuItem, Modal, Typography } from "@mui/material";
+import OutlinedInput from "@mui/material/OutlinedInput";
 import { useState } from "react";
 import Input from "../Input";
 import { Theme } from "../../common/theme";
 import Rating from "../Rating";
 import { Movie } from "../../models/Movie";
-import Select from "../Select";
+
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Accordion from "../Accordion";
+import useMoviesContext from "../../store/MoviesContext";
+import Button from "../Button";
 
 type Props = {
   open: boolean;
@@ -28,9 +32,11 @@ const style = {
 };
 
 const AddMovieModal = ({ open, handleClose }: Props) => {
-  const [formValues, setFormValues] = useState<any>({ categories: [] } as any); //bude <Movie>
-  const { comment, rating, categories, user } = formValues;
+  const { selectedMovie, setSelectedMovie } = useMoviesContext();
+  const { comment, rating, categories } = selectedMovie;
 
+  console.log(categories);
+  const cat = [] as any;
   const handleChange = (
     type: string,
     value: string | number,
@@ -41,7 +47,7 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
     // })
 
     if (subtype) {
-      setFormValues((prev: any) => ({
+      setSelectedMovie((prev: any) => ({
         ...prev,
         [type]: {
           ...prev[type],
@@ -51,11 +57,25 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
     }
 
     if (!subtype) {
-      setFormValues((prev: any) => ({
+      console.log("VAL", value);
+      setSelectedMovie((prev: any) => ({
         ...prev,
         [type]: typeof value === "string" ? value.split(",") : value,
       }));
     }
+  };
+
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: 18 * 4.5 + 9,
+        width: 250,
+      },
+    },
+  };
+
+  const saveMovie = () => {
+    console.log("Ukládám movie: ", selectedMovie);
   };
 
   const dummy_categories_list = [
@@ -121,19 +141,34 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
         >
           <Select
             name="categories"
+            multiple
             value={categories}
-            onChange={(e) => {
+            onChange={(e: any) => {
               console.log(e.target.value);
               handleChange(e.target.name, e.target.value, undefined);
             }}
-            label="Categories"
-            options={dummy_list}
-          />
+            input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+            renderValue={(selected: any) => (
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                {selected.map((value: any) => (
+                  <Chip key={value} label={value} />
+                ))}
+              </Box>
+            )}
+            MenuProps={MenuProps}
+          >
+            {dummy_list?.map((name) => (
+              <MenuItem key={name} value={name}>
+                {name}
+              </MenuItem>
+            ))}
+          </Select>
         </Accordion>
 
         {/* toto bude user specific category */}
 
         {/* <Input name="comment" label="Comment" color={Theme.color.primary} value={} /> */}
+        <Button handleClick={saveMovie} text="Uložit" variant="outlined" />
       </Box>
     </Modal>
   );

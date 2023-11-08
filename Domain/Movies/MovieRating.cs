@@ -14,7 +14,7 @@ namespace Domain.Movies
         public Guid RatingID { get; set; }
         public Rating Rating { get; set; }
         public Guid UserID { get; set; }
-        public User User { get; set; }
+        public AppUser User { get; set; }
         public Guid MovieID { get; set; }
         public Movie Movie { get; set; }
     }

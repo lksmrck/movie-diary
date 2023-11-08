@@ -9,6 +9,7 @@ import NotFound from "./pages/errors/NotFound";
 import ServerError from "./pages/errors/ServerError";
 import Discover from "./pages/Discover";
 import Statistics from "./pages/Statistics";
+import Register from "./pages/Register";
 
 export const routes: RouteObject[] = [
   {
@@ -21,6 +22,7 @@ export const routes: RouteObject[] = [
       { path: "discover", element: <Discover /> },
       { path: "statistics", element: <Statistics /> },
       { path: "login", element: <Login /> },
+      { path: "register", element: <Register /> },
       { path: "not-found", element: <NotFound /> },
       { path: "server-error", element: <ServerError /> },
       { path: "*", element: <Navigate replace to="/not-found" /> },

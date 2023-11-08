@@ -4,6 +4,7 @@ import Input from "../components/Input";
 import { Theme } from "../common/theme";
 import { LoginFormValues } from "../models/User";
 import Button from "../components/Button";
+import agent from "../api/agent";
 
 const Login = () => {
   const [formData, setFormData] = useState({} as LoginFormValues);
@@ -12,8 +13,10 @@ const Login = () => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = () => {
-    console.log("submitted");
+  const handleSubmit = async () => {
+    console.log(formData);
+    const res = await agent.Users.login(formData);
+    console.log(res);
   };
 
   const handleBack = () => {

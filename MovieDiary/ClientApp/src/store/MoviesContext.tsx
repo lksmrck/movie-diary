@@ -7,28 +7,42 @@ import {
   SetStateAction,
   useEffect,
   FC,
+  useContext,
 } from "react";
-import { Movie } from "../models/Movie";
+import {
+  Movie,
+  SearchedMovie,
+  UserAdjustedSearchedMovie,
+} from "../models/Movie";
 
 interface MoviesContextInterface {
-  movies: Movie[];
+  selectedMovie: UserAdjustedSearchedMovie;
+  setSelectedMovie: Dispatch<SetStateAction<UserAdjustedSearchedMovie>>;
 }
 
 const MoviesContext = createContext({} as MoviesContextInterface);
 
-export const ReservationContextProvider: FC<{
+export const MoviesContextProvider: FC<{
   children: ReactNode;
 }> = ({ children }) => {
-  const [movies, setMovies] = useState([] as Movie[]);
+  const [selectedMovie, setSelectedMovie] = useState(
+    {} as UserAdjustedSearchedMovie
+  );
 
   return (
     <MoviesContext.Provider
       value={{
-        movies,
+        selectedMovie,
+        setSelectedMovie,
       }}
     >
       {children}
     </MoviesContext.Provider>
   );
 };
-export default MoviesContext;
+
+const useMoviesContext = () => {
+  return useContext(MoviesContext);
+};
+
+export default useMoviesContext;

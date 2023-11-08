@@ -4,4 +4,8 @@ export type LoginFormValues = {
   username: string;
   password: string;
 };
-export type RegisterFormValues = {};
+export type RegisterFormValues = {
+  username: string;
+  name: string;
+  password: string;
+};

@@ -23,14 +23,14 @@ namespace Persistence
         {
             if (_context.Movies.Any()) return;
 
-            var users = new List<User>
+            var users = new List<AppUser>
             {
-                new User
+                new AppUser
                 {
                     Id = Guid.NewGuid(),
                     Name = "Jan Novák"
                 },
-                 new User
+                 new AppUser
                 {
                     Id = Guid.NewGuid(),
                     Name = "Dana Drábová"

@@ -1,4 +1,5 @@
 ﻿using Application.DTOs.Users;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,9 @@ namespace Application.Interfaces
     public interface IUsersService
     {
         bool IsUniqueUser(string username);
-        Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto);
+        Task<UserDto> Login(LoginRequestDto loginRequestDto);
         Task<UserDto> Register(RegistrationRequestDto registrationRequestDto);
+        Task<UserDto> GetCurrentUser(string userEmail);
 
     }
 }

@@ -79,11 +79,11 @@ const Comments = {};
 
 const Categories = {};
 
-const Account = {
-  current: () => requests.get<User>("account"),
-  login: (user: LoginFormValues) => requests.post<User>("/account/login", user),
+const Users = {
+  current: () => requests.get<User>("/users/current"), // DODELAT
+  login: (user: LoginFormValues) => requests.post<User>("/users/login", user),
   register: (user: RegisterFormValues) =>
-    requests.post<User>("/account/register", user),
+    requests.post<User>("/users/register", user),
 };
 
 // Vypnuté req i res interceptory, pak přidat res!
@@ -123,7 +123,7 @@ const agent = {
   Movies,
   Comments,
   Categories,
-  Account,
+  Users,
   Search,
 };
 

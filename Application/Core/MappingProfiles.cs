@@ -20,7 +20,7 @@ namespace Application.Core
         {
 
             //Users
-            CreateMap<User, UserDto>().ReverseMap();
+            CreateMap<AppUser, UserDto>().ReverseMap();
 
             //Movies
             CreateMap<Movie, Movie>();

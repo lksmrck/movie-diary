@@ -1,9 +1,13 @@
 ﻿using Application.DTOs.Users;
 using Application.Interfaces;
 using Domain;
+using Domain.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Security.Claims;
 
 namespace API.Controllers
 {
@@ -15,22 +19,33 @@ namespace API.Controllers
         private readonly IUsersService _users;
         protected APIResponse _response;
 
-        public UsersController(IUsersService users)
+        public UsersController(UserManager<AppUser> userManager, IUsersService users)
         {
             _users = users;
             _response = new APIResponse();
         }
 
+        [Authorize]
+        [HttpGet("current")]
+        public async Task<ActionResult<UserDto>> GetCurrentUser()
+        {
+            var userEmail = User.FindFirstValue(ClaimTypes.Email);
+
+            return await _users.GetCurrentUser(userEmail);
+        }
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto model)
         {
+            //TODO: ID se vraci NULL
             var loginResponse = await _users.Login(model);
-            if (loginResponse.User == null || string.IsNullOrEmpty(loginResponse.Token))
+
+            if (loginResponse.UserName == null || string.IsNullOrEmpty(loginResponse.Token))
             {
                 _response.StatusCode = HttpStatusCode.BadRequest;
                 _response.IsSuccess = false;
                 _response.ErrorMessages.Add("Username or password is incorrect");
-                return BadRequest(_response);
+                return Unauthorized(_response);
             }
 
             _response.StatusCode = HttpStatusCode.OK;
