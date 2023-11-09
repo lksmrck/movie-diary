@@ -45,7 +45,7 @@ namespace API.Config
 
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
-            var key = config.GetValue<string>("ApiSettings:Secret");
+            var key = config.GetValue<string>("ApiSettings:Secret")g;
 
             services.AddAuthentication(opt =>
             {

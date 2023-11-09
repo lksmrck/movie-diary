@@ -1,5 +1,5 @@
 export type Movie = {
-  id: string;
+  // id: string;
   title: string;
   description: string;
   category: string;
@@ -25,6 +25,7 @@ export interface UserAdjustedSearchedMovie extends SearchedMovie {
   rating: { value: number };
   comment: { text: string };
   categories: string[];
+  dateWatched: any;
 }
 
 export type Profile = {

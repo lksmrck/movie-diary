@@ -1,15 +1,27 @@
-import { Box, Chip, MenuItem, Modal, Typography } from "@mui/material";
+import {
+  Box,
+  Chip,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Modal,
+  Typography,
+} from "@mui/material";
 import OutlinedInput from "@mui/material/OutlinedInput";
-import { useState } from "react";
+
 import Input from "../Input";
 import { Theme } from "../../common/theme";
 import Rating from "../Rating";
-import { Movie } from "../../models/Movie";
-
+import agent from "../../api/agent";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Accordion from "../Accordion";
 import useMoviesContext from "../../store/MoviesContext";
 import Button from "../Button";
+import Map from "../../helpers/Map";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { SearchedMovie } from "../../models/Movie";
 
 type Props = {
   open: boolean;
@@ -35,8 +47,6 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
   const { selectedMovie, setSelectedMovie } = useMoviesContext();
   const { comment, rating, categories } = selectedMovie;
 
-  console.log(categories);
-  const cat = [] as any;
   const handleChange = (
     type: string,
     value: string | number,
@@ -75,7 +85,10 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
   };
 
   const saveMovie = () => {
-    console.log("Ukládám movie: ", selectedMovie);
+    const mov = Map.mapToMovie(selectedMovie, { id: "", name: "" });
+    console.log(selectedMovie);
+
+    // agent.Movies.create(mov);
   };
 
   const dummy_categories_list = [
@@ -109,6 +122,20 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
         <Accordion
           sx={{ marginTop: "1rem" }}
           id="add-comment"
+          heading="Date watched"
+        >
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              value={selectedMovie.dateWatched}
+              onChange={(d) =>
+                setSelectedMovie({ ...selectedMovie, dateWatched: d })
+              }
+            />
+          </LocalizationProvider>
+        </Accordion>
+        <Accordion
+          sx={{ marginTop: "1rem" }}
+          id="add-comment"
           heading="Add comment"
         >
           <Input
@@ -139,30 +166,36 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
           id="add-categories"
           heading="Add categories"
         >
-          <Select
-            name="categories"
-            multiple
-            value={categories}
-            onChange={(e: any) => {
-              console.log(e.target.value);
-              handleChange(e.target.name, e.target.value, undefined);
-            }}
-            input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-            renderValue={(selected: any) => (
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                {selected.map((value: any) => (
-                  <Chip key={value} label={value} />
-                ))}
-              </Box>
-            )}
-            MenuProps={MenuProps}
-          >
-            {dummy_list?.map((name) => (
-              <MenuItem key={name} value={name}>
-                {name}
-              </MenuItem>
-            ))}
-          </Select>
+          <FormControl sx={{ m: 1, width: 300 }}>
+            <InputLabel id="category-lbl">Categories</InputLabel>
+            <Select
+              labelId="category-lbl"
+              name="categories"
+              multiple
+              value={categories}
+              onChange={(e: any) => {
+                console.log("VAL", e.target);
+                handleChange(e.target.name, e.target.value, undefined);
+              }}
+              input={
+                <OutlinedInput id="select-multiple-chip" label="Categories" />
+              }
+              renderValue={(selected: any) => (
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                  {selected.map((value: any) => (
+                    <Chip key={value} label={value} />
+                  ))}
+                </Box>
+              )}
+              MenuProps={MenuProps}
+            >
+              {dummy_categories_list?.map((cat) => (
+                <MenuItem key={cat.name} value={cat.name}>
+                  {cat.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Accordion>
 
         {/* toto bude user specific category */}

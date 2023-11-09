@@ -97,15 +97,17 @@ const Search = {
         validateStatus: null,
       })
       .then((res) =>
-        res.data.results.map((m: any) =>
+        res.data.results.map((m: any) => {
+          console.log(res.data.results);
           // Destructuring and take only few properties from whole object
-          (({
+          return (({
             title,
             poster_path,
             release_date,
             vote_average,
             overview,
             backdrop_path,
+            genre_ids,
           }) => ({
             title,
             poster_path,
@@ -113,8 +115,9 @@ const Search = {
             vote_average,
             overview,
             backdrop_path,
-          }))(m)
-        )
+            genre_ids,
+          }))(m);
+        })
       );
   },
 };
