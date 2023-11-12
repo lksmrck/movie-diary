@@ -1,4 +1,3 @@
-import { Autocomplete, Box, Grid, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { Theme } from "../../common/theme";
 import agent from "../../api/agent";
@@ -12,21 +11,9 @@ type Props = {
 };
 
 const SearchMovieWorking = ({ onClickSearchedMovie }: Props) => {
-  // const [selectedMovie, setSelectedMovie] = useState(
-  //   {} as {
-  //     poster_path: string;
-  //     title: string;
-  //     release_date: string;
-  //     // highlight: boolean;
-  //     vote_average: number;
-  //     overview: string;
-  //     backdrop_path: string;
-  //   }
-  // );
   const [searchTerm, setSearchTerm] = useState<string>("");
-  // const [selectedValue, setSelectedValue] = useState<string>("");
   const [options, setOptions] = useState([] as any);
-  const { selectedMovie, setSelectedMovie } = useMoviesContext();
+  const { setSelectedMovie } = useMoviesContext();
 
   const fetchMovies = async () => {
     const movies = await agent.Search.movie(searchTerm);
@@ -56,7 +43,7 @@ const SearchMovieWorking = ({ onClickSearchedMovie }: Props) => {
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           handleChangeSearchTerm(e.target.value)
         }
-        color={Theme.Color.primary}
+        color={Theme.Color.teal_2}
         value={searchTerm}
         label="Find your movie"
         name="find-your-movie"

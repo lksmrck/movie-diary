@@ -3,6 +3,7 @@ import { AxiosResponse, AxiosError } from "axios";
 import { router } from "../routes";
 import { Movie } from "../models/Movie";
 import { LoginFormValues, RegisterFormValues, User } from "../models/User";
+import { getLocalStorage } from "../utils/getLocalStorage";
 
 axios.defaults.baseURL = "https://localhost:7173/api";
 
@@ -11,8 +12,8 @@ const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 //const callWithoutInterceptors = axios.request({url});
 
 axios.interceptors.request.use((config) => {
-  // const token = store.commonStore.token;
-  const token = null;
+  const token = getLocalStorage("user")?.token;
+  console.log(token);
   if (token && config.headers) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
@@ -81,9 +82,10 @@ const Categories = {};
 
 const Users = {
   current: () => requests.get<User>("/users/current"), // DODELAT
-  login: (user: LoginFormValues) => requests.post<User>("/users/login", user),
+  login: (user: LoginFormValues) =>
+    requests.post<ApiResponse>("/users/login", user),
   register: (user: RegisterFormValues) =>
-    requests.post<User>("/users/register", user),
+    requests.post<ApiResponse>("/users/register", user),
 };
 
 // Vypnuté req i res interceptory, pak přidat res!
@@ -131,3 +133,10 @@ const agent = {
 };
 
 export default agent;
+
+type ApiResponse = {
+  errorMessages: string[];
+  isSuccess: boolean;
+  result: any;
+  statusCode: number;
+};

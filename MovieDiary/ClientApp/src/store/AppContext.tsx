@@ -1,13 +1,11 @@
-import { getLocalStorage } from "../utils/getLocalStorage";
-import { UserInLS } from "../models/UserInLS";
 import {
   createContext,
   ReactNode,
   useState,
   Dispatch,
   SetStateAction,
-  useEffect,
   FC,
+  useContext,
 } from "react";
 
 interface AppContextInterface {
@@ -17,7 +15,7 @@ interface AppContextInterface {
 
 const AppContext = createContext({} as AppContextInterface);
 
-export const AuthContextProvider: FC<{
+export const AppContextProvider: FC<{
   children: ReactNode;
 }> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -33,4 +31,9 @@ export const AuthContextProvider: FC<{
     </AppContext.Provider>
   );
 };
-export default AppContext;
+
+const useAppContext = () => {
+  return useContext(AppContext);
+};
+
+export default useAppContext;

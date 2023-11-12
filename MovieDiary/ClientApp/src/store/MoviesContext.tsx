@@ -18,6 +18,8 @@ import {
 interface MoviesContextInterface {
   selectedMovie: UserAdjustedSearchedMovie;
   setSelectedMovie: Dispatch<SetStateAction<UserAdjustedSearchedMovie>>;
+  userMovies: Movie[];
+  setUserMovies: Dispatch<SetStateAction<Movie[]>>;
 }
 
 const MoviesContext = createContext({} as MoviesContextInterface);
@@ -28,12 +30,15 @@ export const MoviesContextProvider: FC<{
   const [selectedMovie, setSelectedMovie] = useState(
     {} as UserAdjustedSearchedMovie
   );
+  const [userMovies, setUserMovies] = useState([] as Movie[]);
 
   return (
     <MoviesContext.Provider
       value={{
         selectedMovie,
         setSelectedMovie,
+        userMovies,
+        setUserMovies,
       }}
     >
       {children}

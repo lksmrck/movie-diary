@@ -3,8 +3,11 @@ using Application.Core;
 using Application.Interfaces;
 using Application.Services;
 using Domain.Users;
+using Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Persistence;
@@ -33,19 +36,26 @@ namespace API.Config
             services.AddScoped<ICommentsService, CommentsService>();
             services.AddScoped<IUsersService, UsersService>();
             services.AddScoped<TokenService>();
+            services.AddHttpContextAccessor();
 
             services.AddTransient<Seed>();
-            services.AddControllersWithViews()
-             .AddNewtonsoftJson(options =>
-              options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-            );
+            //services.AddControllersWithViews()
+            // .AddNewtonsoftJson(options =>
+            //  options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            //);
 
-            //builder.Services.AddEndpointsApiExplorer();
-            //builder.Services.AddSwaggerGen();
+            services.AddControllers(opt =>
+            {
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                opt.Filters.Add(new AuthorizeFilter(policy));
+            });
+
+            services.AddEndpointsApiExplorer();
+            services.AddSwaggerGen();
 
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
-            var key = config.GetValue<string>("ApiSettings:Secret")g;
+            var key = config.GetValue<string>("ApiSettings:Secret");
 
             services.AddAuthentication(opt =>
             {
@@ -64,8 +74,21 @@ namespace API.Config
                 };
             });
 
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("IsSameUser", policy =>
+                {
+                    policy.Requirements.Add(new IsSameUser());
+                });
+            });
 
+            //services.Configure<AuthorizationOptions>(options =>
+            //{
+            //    options.AddPolicy("NewRequirement",
+            //            policy => policy.Requirements.Add(new UserRequirement()));
+            //});
 
+            services.AddTransient<IAuthorizationHandler, IsSameUserHandler>();
 
             services.AddCors(options =>
             {

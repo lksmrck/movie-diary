@@ -38,7 +38,8 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 400,
   bgcolor: "background.paper",
-  border: "2px solid #000",
+  border: `2px solid ${Theme.Color.teal_2}`,
+  borderRadius: Theme.BorderRadius.S,
   boxShadow: 24,
   p: 4,
 };
@@ -84,11 +85,16 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
     },
   };
 
-  const saveMovie = () => {
-    const mov = Map.mapToMovie(selectedMovie, { id: "", name: "" });
+  const saveMovie = async () => {
+    const mov = Map.mapToMovie(selectedMovie, {
+      id: "cb3f428a-2f9a-43c1-c7f3-08dbbc45eab2",
+      name: "Karel Testovací",
+    });
     console.log(selectedMovie);
 
-    // agent.Movies.create(mov);
+    await agent.Movies.create(mov);
+
+    handleClose();
   };
 
   const dummy_categories_list = [
@@ -141,7 +147,7 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
           <Input
             name="comment"
             label="Comment"
-            color={Theme.Color.primary}
+            color={Theme.Color.teal_2}
             value={comment?.text}
             onChange={(e) =>
               handleChange(e.target.name, e.target.value, "text")

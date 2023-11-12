@@ -13,6 +13,7 @@ namespace Domain.Movies
         public string Title { get; set; }
         public string Description { get; set; }
         public string Category { get; set; }
+        public string PosterPath { get; set; }
         //Tohle bude user specific category
         //public ICollection<Category> Category { get; set; }
         public DateTime DateCreated { get; set; }

@@ -15,10 +15,11 @@ import agent from "../api/agent";
 import SearchMovie from "../components/searchMovie/SearchMovie";
 import { Movie } from "../models/Movie";
 import SearchMovieWorking from "../components/searchMovie/SearchMovieWorking";
+import Map from "../helpers/Map";
 
 const AddMovie = () => {
   const [movieToAdd, setMovieToAdd] = useState({} as Movie);
-
+  Map.test();
   const width = 50;
 
   const [opened, setOpened] = useState(false);
@@ -43,6 +44,7 @@ const AddMovie = () => {
         variant="contained"
         handleClick={handleOpenForm}
         text="Otevřít form"
+        color="primary"
       />
       <AddMovieModal open={opened} handleClose={() => setOpened(false)} />
       <Accordion sx={{ maxWidth: `${width - 4}rem`, marginTop: "3rem" }}>

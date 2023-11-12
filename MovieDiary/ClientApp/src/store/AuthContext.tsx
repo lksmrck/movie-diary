@@ -8,11 +8,12 @@ import {
   SetStateAction,
   useEffect,
   FC,
+  useContext,
 } from "react";
 
 interface AuthContextInterface {
-  user: UserInLS | null;
-  setUser: Dispatch<SetStateAction<UserInLS | null>>;
+  currentUser: UserInLS | null;
+  setCurrentUser: Dispatch<SetStateAction<UserInLS | null>>;
 }
 
 const AuthContext = createContext({} as AuthContextInterface);
@@ -21,21 +22,27 @@ export const AuthContextProvider: FC<{
   children: ReactNode;
 }> = ({ children }) => {
   //Stored data for user and company
-  const [user, setUser] = useState(getLocalStorage("user") || null);
+  const [currentUser, setCurrentUser] = useState(
+    getLocalStorage("user") || null
+  );
 
   useEffect(() => {
-    localStorage.setItem("user", JSON.stringify(user));
-  }, [user]);
+    localStorage.setItem("user", JSON.stringify(currentUser));
+  }, [currentUser]);
 
   return (
     <AuthContext.Provider
       value={{
-        user,
-        setUser,
+        currentUser,
+        setCurrentUser,
       }}
     >
       {children}
     </AuthContext.Provider>
   );
 };
-export default AuthContext;
+const useAuthContext = () => {
+  return useContext(AuthContext);
+};
+
+export default useAuthContext;

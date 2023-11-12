@@ -5,18 +5,22 @@ import { Theme } from "../common/theme";
 import { LoginFormValues } from "../models/User";
 import Button from "../components/Button";
 import agent from "../api/agent";
+import useAuthContext from "../store/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFormData] = useState({} as LoginFormValues);
+  const { currentUser, setCurrentUser } = useAuthContext();
+  const navigate = useNavigate();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = async () => {
-    console.log(formData);
     const res = await agent.Users.login(formData);
-    console.log(res);
+    if (res.isSuccess) setCurrentUser(res.result);
+    navigate("/home");
   };
 
   const handleBack = () => {
@@ -39,23 +43,37 @@ const Login = () => {
           <Input
             name="username"
             label="Username"
-            color={Theme.Color.primary}
+            color={Theme.Color.teal_2}
             value={formData.username}
             onChange={handleChange}
+            variant="outlined"
+            size="small"
           />
           <Input
             name="password"
             label="Password"
             type="password"
-            color={Theme.Color.primary}
+            color={Theme.Color.teal_2}
             value={formData.password}
             onChange={handleChange}
             sx={{ marginTop: ".5rem" }}
+            variant="outlined"
+            size="small"
           />
         </CardContent>
         <CardActions>
-          <Button handleClick={handleSubmit} variant="contained" text="Login" />
-          <Button handleClick={handleBack} variant="outlined" text="Back" />
+          <Button
+            handleClick={handleSubmit}
+            variant="contained"
+            text="Login"
+            color="primary"
+          />
+          <Button
+            handleClick={handleBack}
+            variant="outlined"
+            text="Back"
+            color="secondary"
+          />
         </CardActions>
       </Card>
     </div>

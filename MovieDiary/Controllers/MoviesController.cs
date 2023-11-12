@@ -2,6 +2,8 @@
 using Domain;
 using Domain.DTOs;
 using Domain.Movies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -26,6 +28,7 @@ namespace API.Controllers
 
 
         // GET: api/<MoviesController>
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -53,24 +56,24 @@ namespace API.Controllers
         }
 
         // GET api/<MoviesController>/5
-
-        [HttpGet("{id}")]
+        [Authorize(Policy = "IsSameUser")]
+        [HttpGet("/user/{userId}/movie/{movieId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<APIResponse>> GetMovie(Guid id)
+        public async Task<ActionResult<APIResponse>> GetMovie(Guid movieId)
         {
             try
             {
-                if (id == Guid.Empty)
+                if (movieId == Guid.Empty)
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
                 }
 
-                MovieDto movie = await _movies.GetMovie(id);
+                MovieDto movie = await _movies.GetMovie(movieId);
 
                 if (movie == null)
                 {
@@ -94,7 +97,8 @@ namespace API.Controllers
 
         }
 
-        // GET api/movies/userId
+        // api/movies/userId
+        [Authorize(Policy = "IsSameUser")]
         [HttpGet("user/{userId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -102,6 +106,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetMoviesForUser(Guid userId)
         {
+            //var ccc = httpContext.Session;
             return Ok(await _movies.GetMoviesForUser(userId));
         }
 
@@ -131,12 +136,13 @@ namespace API.Controllers
         }
 
         // PUT api/<MoviesController>/5
-        [HttpPut("{id}")]
-        public async Task<ActionResult<APIResponse>> Put(Guid id, [FromBody] MovieDto movie)
+        [Authorize(Policy = "IsSameUser")]
+        [HttpPut("user/{userId}/movie/{movieId}")]
+        public async Task<ActionResult<APIResponse>> Put(Guid movieId, [FromBody] MovieDto movie)
         {
             try
             {
-                if (movie == null || id != movie.Id)
+                if (movie == null || movieId != movie.Id)
                 {
                     return BadRequest();
                 }
@@ -157,12 +163,13 @@ namespace API.Controllers
         }
 
         // DELETE api/<MoviesController>/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<APIResponse>> Delete(Guid id)
+        [Authorize(Policy = "IsSameUser")]
+        [HttpDelete("user/{userId}/movie/{movieId}")]
+        public async Task<ActionResult<APIResponse>> Delete(Guid movieId)
         {
             try
             {
-                if (id == Guid.Empty)
+                if (movieId == Guid.Empty)
                 {
                     return BadRequest();
                 }
@@ -176,7 +183,7 @@ namespace API.Controllers
 
                 //await _movies.DeleteMovie(movie);
 
-                await _movies.DeleteMovie(id);
+                await _movies.DeleteMovie(movieId);
 
                 _response.StatusCode = HttpStatusCode.NoContent;
 

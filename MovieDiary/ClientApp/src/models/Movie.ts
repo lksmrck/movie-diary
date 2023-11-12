@@ -3,8 +3,9 @@ export type Movie = {
   title: string;
   description: string;
   category: string;
-  dateCreated: string;
+  dateCreated: Date;
   dateWatched: string;
+  posterPath: string;
   user: Profile;
   rating: Rating;
   comment: Comment;

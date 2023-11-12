@@ -10,17 +10,23 @@ import ServerError from "./pages/errors/ServerError";
 import Discover from "./pages/Discover";
 import Statistics from "./pages/Statistics";
 import Register from "./pages/Register";
+import RequireAuth from "./hoc/RequireAuth";
 
 export const routes: RouteObject[] = [
   {
     path: "/",
     element: <App />,
     children: [
-      { path: "home", element: <Home /> },
-      { path: "my-movies", element: <MyMovies /> },
-      { path: "add-movie", element: <AddMovie /> },
-      { path: "discover", element: <Discover /> },
-      { path: "statistics", element: <Statistics /> },
+      {
+        element: <RequireAuth />,
+        children: [
+          { path: "home", element: <Home /> },
+          { path: "my-movies", element: <MyMovies /> },
+          { path: "add-movie", element: <AddMovie /> },
+          { path: "discover", element: <Discover /> },
+          { path: "statistics", element: <Statistics /> },
+        ],
+      },
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
       { path: "not-found", element: <NotFound /> },

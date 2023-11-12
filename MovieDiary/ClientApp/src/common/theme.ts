@@ -1,5 +1,7 @@
 const Color = {
-  primary: "#35a99f",
+  teal_1: "#98dfd9",
+  teal_2: "#35a99f",
+  teal_3: "#15413e",
 };
 
 const FontSize = {
@@ -20,9 +22,14 @@ const CardWidth = {
   L: 40,
 };
 
+const BorderRadius = {
+  S: "5px",
+};
+
 export const Theme = {
   Color,
   FontSize,
   Spacing,
   CardWidth,
+  BorderRadius,
 };

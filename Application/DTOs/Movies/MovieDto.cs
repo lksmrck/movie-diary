@@ -19,6 +19,7 @@ namespace Domain.DTOs
         //public ICollection<Category> Category { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateWatched { get; set; }
+        public string PosterPath { get; set; }
         public Profile User { get; set; }
         public ShortRating Rating { get; set; }
         public ShortComment Comment { get; set; }

@@ -14,34 +14,6 @@ public class Program
 
         builder.Services.RegisterServices(builder.Configuration);
 
-        //builder.Services.AddDbContext<ApplicationDbContext>(opt =>
-        //{
-        //    opt/*.UseLazyLoadingProxies()*/.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection"), b =>
-        //    {
-        //        b.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
-        //    });
-        //});
-
-
-
-        // Add services to the container.
-        //builder.Services.AddScoped<IMoviesService, MoviesService>();
-        //builder.Services.AddScoped<ICommentsService, CommentsService>();
-
-
-        //builder.Services.AddTransient<Seed>();
-        //builder.Services.AddControllersWithViews()
-        // .AddNewtonsoftJson(options =>
-        //  options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-        //);
-
-        ////builder.Services.AddEndpointsApiExplorer();
-        ////builder.Services.AddSwaggerGen();
-
-        //builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
-
-
-
         var app = builder.Build();
 
         // Seed DB context before app starts
@@ -65,22 +37,18 @@ public class Program
         {
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
-            //app.UseSwagger();
-            //app.UseSwaggerUI(c => {
-            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V2");
-            //});
         }
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
         app.UseRouting();
 
+        app.UseAuthentication();
+        app.UseAuthorization();
 
         app.MapControllerRoute(
             name: "default",
             pattern: "{controller}/{action=Index}/{id?}");
-
-
 
         app.MapFallbackToFile("index.html"); ;
 

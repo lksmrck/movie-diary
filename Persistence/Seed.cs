@@ -66,10 +66,11 @@ namespace Persistence
                     Category = "users specific category",
                     DateCreated = DateTime.UtcNow.AddMonths(-2),
                     DateWatched = DateTime.UtcNow.AddMonths(-1),
+                    PosterPath = "/kfkyALfD4G1mlBJI1lOt2QCra4i.jpg",
                     User = new MovieUser{User = users[0] },
                     Rating = new MovieRating {UserID = users[0].Id,  Rating = new Rating { Value = 5 } } ,
                     Comment = new MovieComment { UserID = users[0].Id, Comment = new Comment{ Text = "Good movie" }  },
-                    Categories = new List<Category> {categories[0], categories[1] } 
+                    Categories = new List<Category> {categories[0], categories[1] }
                 },
                 new Movie
                 {
@@ -78,6 +79,7 @@ namespace Persistence
                     Category = "users specific category2",
                     DateCreated = DateTime.UtcNow.AddMonths(-2),
                     DateWatched = DateTime.UtcNow.AddMonths(-1),
+                    PosterPath = "/kfkyALfD4G1mlBJI1lOt2QCra4i.jpg",
                     User = new MovieUser{User = users[1] } ,
                     Rating = new MovieRating {UserID = users[1].Id, Rating = new Rating { Value = 5 }  },
                     Comment = new MovieComment {UserID = users[1].Id,Comment = new Comment{ Text = "Sračka" } } ,
@@ -90,6 +92,7 @@ namespace Persistence
                     Category = "users specific category3",
                     DateCreated = DateTime.UtcNow.AddMonths(-2),
                     DateWatched = DateTime.UtcNow.AddMonths(-1),
+                    PosterPath = "/kfkyALfD4G1mlBJI1lOt2QCra4i.jpg",
                     User = new MovieUser{User = users[1] } ,
                     Rating = new MovieRating {UserID = users[1].Id, Rating = new Rating { Value = 5 }  },
                     Comment = new MovieComment {UserID = users[1].Id,Comment = new Comment{ Text = "Super film" } } ,
@@ -102,6 +105,7 @@ namespace Persistence
                     Category = "users specific category4",
                     DateCreated = DateTime.UtcNow.AddMonths(-2),
                     DateWatched = DateTime.UtcNow.AddMonths(-1),
+                    PosterPath = "/kfkyALfD4G1mlBJI1lOt2QCra4i.jpg",
                     User = new MovieUser{User = users[0] } ,
                     Rating = new MovieRating {UserID = users[0].Id, Rating = new Rating { Value = 5 }  },
                     Comment = new MovieComment {UserID = users[0].Id,Comment = new Comment{ Text = "Boží" } } ,
