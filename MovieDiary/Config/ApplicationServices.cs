@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Persistence;
+using System.Configuration;
 using System.Text;
 using static Azure.Core.HttpHeader;
 
@@ -82,11 +83,6 @@ namespace API.Config
                 });
             });
 
-            //services.Configure<AuthorizationOptions>(options =>
-            //{
-            //    options.AddPolicy("NewRequirement",
-            //            policy => policy.Requirements.Add(new UserRequirement()));
-            //});
 
             services.AddTransient<IAuthorizationHandler, IsSameUserHandler>();
 

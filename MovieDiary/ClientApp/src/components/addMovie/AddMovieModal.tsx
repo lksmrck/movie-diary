@@ -22,6 +22,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { SearchedMovie } from "../../models/Movie";
+import useAuthContext from "../../store/AuthContext";
 
 type Props = {
   open: boolean;
@@ -46,6 +47,7 @@ const style = {
 
 const AddMovieModal = ({ open, handleClose }: Props) => {
   const { selectedMovie, setSelectedMovie } = useMoviesContext();
+  const { currentUser } = useAuthContext();
   const { comment, rating, categories } = selectedMovie;
 
   const handleChange = (
@@ -87,8 +89,8 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
 
   const saveMovie = async () => {
     const mov = Map.mapToMovie(selectedMovie, {
-      id: "cb3f428a-2f9a-43c1-c7f3-08dbbc45eab2",
-      name: "Karel Testovací",
+      id: currentUser?.id,
+      name: currentUser?.name,
     });
     console.log(selectedMovie);
 
@@ -207,7 +209,13 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
         {/* toto bude user specific category */}
 
         {/* <Input name="comment" label="Comment" color={Theme.color.primary} value={} /> */}
-        <Button handleClick={saveMovie} text="Uložit" variant="outlined" />
+        <Button
+          handleClick={saveMovie}
+          text="Uložit"
+          variant="outlined"
+          color="secondary"
+          sx={{ marginTop: "2rem" }}
+        />
       </Box>
     </Modal>
   );

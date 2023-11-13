@@ -22,7 +22,7 @@ namespace API.Services
                 new Claim(ClaimTypes.Name, user.UserName),
                  //TODO: ID se vraci NULL
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                //new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Email, user.Email),
             };
 
             // Symmetric security key = same key which encrypted is used for decrypt (other variant is AssymetricSecurityKey)

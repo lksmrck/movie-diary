@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using System.Net;
+using System.Security.Claims;
 using System.Xml.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -19,6 +20,7 @@ namespace API.Controllers
     public class MoviesController : ControllerBase
     {
         private readonly IMoviesService _movies;
+        //private readonly HttpContext _context;
         protected APIResponse _response = new APIResponse();
 
         public MoviesController(IMoviesService movies)
@@ -106,17 +108,21 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetMoviesForUser(Guid userId)
         {
-            //var ccc = httpContext.Session;
             return Ok(await _movies.GetMoviesForUser(userId));
         }
 
         // POST api/<MoviesController>
+        [Authorize]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<APIResponse>> CreateMovie([FromBody] MovieDto movie)
         {
+
+            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+
             try
             {
                 MovieDto createdMovie = await _movies.CreateMovie(movie);
@@ -136,8 +142,8 @@ namespace API.Controllers
         }
 
         // PUT api/<MoviesController>/5
-        [Authorize(Policy = "IsSameUser")]
-        [HttpPut("user/{userId}/movie/{movieId}")]
+        [Authorize]
+        [HttpPut("{movieId}")]
         public async Task<ActionResult<APIResponse>> Put(Guid movieId, [FromBody] MovieDto movie)
         {
             try
@@ -163,8 +169,8 @@ namespace API.Controllers
         }
 
         // DELETE api/<MoviesController>/5
-        [Authorize(Policy = "IsSameUser")]
-        [HttpDelete("user/{userId}/movie/{movieId}")]
+        [Authorize]
+        [HttpDelete("{movieId}")]
         public async Task<ActionResult<APIResponse>> Delete(Guid movieId)
         {
             try

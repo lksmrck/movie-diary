@@ -30,8 +30,8 @@ export interface UserAdjustedSearchedMovie extends SearchedMovie {
 }
 
 export type Profile = {
-  id: string;
-  name: string;
+  id?: string;
+  name?: string;
 };
 
 export type Rating = {

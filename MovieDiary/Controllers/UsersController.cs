@@ -38,7 +38,7 @@ namespace API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto model)
         {
-            //TODO: ID se vraci NULL
+         
             var loginResponse = await _users.Login(model);
 
             if (loginResponse.UserName == null || string.IsNullOrEmpty(loginResponse.Token))

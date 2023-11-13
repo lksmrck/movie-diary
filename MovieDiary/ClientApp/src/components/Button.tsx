@@ -9,15 +9,24 @@ type Props = {
   disabled?: boolean;
   text: string;
   color: "primary" | "secondary";
+  sx?: Object;
 };
 
-const Button = ({ handleClick, variant, disabled, text, color }: Props) => {
+const Button = ({
+  handleClick,
+  variant,
+  disabled,
+  text,
+  color,
+  sx = {},
+}: Props) => {
   return (
     <MUIButton
       variant={variant}
       onClick={handleClick}
       disabled={disabled}
       sx={{
+        ...sx,
         backgroundColor:
           color == "primary" ? Theme.Color.teal_2 : Theme.Color.teal_3,
 

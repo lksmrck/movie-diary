@@ -14,6 +14,5 @@ namespace Application.Interfaces
         Task<UserDto> Login(LoginRequestDto loginRequestDto);
         Task<UserDto> Register(RegistrationRequestDto registrationRequestDto);
         Task<UserDto> GetCurrentUser(string userEmail);
-
     }
 }

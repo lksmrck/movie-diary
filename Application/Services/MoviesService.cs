@@ -5,9 +5,10 @@ using AutoMapper.QueryableExtensions;
 using Domain.DTOs;
 using Domain.Movies;
 using Domain.Users;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-
+using System.Security.Claims;
 
 namespace Application.Services
 {
@@ -15,14 +16,18 @@ namespace Application.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IHttpContextAccessor _httpContext;
 
-        public MoviesService(ApplicationDbContext context, IMapper mapper)
+        public MoviesService(ApplicationDbContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _mapper = mapper;
+            _httpContext = httpContextAccessor;
         }
         public async Task<MovieDto> CreateMovie(MovieDto movie)
         {
+            if (!CompareUser(movie.User.Id, _httpContext))
+                return null;
 
             Movie movieToAdd = _mapper.Map<Movie>(movie);
 
@@ -59,11 +64,14 @@ namespace Application.Services
         }
 
         //TODO: nesmaže se Comment z tab Comments, jen join z MovieComments - jinak ale funguje a zobrazuje jak má.
-        public async Task DeleteMovie(Guid id)
+        public async Task DeleteMovie(Guid movieId)
         {
             //Movie movieToDelete = _mapper.Map<Movie>(movie);
 
-            Movie movieToDelete = await _context.Movies.FirstOrDefaultAsync(x => x.Id == id);
+            Movie movieToDelete = await _context.Movies.FirstOrDefaultAsync(x => x.Id == movieId);
+
+            if (movieToDelete != null && !CompareUser(movieToDelete.User.UserID, _httpContext))
+                return;
 
             _context.Remove(movieToDelete);
             await _context.SaveChangesAsync();
@@ -103,6 +111,8 @@ namespace Application.Services
 
         public async Task<MovieDto> UpdateMovie(MovieDto movie)
         {
+            if (!CompareUser(movie.User.Id, _httpContext))
+                return null;
 
             Movie model = _mapper.Map<Movie>(movie);
 
@@ -113,6 +123,12 @@ namespace Application.Services
             return movie;
         }
 
+
+        private static bool CompareUser(Guid userId, IHttpContextAccessor _httpContext)
+        {
+            var contextUserId = Guid.Parse(_httpContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+            return contextUserId == userId;
+        }
 
     }
 }

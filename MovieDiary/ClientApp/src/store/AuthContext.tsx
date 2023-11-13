@@ -27,7 +27,10 @@ export const AuthContextProvider: FC<{
   );
 
   useEffect(() => {
-    localStorage.setItem("user", JSON.stringify(currentUser));
+    localStorage.setItem(
+      "user",
+      JSON.stringify({ ...currentUser, date: new Date() })
+    );
   }, [currentUser]);
 
   return (
