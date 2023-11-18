@@ -13,6 +13,8 @@ type Props = {
   sx?: any;
   variant?: TextFieldVariants;
   size?: "small" | "medium";
+  multiline?: boolean;
+  rows?: number;
 };
 
 const Input = ({
@@ -25,6 +27,8 @@ const Input = ({
   sx,
   variant = "outlined",
   size = "medium",
+  multiline,
+  rows,
 }: Props) => {
   const defaultStyle = {
     "& label.Mui-focused": { color: color },
@@ -50,6 +54,8 @@ const Input = ({
       type={type}
       sx={finalStyle}
       size={size}
+      multiline={multiline}
+      rows={rows}
     />
   );
 };

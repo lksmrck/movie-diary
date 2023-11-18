@@ -73,10 +73,10 @@ const SearchMovie = ({ onClickSearchedMovie }: Props) => {
           fullWidth
           sx={{
             "&:before": {
-              borderColor: Theme.Color.primary,
+              borderColor: Theme.Color.teal_1,
             },
             "&:after": {
-              borderColor: Theme.Color.primary,
+              borderColor: Theme.Color.teal_1,
             },
           }}
         />

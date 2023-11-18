@@ -9,7 +9,7 @@ export type Movie = {
   user: Profile;
   rating: Rating;
   comment: Comment;
-  categories: Category[];
+  categories: Category[] | string[];
 };
 
 export type SearchedMovie = {
@@ -20,6 +20,7 @@ export type SearchedMovie = {
   vote_average: number;
   overview: string;
   backdrop_path: string;
+  genre_ids: number[];
 };
 
 export interface UserAdjustedSearchedMovie extends SearchedMovie {

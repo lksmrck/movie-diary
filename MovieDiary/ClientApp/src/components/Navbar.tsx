@@ -13,22 +13,22 @@ import Tooltip from "@mui/material/Tooltip";
 import Avatar from "@mui/material/Avatar";
 import { Theme } from "../common/theme";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import useAuthContext from "../store/AuthContext";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const { currentUser } = useAuthContext();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
-  const pages = [
-    { title: "Home", link: "/home" },
-    { title: "My movies", link: "/my-movies" },
-    { title: "Add movie", link: "/add-movie" },
-    { title: "Discover", link: "/discover" },
-    { title: "Statistics", link: "/statistics" },
-  ];
-  const settings = ["Profile", "Account", "Dashboard", "Logout"];
+
+  const handleLogout = () => {
+    console.log("Im out");
+  };
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -37,11 +37,32 @@ const Navbar = () => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
+  const handleCloseNavMenu = (action: any) => {
+    action();
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
+  const settings = [
+    {
+      title: "Profile",
+      action: () => {
+        navigate({ pathname: `/profile`, search: `?id=${currentUser?.id}` });
+      },
+    },
+    // { title: "Dashboard", link: "/dashboard" },
+    { title: "Logout", action: () => handleLogout() },
+  ];
+
+  const pages = [
+    { title: "Home", action: () => navigate("/home") },
+    { title: "My movies", action: () => navigate("/my-movies") },
+    { title: "Add movie", action: () => navigate("/add-movie") },
+    { title: "Discover", action: () => navigate("/discover") },
+    { title: "Statistics", action: () => navigate("/statistics") },
+  ];
+
+  const handleCloseUserMenu = (action: any) => {
+    action();
     setAnchorElUser(null);
   };
 
@@ -102,10 +123,11 @@ const Navbar = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page.title} onClick={handleCloseNavMenu}>
-                  <Link to={page.link}>
-                    <Typography textAlign="center">{page.title}</Typography>
-                  </Link>
+                <MenuItem
+                  key={page.title}
+                  onClick={() => handleCloseNavMenu(page.action)}
+                >
+                  <Typography textAlign="center">{page.title}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -134,10 +156,10 @@ const Navbar = () => {
             {pages.map((page) => (
               <Button
                 key={page.title}
-                onClick={handleCloseNavMenu}
+                onClick={() => handleCloseNavMenu(page.action)}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                <Link to={page.link}>{page.title}</Link>
+                {page.title}
               </Button>
             ))}
           </Box>
@@ -165,8 +187,11 @@ const Navbar = () => {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem
+                  key={setting.title}
+                  onClick={() => handleCloseUserMenu(setting.action)}
+                >
+                  <Typography textAlign="center">{setting.title}</Typography>
                 </MenuItem>
               ))}
             </Menu>

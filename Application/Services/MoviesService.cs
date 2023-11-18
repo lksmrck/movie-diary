@@ -17,12 +17,14 @@ namespace Application.Services
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContext;
+        private readonly ICategoriesService _categories;
 
-        public MoviesService(ApplicationDbContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public MoviesService(ApplicationDbContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor, ICategoriesService categories)
         {
             _context = context;
             _mapper = mapper;
             _httpContext = httpContextAccessor;
+            _categories = categories;
         }
         public async Task<MovieDto> CreateMovie(MovieDto movie)
         {
@@ -44,7 +46,7 @@ namespace Application.Services
 
             foreach (var cat in movie.Categories)
             {
-                var category = await _context.Categories.FirstOrDefaultAsync(u => u.Id == cat.Id);
+                var category = await _categories.GetOrCreateCategory(cat.Name);
 
                 if (category != null)
                 {
@@ -129,6 +131,5 @@ namespace Application.Services
             var contextUserId = Guid.Parse(_httpContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
             return contextUserId == userId;
         }
-
     }
 }

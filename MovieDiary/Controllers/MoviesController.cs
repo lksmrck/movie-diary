@@ -119,10 +119,6 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<APIResponse>> CreateMovie([FromBody] MovieDto movie)
         {
-
-            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-
             try
             {
                 MovieDto createdMovie = await _movies.CreateMovie(movie);

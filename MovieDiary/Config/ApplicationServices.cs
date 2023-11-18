@@ -35,6 +35,7 @@ namespace API.Config
 
             services.AddScoped<IMoviesService, MoviesService>();
             services.AddScoped<ICommentsService, CommentsService>();
+            services.AddScoped<ICategoriesService, CategoriesService>();
             services.AddScoped<IUsersService, UsersService>();
             services.AddScoped<TokenService>();
             services.AddHttpContextAccessor();

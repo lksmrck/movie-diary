@@ -1,7 +1,11 @@
 import { UserAdjustedSearchedMovie, Category, Profile } from "../models/Movie";
 
 // from UserAdjustedSearchedMovie to Movie
-const mapToMovie = (sm: UserAdjustedSearchedMovie, user: Profile) => {
+const mapToMovie = (
+  sm: UserAdjustedSearchedMovie,
+  user: Profile,
+  categories: string[]
+) => {
   return {
     title: sm.title,
     description: sm.overview,
@@ -12,23 +16,13 @@ const mapToMovie = (sm: UserAdjustedSearchedMovie, user: Profile) => {
     user,
     rating: sm.rating,
     comment: sm.comment,
-    categories: [
-      {
-        id: "0044a6d9-8411-40b2-aab4-191c23963d96",
-        name: "Krimi",
-      },
-    ],
+    categories: categories.map((c) => ({ name: c })),
     // categories: sm.categories,
   };
 };
 
-const test = () => {
-  console.log(process.env);
-};
-
 const Map = {
   mapToMovie,
-  test,
 };
 
 export default Map;

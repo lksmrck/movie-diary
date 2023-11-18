@@ -97,7 +97,6 @@ namespace Application.Services
             return new UserDto();
         }
 
-
         public async Task<UserDto> GetCurrentUser(string userEmail)
         {
             var user = await _userManager.FindByEmailAsync(userEmail);

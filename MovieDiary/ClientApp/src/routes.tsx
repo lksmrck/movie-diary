@@ -11,6 +11,7 @@ import Discover from "./pages/Discover";
 import Statistics from "./pages/Statistics";
 import Register from "./pages/Register";
 import RequireAuth from "./hoc/RequireAuth";
+import Profile from "./pages/Profile";
 
 export const routes: RouteObject[] = [
   {
@@ -25,6 +26,7 @@ export const routes: RouteObject[] = [
           { path: "add-movie", element: <AddMovie /> },
           { path: "discover", element: <Discover /> },
           { path: "statistics", element: <Statistics /> },
+          { path: "profile", element: <Profile /> },
         ],
       },
       { path: "login", element: <Login /> },

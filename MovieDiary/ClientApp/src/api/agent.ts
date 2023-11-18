@@ -13,7 +13,7 @@ const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 axios.interceptors.request.use((config) => {
   const token = getLocalStorage("user")?.token;
-  console.log(token);
+  // console.log(token);
   if (token && config.headers) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
@@ -89,6 +89,8 @@ const Users = {
 };
 
 // Vypnuté req i res interceptory, pak přidat res!
+
+// TMDB API Requests
 const Search = {
   movie: (searchTerm: string) => {
     return axios
@@ -100,7 +102,7 @@ const Search = {
       })
       .then((res) =>
         res.data.results.map((m: any) => {
-          console.log(res.data.results);
+          // console.log(res.data.results);
           // Destructuring and take only few properties from whole object
           return (({
             title,
@@ -120,6 +122,23 @@ const Search = {
             genre_ids,
           }))(m);
         })
+      );
+  },
+  // Vrátí názvy žánrů podle jejich IDs
+  categories: (genreIds: number[]) => {
+    return axios
+      .request({
+        baseURL: process.env.REACT_APP_CATEGORIES_SEARCH_URL,
+        method: "get",
+        validateStatus: null,
+      })
+      .then((res) =>
+        genreIds.map(
+          (id) =>
+            res.data.genres.find(
+              (g: { id: number; name: string }) => g.id === id
+            )?.name
+        )
       );
   },
 };

@@ -19,7 +19,7 @@ import Map from "../helpers/Map";
 
 const AddMovie = () => {
   const [movieToAdd, setMovieToAdd] = useState({} as Movie);
-  Map.test();
+
   const width = 50;
 
   const [opened, setOpened] = useState(false);
@@ -32,7 +32,15 @@ const AddMovie = () => {
   return (
     <div className="flex justify-center items-center flex-col">
       <Card
-        sx={{ padding: "5rem", marginTop: "2rem", maxWidth: `${width}rem` }}
+        sx={{
+          padding: "5rem",
+          marginTop: "2rem",
+          width: `${width}rem`,
+          height: "20rem",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
       >
         <Typography variant="h4">Find your movie!</Typography>
         <CardContent>

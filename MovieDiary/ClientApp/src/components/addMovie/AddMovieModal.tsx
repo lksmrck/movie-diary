@@ -48,7 +48,7 @@ const style = {
 const AddMovieModal = ({ open, handleClose }: Props) => {
   const { selectedMovie, setSelectedMovie } = useMoviesContext();
   const { currentUser } = useAuthContext();
-  const { comment, rating, categories } = selectedMovie;
+  const { comment, rating /*categories*/ } = selectedMovie;
 
   const handleChange = (
     type: string,
@@ -70,7 +70,6 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
     }
 
     if (!subtype) {
-      console.log("VAL", value);
       setSelectedMovie((prev: any) => ({
         ...prev,
         [type]: typeof value === "string" ? value.split(",") : value,
@@ -88,11 +87,16 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
   };
 
   const saveMovie = async () => {
-    const mov = Map.mapToMovie(selectedMovie, {
-      id: currentUser?.id,
-      name: currentUser?.name,
-    });
-    console.log(selectedMovie);
+    const categories = await agent.Search.categories(selectedMovie.genre_ids);
+
+    const mov = Map.mapToMovie(
+      selectedMovie,
+      {
+        id: currentUser?.id,
+        name: currentUser?.name,
+      },
+      categories
+    );
 
     await agent.Movies.create(mov);
 
@@ -149,11 +153,14 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
           <Input
             name="comment"
             label="Comment"
+            multiline
             color={Theme.Color.teal_2}
             value={comment?.text}
             onChange={(e) =>
               handleChange(e.target.name, e.target.value, "text")
             }
+            rows={10}
+            sx={{ width: "18.5rem" }}
           />
         </Accordion>
         <Accordion
@@ -169,10 +176,10 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
             }
           />
         </Accordion>
-        <Accordion
+        {/* <Accordion
           sx={{ marginTop: "1rem" }}
           id="add-categories"
-          heading="Add categories"
+          heading="Add your own categories"
         >
           <FormControl sx={{ m: 1, width: 300 }}>
             <InputLabel id="category-lbl">Categories</InputLabel>
@@ -204,7 +211,7 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
               ))}
             </Select>
           </FormControl>
-        </Accordion>
+        </Accordion> */}
 
         {/* toto bude user specific category */}
 

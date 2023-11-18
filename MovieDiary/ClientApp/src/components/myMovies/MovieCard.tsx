@@ -1,15 +1,19 @@
 import {
-  Button,
   CardActionArea,
   CardActions,
   CardContent,
   CardMedia,
+  Chip,
+  Divider,
+  Rating,
   Typography,
 } from "@mui/material";
 import Card from "@mui/material/Card";
 import { Movie } from "../../models/Movie";
 import { useState } from "react";
 import CommentModal from "./CommentModal";
+import Button from "../Button";
+import { Theme } from "../../common/theme";
 
 type Props = {
   movie: Movie;
@@ -22,16 +26,24 @@ const MovieCard = ({ movie }: Props) => {
 
   return (
     <>
-      <Card sx={{ width: 500 }}>
-        <div className="flex">
-          <CardActionArea sx={{ width: 100 }}>
+      <Card
+        sx={{
+          width: 450,
+          height: 380,
+          position: "relative",
+          border: `1px solid ${Theme.Color.grey_3}`,
+        }}
+      >
+        {/* Img and Text */}
+        <div className="flex h-64 border-b-2 border-grey-100 shadow-sm overflow-auto p-2">
+          <CardActionArea sx={{ width: 120 }}>
             <CardMedia
               component="img"
               // image={process.env.REACT_APP_MOVIES_IMG_API + movie.posterPath}
               src={process.env.REACT_APP_MOVIES_IMG_API + movie.posterPath}
               sx={{
                 height: "150px",
-                width: "100px",
+                width: "120px",
               }}
             />
           </CardActionArea>
@@ -44,17 +56,31 @@ const MovieCard = ({ movie }: Props) => {
             </Typography>
           </CardContent>
         </div>
-        <CardActions>
-          <Button
-            size="small"
-            color="primary"
-            onClick={() => setCommentOpen(true)}
-          >
-            {hasComment ? "Show comment" : "Add comment"}
-          </Button>
-          <Button size="small" color="primary">
-            {hasRating ? "Show comment" : "Add rating"}
-          </Button>
+        {/* Categories */}
+        {/* [&>*:not(:first-child)] */}
+        <div className="p-2 [&>*]:ml-2">
+          {movie.categories.map((c) => (
+            <Chip
+              label={typeof c != "string" ? c.name : c}
+              className=" not:first:m-2"
+            />
+          ))}
+        </div>
+        {/* Comment and Rating */}
+        <CardActions sx={{ position: "absolute", bottom: 0 }}>
+          <div className="p-2">
+            <h2>Your comment</h2>
+            <Button
+              color="primary"
+              text={hasComment ? "Show comment" : "Add comment"}
+              variant="contained"
+              handleClick={() => setCommentOpen(true)}
+            />
+          </div>
+          <div>
+            <h2>Your rating</h2>
+            <Rating name="read-only" value={movie.rating.value} readOnly />
+          </div>
         </CardActions>
       </Card>
       <CommentModal

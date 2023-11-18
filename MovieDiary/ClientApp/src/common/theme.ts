@@ -2,6 +2,11 @@ const Color = {
   teal_1: "#98dfd9",
   teal_2: "#35a99f",
   teal_3: "#15413e",
+
+  //Grey
+  grey_1: "#f6f4f5",
+  grey_2: "#efeaec",
+  grey_3: "#e0d7da",
 };
 
 const FontSize = {
