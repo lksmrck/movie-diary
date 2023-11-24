@@ -13,11 +13,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <>
     <AppContextProvider>
-      <MoviesContextProvider>
-        <AuthContextProvider>
+      <AuthContextProvider>
+        <MoviesContextProvider>
           <RouterProvider router={router} />
-        </AuthContextProvider>
-      </MoviesContextProvider>
+        </MoviesContextProvider>
+      </AuthContextProvider>
     </AppContextProvider>
   </>
 );

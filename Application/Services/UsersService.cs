@@ -23,6 +23,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using API.Services;
+using Microsoft.AspNetCore.Http;
 
 namespace Application.Services
 {
@@ -104,7 +105,30 @@ namespace Application.Services
             return CreateUserObject(user);
         }
 
-        private UserDto CreateUserObject(AppUser user)
+        public async Task<AppUser> GetUserForRefreshToken(string name)
+        {
+            return await _userManager.Users
+                .Include(r => r.RefreshTokens)
+                .FirstOrDefaultAsync(x => x.UserName == name);
+        }
+
+
+        public async Task<RefreshToken> SetRefreshToken(UserDto user)
+        {
+            var refreshToken = _tokenService.GenerateRefreshToken();
+
+            var domainUser = await _db.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
+
+            //var domainUser = _mapper.Map<AppUser>(user);
+
+            domainUser?.RefreshTokens.Add(refreshToken);
+
+            await _userManager.UpdateAsync(domainUser);
+
+            return refreshToken;
+        }
+
+        public UserDto CreateUserObject(AppUser user)
         {
             if (user == null)
             {

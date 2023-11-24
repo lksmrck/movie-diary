@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFormData] = useState({} as LoginFormValues);
-  const { currentUser, setCurrentUser } = useAuthContext();
+  const { currentUser, loginUser } = useAuthContext();
   const navigate = useNavigate();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -18,9 +18,10 @@ const Login = () => {
   };
 
   const handleSubmit = async () => {
-    const res = await agent.Users.login(formData);
-    if (res.isSuccess) setCurrentUser(res.result);
-    navigate("/home");
+    await loginUser(formData);
+    // const res = await agent.Users.login(formData);
+    // if (res.isSuccess) setCurrentUser(res.result);
+    // navigate("/home");
   };
 
   const handleBack = () => {

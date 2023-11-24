@@ -72,7 +72,9 @@ namespace API.Config
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
                     ValidateIssuer = false,
-                    ValidateAudience = false
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero // remove default 5min window, které bylo i když je v CreateToken nastavena délka kratší
                 };
             });
 
@@ -94,7 +96,9 @@ namespace API.Config
                     builder
                         .WithOrigins("https://localhost:44460") // Replace with your React app's URL
                         .AllowAnyHeader()
-                        .AllowAnyMethod();
+                        .AllowCredentials()
+                        .AllowAnyMethod()
+                        .WithExposedHeaders("WWW-Authenticate");
                 });
             });
 

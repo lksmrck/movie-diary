@@ -1,4 +1,6 @@
 ﻿using Application.DTOs.Users;
+using Domain;
+using Domain.Users;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -14,5 +16,8 @@ namespace Application.Interfaces
         Task<UserDto> Login(LoginRequestDto loginRequestDto);
         Task<UserDto> Register(RegistrationRequestDto registrationRequestDto);
         Task<UserDto> GetCurrentUser(string userEmail);
+        Task<RefreshToken> SetRefreshToken(UserDto user);
+        Task<AppUser> GetUserForRefreshToken(string name);
+        UserDto CreateUserObject(AppUser user);
     }
 }

@@ -32,16 +32,20 @@ namespace API.Controllers
         {
             var userEmail = User.FindFirstValue(ClaimTypes.Email);
 
-            return await _users.GetCurrentUser(userEmail);
+            var user = await _users.GetCurrentUser(userEmail);
+
+            await SetRefreshToken(user);
+
+            return Ok(user);
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto model)
         {
-         
-            var loginResponse = await _users.Login(model);
 
-            if (loginResponse.UserName == null || string.IsNullOrEmpty(loginResponse.Token))
+            var user = await _users.Login(model);
+
+            if (user.UserName == null || string.IsNullOrEmpty(user.Token))
             {
                 _response.StatusCode = HttpStatusCode.BadRequest;
                 _response.IsSuccess = false;
@@ -49,9 +53,11 @@ namespace API.Controllers
                 return Unauthorized(_response);
             }
 
+            await SetRefreshToken(user);
+
             _response.StatusCode = HttpStatusCode.OK;
             _response.IsSuccess = true;
-            _response.Result = loginResponse;
+            _response.Result = user;
             return Ok(_response);
         }
 
@@ -80,6 +86,47 @@ namespace API.Controllers
             _response.StatusCode = HttpStatusCode.OK;
             _response.IsSuccess = true;
             return Ok(_response);
+        }
+
+        [Authorize]
+        [HttpPost("refreshToken")]
+        public async Task<ActionResult<UserDto>> RefreshToken()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+            var user = await _users.GetUserForRefreshToken(User.FindFirstValue(ClaimTypes.Name));
+
+            if (user == null)
+                return Unauthorized();
+
+            var oldToken = user.RefreshTokens.SingleOrDefault(x => x.Token == refreshToken);
+
+            if (oldToken == null || refreshToken == null)
+                return Unauthorized();
+
+            if (oldToken != null && !oldToken.IsActive)
+                return Unauthorized();
+
+            if (oldToken != null)
+                oldToken.Revoked = DateTime.UtcNow;
+
+            return _users.CreateUserObject(user);
+        }
+
+        private async Task SetRefreshToken(UserDto user)
+        {
+            var refreshToken = await _users.SetRefreshToken(user);
+
+            var cookieOptions = new CookieOptions
+            {
+                // not accessible by JS
+                HttpOnly = true,
+                Expires = DateTime.UtcNow.AddDays(7),
+                Secure = true,
+                SameSite = SameSiteMode.None
+
+            };
+
+            Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
         }
     }
 }

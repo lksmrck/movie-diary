@@ -15,6 +15,6 @@ namespace Domain
         public DateTime Expires { get; set; } = DateTime.UtcNow.AddDays(7);
         public bool IsExpired => DateTime.UtcNow >= Expires;
         public DateTime Revoked { get; set; }
-        public bool IsActive => Revoked == null && !IsExpired;
+        public bool IsActive => (Revoked == null || Revoked == DateTime.MinValue) && !IsExpired;
     }
 }
