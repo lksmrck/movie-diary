@@ -3,11 +3,10 @@ import Navbar from "./components/Navbar.tsx";
 import Landing from "./pages/Landing.tsx";
 import { Alert, Snackbar } from "@mui/material";
 import useAppContext from "./store/AppContext.tsx";
-import { useAxiosResponseInterceptors } from "./hooks/hooks.tsx";
 
 const App = () => {
   const location = useLocation();
-  useAxiosResponseInterceptors();
+
   const { error, setError } = useAppContext();
 
   return (

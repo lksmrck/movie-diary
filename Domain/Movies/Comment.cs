@@ -12,6 +12,7 @@ namespace Domain.Movies
     {
         public Guid Id { get; set; }
         public string Text { get; set; }
+        public DateTime DateOfComment { get; set; } = DateTime.UtcNow;
         public Guid MovieID { get; set; }
         public MovieComment Movie { get; set; }
     }

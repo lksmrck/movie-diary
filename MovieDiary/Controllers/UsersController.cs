@@ -122,7 +122,8 @@ namespace API.Controllers
                 HttpOnly = true,
                 Expires = DateTime.UtcNow.AddDays(7),
                 Secure = true,
-                SameSite = SameSiteMode.None
+                SameSite = SameSiteMode.None,
+                //Domain = "https://localhost:44460"
 
             };
 

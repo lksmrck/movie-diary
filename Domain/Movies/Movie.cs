@@ -16,7 +16,7 @@ namespace Domain.Movies
         public string PosterPath { get; set; }
         //Tohle bude user specific category
         //public ICollection<Category> Category { get; set; }
-        public DateTime DateCreated { get; set; }
+        public DateTime DateCreated { get; set; } = DateTime.UtcNow;
         public DateTime DateWatched { get; set; }
         public MovieUser User { get; set; }
         public MovieRating Rating { get; set; }

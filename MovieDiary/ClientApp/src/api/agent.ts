@@ -1,28 +1,22 @@
-import axios from "axios";
-import { AxiosResponse, AxiosError } from "axios";
+import axios, { AxiosResponse, AxiosError } from "axios";
 import { Movie } from "../models/Movie";
 import { LoginFormValues, RegisterFormValues, User } from "../models/User";
-import { getLocalStorage } from "../utils/getLocalStorage";
-
-axios.defaults.baseURL = "https://localhost:7173/api";
-axios.defaults.withCredentials = true;
+import AxiosInstances from "./axiosInstances";
 
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
-//const callWithoutInterceptors = axios.request({url});
-
-axios.interceptors.request.use((config) => {
-  const token = getLocalStorage("user")?.token;
-  if (token && config.headers) config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
+// axios.defaults.withCredentials = true;
+// axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 const requests = {
-  get: <T>(url: string) => axios.get<T>(url).then(responseBody),
+  get: <T>(url: string) =>
+    AxiosInstances.internal.get<T>(url).then(responseBody),
   post: <T>(url: string, body: {}) =>
-    axios.post<T>(url, body).then(responseBody),
-  put: <T>(url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
-  del: <T>(url: string) => axios.delete<T>(url).then(responseBody),
+    AxiosInstances.internal.post<T>(url, body).then(responseBody),
+  put: <T>(url: string, body: {}) =>
+    AxiosInstances.internal.put<T>(url, body).then(responseBody),
+  del: <T>(url: string) =>
+    AxiosInstances.internal.delete<T>(url).then(responseBody),
 };
 
 const Movies = {
@@ -52,7 +46,7 @@ const Users = {
 // TMDB API Requests
 const Search = {
   movie: (searchTerm: string) => {
-    return axios
+    return AxiosInstances.external
       .request({
         baseURL: process.env.REACT_APP_MOVIES_SEARCH_URL,
         url: searchTerm,
@@ -85,7 +79,7 @@ const Search = {
   },
   // Vrátí názvy žánrů podle jejich IDs
   categories: (genreIds: number[]) => {
-    return axios
+    return AxiosInstances.external
       .request({
         baseURL: process.env.REACT_APP_CATEGORIES_SEARCH_URL,
         method: "get",

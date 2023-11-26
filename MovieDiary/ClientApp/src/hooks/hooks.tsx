@@ -5,6 +5,7 @@ import { router } from "../routes";
 import { Snackbar } from "@mui/material";
 import useAppContext from "../store/AppContext";
 import useAuthContext from "../store/AuthContext";
+import AxiosInstances from "../api/axiosInstances";
 
 export const useFetch = (url: string, defaultData: {}) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -49,23 +50,23 @@ export const useFetch = (url: string, defaultData: {}) => {
   };
 };
 
-const useRequest = (
-  method: string,
-  url: string,
-  data: {},
-  errorMessage: string,
-  responseType: any
-) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<any>(null);
+// const useRequest = (
+//   method: string,
+//   url: string,
+//   data: {},
+//   errorMessage: string,
+//   responseType: any
+// ) => {
+//   const [isLoading, setIsLoading] = useState(false);
+//   const [error, setError] = useState<any>(null);
 
-  const sendRequest = async () => {
-    setIsLoading(true);
-    try {
-      const response = await axios({ method, url, data, responseType });
-    } catch (error) {}
-  };
-};
+//   const sendRequest = async () => {
+//     setIsLoading(true);
+//     try {
+//       const response = await axios({ method, url, data, responseType });
+//     } catch (error) {}
+//   };
+// };
 
 export const useTypingDebounce = (callback: () => void, time: number) => {
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("" as any);
@@ -108,67 +109,4 @@ export const useClickOutside = (ref: any, actionCallback: () => void) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [ref]);
-};
-
-export const useAxiosResponseInterceptors = () => {
-  const { setError } = useAppContext();
-  const { logoutUser } = useAuthContext();
-
-  useEffect(() => {
-    axios.interceptors.response.use(
-      async (response) => {
-        return response;
-      },
-      (error: AxiosError) => {
-        const { data, status, config, headers } =
-          error.response as AxiosResponse;
-        switch (status) {
-          case 400:
-            if (config.method === "get" && data.errors.hasOwnProperty("id")) {
-              router.navigate("/not-found");
-            }
-            if (data.errors) {
-              const modalStateErrors = [];
-              for (const key in data.errors) {
-                if (data.errors[key]) {
-                  modalStateErrors.push(data.errors[key]);
-                }
-              }
-              throw modalStateErrors.flat();
-            } else {
-              //toast.error(data);
-            }
-            break;
-          case 401:
-            if (
-              // Pokud je invalid token, tak usera odhlásíme
-              status === 401 &&
-              headers["www-authenticate"]?.startsWith(
-                'Bearer error="invalid_token'
-              )
-            ) {
-              logoutUser();
-              setError({
-                isError: true,
-                message: "Session expired - please login again.",
-              });
-            } else {
-              setError({ isError: true, message: "Unauthorized" });
-            }
-            break;
-          case 403:
-            setError({ isError: true, message: "Forbidden" });
-            break;
-          case 404:
-            router.navigate("/not-found");
-            break;
-          case 500:
-            //store.commonStore.setServerError(data);
-            router.navigate("/server-error");
-            break;
-        }
-        return Promise.reject(error);
-      }
-    );
-  }, []);
 };
