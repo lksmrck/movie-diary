@@ -17,12 +17,10 @@ namespace Infrastructure.Security
     // Check, že URL params ({userId}) == userId z tokenu v requestu
     public class IsSameUserHandler : AuthorizationHandler<IsSameUser>
     {
-        private readonly ApplicationDbContext _dbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public IsSameUserHandler(ApplicationDbContext dbContext, IHttpContextAccessor httpContextAccessor)
+        public IsSameUserHandler(IHttpContextAccessor httpContextAccessor)
         {
-            _dbContext = dbContext;
             _httpContextAccessor = httpContextAccessor;
         }
 

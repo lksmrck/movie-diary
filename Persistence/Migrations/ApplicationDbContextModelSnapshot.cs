@@ -57,6 +57,9 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("DateOfComment")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid>("MovieID")
                         .HasColumnType("uniqueidentifier");
 
@@ -201,7 +204,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("AppUserId");
 
-                    b.ToTable("RefreshToken");
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("Domain.Users.AppUser", b =>

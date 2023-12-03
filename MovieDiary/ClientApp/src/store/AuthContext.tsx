@@ -16,7 +16,7 @@ import {
 
 interface AuthContextInterface {
   currentUser: UserInLS | null;
-  // setCurrentUser: Dispatch<SetStateAction<UserInLS | null>>;
+  setCurrentUser: Dispatch<SetStateAction<UserInLS | null>>;
   loginUser: (user: any) => void;
   logoutUser: () => void;
 }
@@ -31,13 +31,12 @@ export const AuthContextProvider: FC<{
   const [currentUser, setCurrentUser] = useState(
     getLocalStorage("user") || null
   );
-  const [refreshTokenTimeout, setRefreshTokenTimeout] = useState(null as any);
 
   const loginUser = async (formData: any) => {
     try {
       const res = await agent.Users.login(formData);
       if (res.isSuccess) setCurrentUser(res.result);
-      startRefreshTokenTimer(res.result);
+      // startRefreshTokenTimer(res.result);
       router.navigate("/home");
     } catch (error: any) {
       setError({ isError: true, message: "Error during login." });
@@ -49,28 +48,6 @@ export const AuthContextProvider: FC<{
     router.navigate("/");
   };
 
-  const refreshToken = async () => {
-    stopRefreshTokenTimer();
-    try {
-      const user = await agent.Users.refreshToken();
-      setCurrentUser(user);
-      startRefreshTokenTimer(user);
-    } catch (error: any) {
-      setError({ isError: true, message: "Error during refreshing token." });
-    }
-  };
-
-  const startRefreshTokenTimer = (user: any) => {
-    const jwtToken = JSON.parse(atob(user.token.split(".")[1]));
-    const expires = new Date(jwtToken.exp * 1000);
-    const timeout = expires.getTime() - Date.now() - 30 * 1000;
-    console.log("Timeout pro refresh tokenu je:", timeout);
-    setRefreshTokenTimeout(setTimeout(refreshToken, timeout));
-  };
-  const stopRefreshTokenTimer = () => {
-    clearTimeout(refreshTokenTimeout);
-  };
-
   useEffect(() => {
     localStorage.setItem("user", JSON.stringify(currentUser));
   }, [currentUser]);
@@ -79,6 +56,7 @@ export const AuthContextProvider: FC<{
     <AuthContext.Provider
       value={{
         currentUser,
+        setCurrentUser,
         loginUser,
         logoutUser,
       }}

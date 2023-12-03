@@ -15,11 +15,11 @@ root.render(
   <>
     <AppContextProvider>
       <AuthContextProvider>
-        <AxiosErrorHandler>
-          <MoviesContextProvider>
+        <MoviesContextProvider>
+          <AxiosErrorHandler>
             <RouterProvider router={router} />
-          </MoviesContextProvider>
-        </AxiosErrorHandler>
+          </AxiosErrorHandler>
+        </MoviesContextProvider>
       </AuthContextProvider>
     </AppContextProvider>
   </>

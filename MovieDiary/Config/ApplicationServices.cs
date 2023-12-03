@@ -26,7 +26,9 @@ namespace API.Config
                 opt/*.UseLazyLoadingProxies()*/.UseSqlServer(config.GetConnectionString("DefaultSQLConnection"), b =>
                 {
                     b.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
-                });
+                })
+                .EnableSensitiveDataLogging()
+                .LogTo(Console.WriteLine, LogLevel.Information);
             });
 
             services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
@@ -41,10 +43,6 @@ namespace API.Config
             services.AddHttpContextAccessor();
 
             services.AddTransient<Seed>();
-            //services.AddControllersWithViews()
-            // .AddNewtonsoftJson(options =>
-            //  options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-            //);
 
             services.AddControllers(opt =>
             {
@@ -101,8 +99,6 @@ namespace API.Config
                         .WithExposedHeaders("WWW-Authenticate");
                 });
             });
-
-
 
             //FluentValidation
             //services.AddControllers().AddFluentValidation(fv =>

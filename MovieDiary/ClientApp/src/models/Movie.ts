@@ -9,7 +9,8 @@ export type Movie = {
   user: Profile;
   rating: Rating;
   comment: Comment;
-  categories: Category[] | string[];
+  // categories: Category[] | string[];
+  categories: Category[];
 };
 
 export type SearchedMovie = {
@@ -45,6 +46,6 @@ export type Comment = {
 };
 
 export type Category = {
-  id: string;
+  // id: string;
   name: string;
 };

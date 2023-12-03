@@ -89,11 +89,13 @@ namespace API.Controllers
         }
 
         [Authorize]
-        [HttpPost("refreshToken")]
+        [HttpGet("refreshToken")]
         public async Task<ActionResult<UserDto>> RefreshToken()
         {
             var refreshToken = Request.Cookies["refreshToken"];
-            var user = await _users.GetUserForRefreshToken(User.FindFirstValue(ClaimTypes.Name));
+
+         
+            var user = await _users.GetUserFromRefreshToken(refreshToken);
 
             if (user == null)
                 return Unauthorized();
@@ -109,7 +111,11 @@ namespace API.Controllers
             if (oldToken != null)
                 oldToken.Revoked = DateTime.UtcNow;
 
-            return _users.CreateUserObject(user);
+            _response.StatusCode = HttpStatusCode.OK;
+            _response.IsSuccess = true;
+            _response.Result = _users.CreateUserObject(user);
+            return Ok(_response);
+          
         }
 
         private async Task SetRefreshToken(UserDto user)

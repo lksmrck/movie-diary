@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Movies
 {
+    /// <summary>
+    /// Specific category created by User
+    /// </summary>
     public class Category
     {
         public Guid Id { get; set; }

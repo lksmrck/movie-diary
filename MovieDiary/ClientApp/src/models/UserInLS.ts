@@ -1,5 +1,6 @@
 export type UserInLS = {
   id: string;
   name: string;
-  email: string;
+  token: string;
+  userName: string;
 };

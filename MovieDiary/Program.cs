@@ -41,9 +41,11 @@ public class Program
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
-        app.UseRouting();
 
+        app.UseRouting();
+        app.UseCors("ReactAppPolicy"); // Apply the CORS policy
         app.UseAuthentication();
+
         app.UseAuthorization();
 
         app.UseMiddleware<JwtMiddleware>();
@@ -54,7 +56,7 @@ public class Program
 
         app.MapFallbackToFile("index.html"); ;
 
-        app.UseCors("ReactAppPolicy"); // Apply the CORS policy
+
 
         app.Run();
     }

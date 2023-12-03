@@ -15,7 +15,7 @@ import agent from "../api/agent";
 import SearchMovie from "../components/searchMovie/SearchMovie";
 import { Movie } from "../models/Movie";
 import SearchMovieWorking from "../components/searchMovie/SearchMovieWorking";
-import Map from "../helpers/Map";
+import Map from "../helpers/Mapper";
 
 const AddMovie = () => {
   const [movieToAdd, setMovieToAdd] = useState({} as Movie);

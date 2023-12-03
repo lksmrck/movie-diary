@@ -11,16 +11,26 @@ const UserMovies = () => {
   const { currentUser } = useAuthContext();
   const { isLoading, setIsLoading } = useAppContext();
 
-  const fetchMovies = async () => {
-    setIsLoading(true);
-    let movies;
-    if (currentUser?.id) movies = await agent.Movies.getAll(currentUser?.id);
-    if (movies) setUserMovies(movies);
-    setIsLoading(false);
-  };
-
   useEffect(() => {
+    const controller = new AbortController();
+
+    const fetchMovies = async () => {
+      setIsLoading(true);
+      let movies;
+      if (currentUser?.id)
+        movies = await agent.Movies.getAll(currentUser?.id, {
+          signal: controller.signal,
+        });
+      if (movies) setUserMovies(movies);
+      setIsLoading(false);
+    };
+
     fetchMovies();
+
+    return () => {
+      controller.abort();
+      setIsLoading(false);
+    };
   }, []);
 
   return (

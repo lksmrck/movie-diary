@@ -103,12 +103,14 @@ namespace Application.Services
 
         public async Task<List<MovieDto>> GetMoviesForUser(Guid userId)
         {
-            var movies = await _context.Movies
+
+
+            //return new List<MovieDto>();
+            return await _context.Movies
                 .Where(c => c.User.UserID == userId)
                 .ProjectTo<MovieDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
-            return movies;
         }
 
         public async Task<MovieDto> UpdateMovie(MovieDto movie)

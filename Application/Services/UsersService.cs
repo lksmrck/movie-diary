@@ -32,6 +32,7 @@ namespace Application.Services
         private readonly ApplicationDbContext _db;
         private readonly UserManager<AppUser> _userManager;
         private readonly TokenService _tokenService;
+        private readonly IHttpContextAccessor _httpContext;
         private readonly IMapper _mapper;
         private string secretKey;
 
@@ -100,16 +101,27 @@ namespace Application.Services
 
         public async Task<UserDto> GetCurrentUser(string userEmail)
         {
-            var user = await _userManager.FindByEmailAsync(userEmail);
+            //var user = await _userManager.FindByEmailAsync(userEmail);
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
+
+            //var user = await _userManager.Users
+            //    .SingleOrDefaultAsync(u => u.Email == userEmail);
+
+
 
             return CreateUserObject(user);
         }
 
-        public async Task<AppUser> GetUserForRefreshToken(string name)
+        public async Task<AppUser> GetUserFromRefreshToken(string refreshToken)
         {
-            return await _userManager.Users
+
+            var users = _userManager.Users
                 .Include(r => r.RefreshTokens)
-                .FirstOrDefaultAsync(x => x.UserName == name);
+                .Where(u => u.RefreshTokens
+                .Any(t => t.Token == refreshToken))
+                .ToList();
+
+            return users.First();
         }
 
 

@@ -17,7 +17,7 @@ namespace Application.Interfaces
         Task<UserDto> Register(RegistrationRequestDto registrationRequestDto);
         Task<UserDto> GetCurrentUser(string userEmail);
         Task<RefreshToken> SetRefreshToken(UserDto user);
-        Task<AppUser> GetUserForRefreshToken(string name);
+        Task<AppUser> GetUserFromRefreshToken(string refreshToken);
         UserDto CreateUserObject(AppUser user);
     }
 }

@@ -100,7 +100,8 @@ namespace API.Controllers
         }
 
         // api/movies/userId
-        [Authorize(Policy = "IsSameUser")]
+        //[Authorize(Policy = "IsSameUser")]
+        [Authorize]
         [HttpGet("user/{userId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

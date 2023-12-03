@@ -17,12 +17,14 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Accordion from "../Accordion";
 import useMoviesContext from "../../store/MoviesContext";
 import Button from "../Button";
-import Map from "../../helpers/Map";
+import Mapper from "../../helpers/Mapper";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { SearchedMovie } from "../../models/Movie";
 import useAuthContext from "../../store/AuthContext";
+import { useState } from "react";
+import AddCategoryPopover from "./AddCategoryPopover";
 
 type Props = {
   open: boolean;
@@ -48,7 +50,10 @@ const style = {
 const AddMovieModal = ({ open, handleClose }: Props) => {
   const { selectedMovie, setSelectedMovie } = useMoviesContext();
   const { currentUser } = useAuthContext();
-  const { comment, rating /*categories*/ } = selectedMovie;
+  const { comment, rating } = selectedMovie;
+  const [addCategoryOpened, setAddCategoryOpened] = useState(false);
+
+  const [categories, setCategories] = useState([] as any);
 
   const handleChange = (
     type: string,
@@ -58,7 +63,11 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
     // if (subtype) setFormValues((prev) => {
     //   return {...prev, prev[type]: {...prev[type], prev[type][subtype]: value}}
     // })
-
+    if ((type = "categories")) {
+      if (value == "-- Create new --") {
+        setAddCategoryOpened(true);
+      } else setCategories(value);
+    }
     if (subtype) {
       setSelectedMovie((prev: any) => ({
         ...prev,
@@ -89,7 +98,7 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
   const saveMovie = async () => {
     const categories = await agent.Search.categories(selectedMovie.genre_ids);
 
-    const mov = Map.mapToMovie(
+    const mov = Mapper.mapToMovie(
       selectedMovie,
       {
         id: currentUser?.id,
@@ -104,6 +113,7 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
   };
 
   const dummy_categories_list = [
+    { id: "0", name: "-- Create new --" },
     {
       id: "0044a6d9-8411-40b2-aab4-191c23963d96",
       name: "Krimi",
@@ -176,13 +186,17 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
             }
           />
         </Accordion>
-        {/* <Accordion
+        <Accordion
           sx={{ marginTop: "1rem" }}
           id="add-categories"
           heading="Add your own categories"
         >
           <FormControl sx={{ m: 1, width: 300 }}>
             <InputLabel id="category-lbl">Categories</InputLabel>
+            <AddCategoryPopover
+              open={addCategoryOpened}
+              onClose={() => setAddCategoryOpened(false)}
+            />
             <Select
               labelId="category-lbl"
               name="categories"
@@ -211,14 +225,13 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
               ))}
             </Select>
           </FormControl>
-        </Accordion> */}
+        </Accordion>
 
         {/* toto bude user specific category */}
 
-        {/* <Input name="comment" label="Comment" color={Theme.color.primary} value={} /> */}
         <Button
           handleClick={saveMovie}
-          text="Uložit"
+          text="Save"
           variant="outlined"
           color="secondary"
           sx={{ marginTop: "2rem" }}

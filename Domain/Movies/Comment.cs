@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Movies
 {
+    /// <summary>
+    /// Specific comment created by User
+    /// </summary>
     public class Comment
     {
         public Guid Id { get; set; }

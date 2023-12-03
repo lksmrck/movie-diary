@@ -1,16 +1,15 @@
-import axios, { AxiosResponse, AxiosError } from "axios";
+import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { Movie } from "../models/Movie";
 import { LoginFormValues, RegisterFormValues, User } from "../models/User";
 import AxiosInstances from "./axiosInstances";
 
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
-// axios.defaults.withCredentials = true;
-// axios.defaults.baseURL = process.env.REACT_APP_API_URL;
-
 const requests = {
-  get: <T>(url: string) =>
-    AxiosInstances.internal.get<T>(url).then(responseBody),
+  get: <T>(
+    url: string,
+    config: AxiosRequestConfig<any> | undefined = undefined
+  ) => AxiosInstances.internal.get<T>(url, config).then(responseBody),
   post: <T>(url: string, body: {}) =>
     AxiosInstances.internal.post<T>(url, body).then(responseBody),
   put: <T>(url: string, body: {}) =>
@@ -20,7 +19,8 @@ const requests = {
 };
 
 const Movies = {
-  getAll: (userId: string) => requests.get<Movie[]>(`/movies/user/${userId}`),
+  getAll: (userId: string, config: AxiosRequestConfig<any> | undefined) =>
+    requests.get<Movie[]>(`/movies/user/${userId}`, config),
   getOne: (movieId: string) => requests.get<Movie>(`/movies/${movieId}`),
   create: (movie: Movie) => requests.post<void>(`/movies`, movie),
   //   update: (movie: MovieFormValues) =>
@@ -38,10 +38,8 @@ const Users = {
     requests.post<ApiResponse>("/users/login", user),
   register: (user: RegisterFormValues) =>
     requests.post<ApiResponse>("/users/register", user),
-  refreshToken: () => requests.post<any>("/users/refreshToken", {}), //returns User místo any
+  refreshToken: () => requests.get<any>("/users/refreshToken"), //returns User místo any
 };
-
-// Vypnuté req i res interceptory, pak přidat res!
 
 // TMDB API Requests
 const Search = {

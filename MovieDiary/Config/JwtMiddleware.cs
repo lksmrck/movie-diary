@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,10 +13,12 @@ namespace API.Config
         private readonly RequestDelegate _next;
         private readonly IConfiguration _config;
 
+
         public JwtMiddleware(RequestDelegate next, IConfiguration config)
         {
             _next = next;
             _config = config;
+
         }
 
         public async Task Invoke(HttpContext context, IUsersService userService)
@@ -23,12 +26,12 @@ namespace API.Config
             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 
             if (token != null)
-                attachUserToContext(context, userService, token);
+                await attachUserToContext(context, userService, token);
 
             await _next(context);
         }
 
-        private void attachUserToContext(HttpContext context, IUsersService userService, string token)
+        private async Task attachUserToContext(HttpContext context, IUsersService userService, string token)
         {
             try
             {
@@ -46,8 +49,9 @@ namespace API.Config
 
                 var jwtToken = (JwtSecurityToken)validatedToken;
                 string email = context.User.FindFirstValue(ClaimTypes.Email);
+
                 // attach user to context on successful jwt validation
-                context.Items["User"] = userService.GetCurrentUser(email);
+                context.Items["User"] = await userService.GetCurrentUser(email);
             }
             catch
             {
