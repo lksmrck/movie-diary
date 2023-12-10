@@ -2,7 +2,6 @@ export type Movie = {
   // id: string;
   title: string;
   description: string;
-  category: string;
   dateCreated: Date;
   dateWatched: string;
   posterPath: string;
@@ -10,7 +9,8 @@ export type Movie = {
   rating: Rating;
   comment: Comment;
   // categories: Category[] | string[];
-  categories: Category[];
+  defaultCategories: string[];
+  userCategories: Category[];
 };
 
 export type SearchedMovie = {
@@ -46,6 +46,6 @@ export type Comment = {
 };
 
 export type Category = {
-  // id: string;
+  id?: string;
   name: string;
 };

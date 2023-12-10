@@ -12,7 +12,7 @@ namespace Domain.Movies
         public Guid Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public string Category { get; set; }
+        public List<string> DefaultCategories { get; set; }
         public string PosterPath { get; set; }
         //Tohle bude user specific category
         //public ICollection<Category> Category { get; set; }
@@ -21,7 +21,7 @@ namespace Domain.Movies
         public MovieUser User { get; set; }
         public MovieRating Rating { get; set; }
         public MovieComment Comment { get; set; }
-        public ICollection<Category> Categories { get; set; }
+        public ICollection<UserCategory> UserCategories { get; set; }
 
     }
 }

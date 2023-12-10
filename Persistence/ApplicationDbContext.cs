@@ -3,6 +3,7 @@ using Domain.Movies;
 using Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace Persistence
 
         public DbSet<AppUser> Users { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
-        public DbSet<Category> Categories { get; set; }
+        public DbSet<UserCategory> Categories { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Rating> Ratings { get; set; }
 
@@ -28,18 +29,25 @@ namespace Persistence
         public DbSet<MovieComment> MovieComments { get; set; }
 
 
-        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
             modelBuilder.Entity<Movie>().Navigation(e => e.User).AutoInclude();
             modelBuilder.Entity<Movie>().Navigation(e => e.Rating).AutoInclude();
             modelBuilder.Entity<Movie>().Navigation(e => e.Comment).AutoInclude();
-            modelBuilder.Entity<Movie>().Navigation(e => e.Categories).AutoInclude();
+            modelBuilder.Entity<Movie>().Navigation(e => e.UserCategories).AutoInclude();
+
+            modelBuilder.Entity<Movie>()
+               .Property(x => x.DefaultCategories)
+               .HasConversion(new ValueConverter<List<string>, string>(
+               v => JsonConvert.SerializeObject(v), // Convert to string for persistence
+               v => JsonConvert.DeserializeObject<List<string>>(v)));
+
 
             base.OnModelCreating(modelBuilder);
 
-      
+
 
             //OK - ONE TO MANY
             modelBuilder.Entity<MovieUser>()

@@ -3,15 +3,17 @@ import React, { useState } from "react";
 import Input from "../Input";
 import Button from "../Button";
 import { Theme } from "../../common/theme";
+import agent from "../../api/agent";
+import { Category } from "../../models/Movie";
 
 type Props = {
   open: boolean;
   onClose: () => void;
+  handleAddCategory: (category: Category) => void;
 };
 
-const AddCategoryPopover = ({ open, onClose }: Props) => {
+const AddCategoryPopover = ({ open, onClose, handleAddCategory }: Props) => {
   const [category, setCategory] = useState("");
-  const handleAddCategory = () => {};
 
   return (
     <Popover
@@ -41,7 +43,7 @@ const AddCategoryPopover = ({ open, onClose }: Props) => {
         />
         <Button
           text="Create"
-          handleClick={handleAddCategory}
+          handleClick={() => handleAddCategory({ name: category })}
           variant="outlined"
           color="secondary"
         />

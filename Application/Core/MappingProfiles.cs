@@ -40,7 +40,7 @@ namespace Application.Core
                 .ForMember(d => d.Value, o => o.MapFrom(s => s.Rating.Value))
                 .ReverseMap();
 
-            CreateMap<Category, DTOs.Movies.ShortCategory>()
+            CreateMap<UserCategory, DTOs.Movies.ShortCategory>()
                 .ForMember(d => d.Id, o => o.MapFrom(s => s.Id))
                 .ForMember(d => d.Name, o => o.MapFrom(s => s.Name))
                 .ReverseMap();
@@ -80,10 +80,11 @@ namespace Application.Core
             CreateMap<Movie, ShortMovie>()
                 .ForMember(d => d.Id, o => o.MapFrom(s => s.Id))
                 .ForMember(d => d.Name, o => o.MapFrom(s => s.Title))
-                .ForMember(d => d.Categories, o => o.MapFrom(s => s.Categories))
+                .ForMember(d => d.UserCategories, o => o.MapFrom(s => s.UserCategories))
+                .ForMember(d => d.DefaultCategories, o => o.MapFrom(s => s.DefaultCategories))
                 .ReverseMap();
 
-            CreateMap<Category, CategoryDto>().ReverseMap();
+            CreateMap<UserCategory, CategoryDto>().ReverseMap();
         }
     }
 }

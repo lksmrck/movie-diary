@@ -79,6 +79,7 @@ namespace Application.Services
                 UserName = registrationRequestDto.UserName,
                 //PasswordHash = registrationRequestDto.Password,
                 Name = registrationRequestDto.Name,
+                Email = registrationRequestDto.Email,
             };
 
             try
@@ -140,20 +141,25 @@ namespace Application.Services
             return refreshToken;
         }
 
-        public UserDto CreateUserObject(AppUser user)
+        public UserDto CreateUserObject(AppUser user, bool withToken = true)
         {
             if (user == null)
             {
                 return new UserDto();
             }
 
-            return new UserDto
+            return withToken ? new UserDto
             {
                 Id = user.Id,
                 UserName = user.UserName,
                 Name = user.Name,
                 //Image = user?.Photos?.FirstOrDefault(x => x.IsMain)?.Url,
                 Token = _tokenService.CreateToken(user)
+            } : new UserDto
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Name = user.Name,
             };
         }
 

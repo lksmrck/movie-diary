@@ -18,6 +18,6 @@ namespace Application.Interfaces
         Task<UserDto> GetCurrentUser(string userEmail);
         Task<RefreshToken> SetRefreshToken(UserDto user);
         Task<AppUser> GetUserFromRefreshToken(string refreshToken);
-        UserDto CreateUserObject(AppUser user);
+        UserDto CreateUserObject(AppUser user, bool withToken = true);
     }
 }

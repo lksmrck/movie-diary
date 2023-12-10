@@ -21,10 +21,11 @@ import Mapper from "../../helpers/Mapper";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { SearchedMovie } from "../../models/Movie";
+import { Category, SearchedMovie } from "../../models/Movie";
 import useAuthContext from "../../store/AuthContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddCategoryPopover from "./AddCategoryPopover";
+import useAppContext from "../../store/AppContext";
 
 type Props = {
   open: boolean;
@@ -50,24 +51,47 @@ const style = {
 const AddMovieModal = ({ open, handleClose }: Props) => {
   const { selectedMovie, setSelectedMovie } = useMoviesContext();
   const { currentUser } = useAuthContext();
+  const { isLoading, setIsLoading } = useAppContext();
   const { comment, rating } = selectedMovie;
   const [addCategoryOpened, setAddCategoryOpened] = useState(false);
 
   const [categories, setCategories] = useState([] as any);
 
-  const handleChange = (
-    type: string,
-    value: string | number,
-    subtype?: string
-  ) => {
-    // if (subtype) setFormValues((prev) => {
-    //   return {...prev, prev[type]: {...prev[type], prev[type][subtype]: value}}
-    // })
-    if ((type = "categories")) {
-      if (value == "-- Create new --") {
-        setAddCategoryOpened(true);
-      } else setCategories(value);
+  useEffect(() => {
+    console.log("sup1");
+    const controller = new AbortController();
+
+    const fetchCategories = async () => {
+      console.log("sup2");
+      setIsLoading(true);
+      let res;
+      if (currentUser?.id)
+        res = await agent.Categories.getAll(currentUser.id, {
+          signal: controller.signal,
+        });
+      if (res?.isSuccess) setCategories(res.result);
+      console.log(res?.result);
+      setIsLoading(false);
+    };
+
+    fetchCategories();
+
+    return () => {
+      controller.abort();
+      setIsLoading(false);
+    };
+  }, []);
+
+  const handleAddCategory = async (category: Category) => {
+    if (currentUser?.id) {
+      const res = await agent.Categories.create(currentUser?.id, category);
+      if (res.isSuccess) setCategories(res.result);
+      setAddCategoryOpened(false);
     }
+  };
+
+  const handleChange = (type: string, value: any, subtype?: string) => {
+    console.log(type, value);
     if (subtype) {
       setSelectedMovie((prev: any) => ({
         ...prev,
@@ -79,9 +103,19 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
     }
 
     if (!subtype) {
+      // Přidání nové kategorie
+      let sanitizedValue = value;
+      if (value.includes("createNew")) {
+        sanitizedValue = value.filter((v: string) => v !== "createNew");
+        setAddCategoryOpened(true);
+      }
+
       setSelectedMovie((prev: any) => ({
         ...prev,
-        [type]: typeof value === "string" ? value.split(",") : value,
+        [type]:
+          typeof sanitizedValue === "string"
+            ? sanitizedValue.split(",")
+            : sanitizedValue,
       }));
     }
   };
@@ -111,20 +145,6 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
 
     handleClose();
   };
-
-  const dummy_categories_list = [
-    { id: "0", name: "-- Create new --" },
-    {
-      id: "0044a6d9-8411-40b2-aab4-191c23963d96",
-      name: "Krimi",
-    },
-    {
-      id: "97942583-f375-401c-84b0-f3ebc6548d0d",
-      name: "Komedie",
-    },
-  ];
-
-  const dummy_list = ["Krimi", "Komedie"];
 
   return (
     <Modal
@@ -196,12 +216,13 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
             <AddCategoryPopover
               open={addCategoryOpened}
               onClose={() => setAddCategoryOpened(false)}
+              handleAddCategory={handleAddCategory}
             />
             <Select
               labelId="category-lbl"
               name="categories"
               multiple
-              value={categories}
+              value={selectedMovie.categories}
               onChange={(e: any) => {
                 console.log("VAL", e.target);
                 handleChange(e.target.name, e.target.value, undefined);
@@ -211,14 +232,17 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
               }
               renderValue={(selected: any) => (
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                  {selected.map((value: any) => (
-                    <Chip key={value} label={value} />
+                  {selected?.map((cat: any) => (
+                    <Chip key={cat} label={cat} />
                   ))}
                 </Box>
               )}
               MenuProps={MenuProps}
             >
-              {dummy_categories_list?.map((cat) => (
+              <MenuItem key="create-new" value="createNew">
+                -- Create new --
+              </MenuItem>
+              {categories?.map((cat: Category) => (
                 <MenuItem key={cat.name} value={cat.name}>
                   {cat.name}
                 </MenuItem>

@@ -7,5 +7,6 @@ export type LoginFormValues = {
 export type RegisterFormValues = {
   username: string;
   name: string;
+  email: string;
   password: string;
 };

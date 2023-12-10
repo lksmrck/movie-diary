@@ -42,11 +42,11 @@ namespace Application.Services
                 movieToAdd.Rating.UserID = user.Id;
             }
 
-            List<Category> categories = new List<Category>();
+            List<UserCategory> categories = new List<UserCategory>();
 
-            foreach (var cat in movie.Categories)
+            foreach (var cat in movie.UserCategories)
             {
-                var category = await _categories.GetOrCreateCategory(cat.Name);
+                var category = await _categories.GetCategory(cat.Name);
 
                 if (category != null)
                 {
@@ -54,7 +54,7 @@ namespace Application.Services
                 }
             }
 
-            movieToAdd.Categories = categories;
+            movieToAdd.UserCategories = categories;
 
             await _context.AddAsync(movieToAdd);
             await _context.SaveChangesAsync();
@@ -75,7 +75,7 @@ namespace Application.Services
             if (movieToDelete != null && !CompareUser(movieToDelete.User.UserID, _httpContext))
                 return;
 
-            _context.Remove(movieToDelete);
+            _context.Movies.Remove(movieToDelete);
             await _context.SaveChangesAsync();
         }
 
@@ -103,8 +103,6 @@ namespace Application.Services
 
         public async Task<List<MovieDto>> GetMoviesForUser(Guid userId)
         {
-
-
             //return new List<MovieDto>();
             return await _context.Movies
                 .Where(c => c.User.UserID == userId)

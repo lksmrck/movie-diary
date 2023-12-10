@@ -15,6 +15,7 @@ namespace Domain.Users
         public ICollection<MovieRating> Ratings { get; set; }
         public ICollection<MovieUser> Movies { get; set; }
         public ICollection<MovieComment> Comments { get; set; }
+        public ICollection<UserCategory> Categories { get; set; }
         public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
     }
 }

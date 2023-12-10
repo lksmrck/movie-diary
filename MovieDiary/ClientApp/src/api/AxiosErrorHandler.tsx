@@ -1,8 +1,8 @@
-import React, { ReactNode, useEffect, FC, useState } from "react";
+import { ReactNode, useEffect, FC } from "react";
 import useAppContext from "../store/AppContext";
 import useAuthContext from "../store/AuthContext";
 import AxiosInstances from "./axiosInstances";
-import axios, { AxiosError, AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import { router } from "../routes";
 import useRefreshToken from "../hooks/useRefreshToken";
 import { getLocalStorage } from "../utils/getLocalStorage";

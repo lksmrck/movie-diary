@@ -11,19 +11,19 @@ const mapToMovie = (
   user: Profile,
   categories: string[]
 ): Movie => {
+  console.log(sm);
   return {
     title: sm.title,
     description: sm.overview,
     // User specific categories
-    category: "TBD",
     dateCreated: new Date(),
     dateWatched: sm.dateWatched,
     posterPath: sm.poster_path,
     user,
     rating: sm.rating,
     comment: sm.comment,
-    // Categories z TMDB
-    categories: categories.map((c) => ({ name: c })),
+    defaultCategories: ["TBD", "TBD"],
+    userCategories: categories.map((c) => ({ name: c })),
     // categories: sm.categories,
   };
 };

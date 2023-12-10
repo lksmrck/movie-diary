@@ -53,6 +53,15 @@ const Register = () => {
             value={formData.name}
             onChange={handleChange}
             variant="outlined"
+            size="small"
+          />
+          <Input
+            name="email"
+            label="E-mail"
+            color={Theme.Color.teal_2}
+            value={formData.email}
+            onChange={handleChange}
+            variant="outlined"
             sx={{ marginTop: ".5rem" }}
             size="small"
           />

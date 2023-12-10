@@ -1,7 +1,8 @@
 import { AxiosRequestConfig, AxiosResponse } from "axios";
-import { Movie } from "../models/Movie";
+import { Category, Movie } from "../models/Movie";
 import { LoginFormValues, RegisterFormValues, User } from "../models/User";
 import AxiosInstances from "./axiosInstances";
+import { ApiResponse } from "../models/httpModels";
 
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
@@ -30,14 +31,19 @@ const Movies = {
 
 const Comments = {};
 
-const Categories = {};
+const Categories = {
+  getAll: (userId: string, config: AxiosRequestConfig<any> | undefined) =>
+    requests.get<ApiResponse<Category[]>>(`/categories/${userId}`, config),
+  create: (userId: string, category: Category) =>
+    requests.post<ApiResponse<Category[]>>(`/categories/${userId}`, category),
+};
 
 const Users = {
   current: () => requests.get<User>("/users/current"), // DODELAT
   login: (user: LoginFormValues) =>
-    requests.post<ApiResponse>("/users/login", user),
+    requests.post<ApiResponse<any>>("/users/login", user),
   register: (user: RegisterFormValues) =>
-    requests.post<ApiResponse>("/users/register", user),
+    requests.post<ApiResponse<any>>("/users/register", user),
   refreshToken: () => requests.get<any>("/users/refreshToken"), //returns User místo any
 };
 
@@ -103,10 +109,3 @@ const agent = {
 };
 
 export default agent;
-
-type ApiResponse = {
-  errorMessages: string[];
-  isSuccess: boolean;
-  result: any;
-  statusCode: number;
-};

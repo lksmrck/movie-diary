@@ -13,7 +13,13 @@ namespace Application.Interfaces
 {
     public interface ICategoriesService
     {
-        Task<List<CategoryDto>> GetAllCategories();
-        Task<Category> GetOrCreateCategory(string name);
+        /// <summary>
+        /// Method to return UserCategory object based on category name
+        /// </summary>
+        /// <param name="name">Category name</param>
+        /// <returns>Returns UserCategory object (gets from DB or create if no such category found)</returns>
+        Task<UserCategory> GetCategory(string name);
+        Task<List<CategoryDto>> GetAllCategoriesForUser(Guid userId);
+        Task<List<CategoryDto>> CreateCategoryAndReturnAllCategories(Guid userId, string categoryName);
     }
 }

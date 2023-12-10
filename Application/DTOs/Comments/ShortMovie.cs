@@ -12,6 +12,7 @@ namespace Application.DTOs.Comments
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public List<ShortCategory> Categories { get; set; }
+        public List<string> DefaultCategories { get; set; }
+        public List<ShortCategory> UserCategories { get; set; }
     }
 }

@@ -22,35 +22,6 @@ namespace Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CategoryMovie", b =>
-                {
-                    b.Property<Guid>("CategoriesId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("MoviesId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("CategoriesId", "MoviesId");
-
-                    b.HasIndex("MoviesId");
-
-                    b.ToTable("CategoryMovie");
-                });
-
-            modelBuilder.Entity("Domain.Movies.Category", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Categories");
-                });
-
             modelBuilder.Entity("Domain.Movies.Comment", b =>
                 {
                     b.Property<Guid>("Id")
@@ -77,14 +48,14 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Category")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DateWatched")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("DefaultCategories")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -180,6 +151,25 @@ namespace Persistence.Migrations
                     b.ToTable("Ratings");
                 });
 
+            modelBuilder.Entity("Domain.Movies.UserCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Categories");
+                });
+
             modelBuilder.Entity("Domain.RefreshToken", b =>
                 {
                     b.Property<int>("Id")
@@ -263,19 +253,19 @@ namespace Persistence.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("CategoryMovie", b =>
+            modelBuilder.Entity("MovieUserCategory", b =>
                 {
-                    b.HasOne("Domain.Movies.Category", null)
-                        .WithMany()
-                        .HasForeignKey("CategoriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<Guid>("MoviesId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasOne("Domain.Movies.Movie", null)
-                        .WithMany()
-                        .HasForeignKey("MoviesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<Guid>("UserCategoriesId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("MoviesId", "UserCategoriesId");
+
+                    b.HasIndex("UserCategoriesId");
+
+                    b.ToTable("MovieUserCategory");
                 });
 
             modelBuilder.Entity("Domain.Movies.MovieComment", b =>
@@ -351,6 +341,15 @@ namespace Persistence.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Domain.Movies.UserCategory", b =>
+                {
+                    b.HasOne("Domain.Users.AppUser", "User")
+                        .WithMany("Categories")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Domain.RefreshToken", b =>
                 {
                     b.HasOne("Domain.Users.AppUser", "AppUser")
@@ -358,6 +357,21 @@ namespace Persistence.Migrations
                         .HasForeignKey("AppUserId");
 
                     b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("MovieUserCategory", b =>
+                {
+                    b.HasOne("Domain.Movies.Movie", null)
+                        .WithMany()
+                        .HasForeignKey("MoviesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Movies.UserCategory", null)
+                        .WithMany()
+                        .HasForeignKey("UserCategoriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Movies.Comment", b =>
@@ -381,6 +395,8 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Users.AppUser", b =>
                 {
+                    b.Navigation("Categories");
+
                     b.Navigation("Comments");
 
                     b.Navigation("Movies");

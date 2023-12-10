@@ -21,6 +21,7 @@ namespace Application.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
+        //protected ServiceResponse<UserCategory> _response = new ServiceResponse<UserCategory>();
 
 
         public CategoriesService(ApplicationDbContext context, IMapper mapper)
@@ -29,14 +30,41 @@ namespace Application.Services
             _mapper = mapper;
         }
 
-        public async Task<List<CategoryDto>> GetAllCategories()
+        public async Task<List<CategoryDto>> CreateCategoryAndReturnAllCategories(Guid userId, string categoryName)
+        {
+
+            // Check if category already exists
+
+            var isExisting = _context.Categories.Where(c => c.User.Id == userId).FirstOrDefault(c => c.Name == categoryName);
+
+            if (isExisting != null)
+            {
+                return null;
+            }
+
+            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
+
+            UserCategory categoryToAdd = new UserCategory
+            {
+                Name = categoryName,
+                User = user
+            };
+
+            await _context.AddAsync(categoryToAdd);
+            await _context.SaveChangesAsync();
+
+            return await GetAllCategoriesForUser(userId);
+        }
+
+        public async Task<List<CategoryDto>> GetAllCategoriesForUser(Guid userId)
         {
             return await _context.Categories
+                .Where(c => c.User.Id == userId)
                 .ProjectTo<CategoryDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
         }
 
-        public async Task<Category> GetOrCreateCategory(string name)
+        public async Task<UserCategory> GetCategory(string name)
         {
             var catFound = await _context.Categories.FirstOrDefaultAsync(c => c.Name == name);
 
@@ -45,7 +73,7 @@ namespace Application.Services
                 return catFound;
             }
 
-            var catToAdd = new Category { Name = name };
+            var catToAdd = new UserCategory { Name = name };
 
             await _context.AddAsync(catToAdd);
             await _context.SaveChangesAsync();
