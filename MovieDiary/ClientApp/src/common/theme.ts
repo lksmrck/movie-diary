@@ -1,7 +1,8 @@
 const Color = {
-  teal_1: "#98dfd9",
-  teal_2: "#35a99f",
+  teal_1: "#35a99f",
+  teal_2: "#2d8f87",
   teal_3: "#15413e",
+  teal_4: "#113432",
 
   //Grey
   grey_1: "#f6f4f5",

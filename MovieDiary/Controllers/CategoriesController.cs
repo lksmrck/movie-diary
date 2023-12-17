@@ -49,7 +49,7 @@ namespace API.Controllers
             {
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.BadRequest;
-                _response.ErrorMessages = new List<string>() { "Error occured when creating category." };
+                _response.ErrorMessage = "Error occured when creating category.";
                 return BadRequest(_response);
 
             }

@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Core;
+using Application.Interfaces;
 using Domain;
 using Domain.DTOs;
 using Domain.Movies;
@@ -51,7 +52,7 @@ namespace API.Controllers
             catch (Exception ex)
             {
                 _response.IsSuccess = false;
-                _response.ErrorMessages = new List<string>() { ex.ToString() };
+                _response.ErrorMessage = ex.Message;
             }
 
             return BadRequest(_response);
@@ -92,7 +93,7 @@ namespace API.Controllers
             {
 
                 _response.IsSuccess = false;
-                _response.ErrorMessages = new List<string>() { ex.ToString() };
+                _response.ErrorMessage = ex.Message;
             }
 
             return BadRequest(_response);
@@ -122,9 +123,17 @@ namespace API.Controllers
         {
             try
             {
-                MovieDto createdMovie = await _movies.CreateMovie(movie);
+                ServiceResponse<MovieDto> serviceResponse = await _movies.CreateMovie(movie);
 
-                _response.Result = createdMovie;
+                if (!serviceResponse.IsValid)
+                {
+                    _response.StatusCode = HttpStatusCode.OK;
+                    _response.IsSuccess = false;
+                    _response.ErrorMessage = serviceResponse.ErrorMessage;
+                    return Ok(_response);
+                }
+
+                _response.Result = serviceResponse.Result;
                 _response.StatusCode = HttpStatusCode.Created;
 
                 return Ok(_response);
@@ -132,7 +141,7 @@ namespace API.Controllers
             catch (Exception ex)
             {
                 _response.IsSuccess = false;
-                _response.ErrorMessages = new List<string>() { ex.ToString() };
+                _response.ErrorMessage = ex.Message;
             }
 
             return BadRequest(_response);
@@ -159,7 +168,7 @@ namespace API.Controllers
             catch (Exception ex)
             {
                 _response.IsSuccess = false;
-                _response.ErrorMessages = new List<string>() { ex.ToString() };
+                _response.ErrorMessage = ex.Message;
             }
 
             return _response;
@@ -198,7 +207,7 @@ namespace API.Controllers
             catch (Exception ex)
             {
                 _response.IsSuccess = false;
-                _response.ErrorMessages = new List<string>() { ex.ToString() };
+                _response.ErrorMessage = ex.Message;
             }
 
             return _response;

@@ -15,6 +15,8 @@ type Props = {
   size?: "small" | "medium";
   multiline?: boolean;
   rows?: number;
+  InputProps?: any;
+  InputLabelProps?: any;
 };
 
 const Input = ({
@@ -29,11 +31,16 @@ const Input = ({
   size = "medium",
   multiline,
   rows,
+  InputProps,
+  InputLabelProps,
 }: Props) => {
   const defaultStyle = {
     "& label.Mui-focused": { color: color },
     "& .MuiInput-underline:after": {
       borderBottomColor: color,
+    },
+    "& .MuiFilledInput-root:after": {
+      borderBottom: `2px solid ${color}`,
     },
     "& .MuiOutlinedInput-root": {
       "&.Mui-focused fieldset": {
@@ -56,6 +63,8 @@ const Input = ({
       size={size}
       multiline={multiline}
       rows={rows}
+      InputProps={InputProps}
+      InputLabelProps={InputLabelProps}
     />
   );
 };

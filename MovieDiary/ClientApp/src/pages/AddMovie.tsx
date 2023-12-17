@@ -9,13 +9,11 @@ import {
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Button from "../components/Button";
 import AddMovieModal from "../components/addMovie/AddMovieModal";
-import agent from "../api/agent";
-import SearchMovie from "../components/searchMovie/SearchMovie";
 import { Movie } from "../models/Movie";
 import SearchMovieWorking from "../components/searchMovie/SearchMovieWorking";
-import Map from "../helpers/Mapper";
+import "../index.css";
+import { Theme } from "../common/theme";
 
 const AddMovie = () => {
   const [movieToAdd, setMovieToAdd] = useState({} as Movie);
@@ -30,7 +28,7 @@ const AddMovie = () => {
   };
 
   return (
-    <div className="flex justify-center items-center flex-col">
+    <div className="flex items-center flex-col gradient-bg h-screenWithoutNavbar">
       <Card
         sx={{
           padding: "5rem",
@@ -40,22 +38,25 @@ const AddMovie = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          backgroundColor: Theme.Color.grey_2,
         }}
       >
-        <Typography variant="h4">Find your movie!</Typography>
+        <Typography variant="h4" sx={{ fontFamily: "Plus Jakarta Sans" }}>
+          Find your movie!
+        </Typography>
         <CardContent>
           {/* <SearchMovie onClickSearchedMovie={handleOpenForm} /> */}
           <SearchMovieWorking onClickSearchedMovie={handleOpenForm} />
         </CardContent>
       </Card>
-      <Button
-        variant="contained"
-        handleClick={handleOpenForm}
-        text="Otevřít form"
-        color="primary"
-      />
       <AddMovieModal open={opened} handleClose={() => setOpened(false)} />
-      <Accordion sx={{ maxWidth: `${width - 4}rem`, marginTop: "3rem" }}>
+      <Accordion
+        sx={{
+          maxWidth: `${width - 4}rem`,
+          marginTop: "3rem",
+          backgroundColor: Theme.Color.grey_2,
+        }}
+      >
         <AccordionSummary
           id="how-does-it-work"
           aria-controls="how-does-it-work"

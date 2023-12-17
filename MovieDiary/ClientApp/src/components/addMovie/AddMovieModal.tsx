@@ -23,7 +23,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { Category, SearchedMovie } from "../../models/Movie";
 import useAuthContext from "../../store/AuthContext";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import AddCategoryPopover from "./AddCategoryPopover";
 import useAppContext from "../../store/AppContext";
 
@@ -40,12 +40,14 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: 500,
   bgcolor: "background.paper",
   border: `2px solid ${Theme.Color.teal_2}`,
   borderRadius: Theme.BorderRadius.S,
   boxShadow: 24,
   p: 4,
+  maxHeight: "80vh",
+  overflowY: "auto",
 };
 
 const AddMovieModal = ({ open, handleClose }: Props) => {
@@ -53,23 +55,25 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
   const { currentUser } = useAuthContext();
   const { isLoading, setIsLoading } = useAppContext();
   const { comment, rating } = selectedMovie;
-  const [addCategoryOpened, setAddCategoryOpened] = useState(false);
+  const [addCategoryOpened, setAddCategoryOpened] = useState<null | boolean>(
+    null
+  );
 
-  const [categories, setCategories] = useState([] as any);
+  const ref = useRef();
+
+  const [fetchedUserCategories, setFetchedUserCategories] = useState([] as any);
 
   useEffect(() => {
-    console.log("sup1");
     const controller = new AbortController();
 
     const fetchCategories = async () => {
-      console.log("sup2");
       setIsLoading(true);
       let res;
       if (currentUser?.id)
         res = await agent.Categories.getAll(currentUser.id, {
           signal: controller.signal,
         });
-      if (res?.isSuccess) setCategories(res.result);
+      if (res?.isSuccess) setFetchedUserCategories(res.result);
       console.log(res?.result);
       setIsLoading(false);
     };
@@ -85,13 +89,12 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
   const handleAddCategory = async (category: Category) => {
     if (currentUser?.id) {
       const res = await agent.Categories.create(currentUser?.id, category);
-      if (res.isSuccess) setCategories(res.result);
-      setAddCategoryOpened(false);
+      if (res?.isSuccess) setFetchedUserCategories(res?.result);
+      setAddCategoryOpened(null);
     }
   };
 
   const handleChange = (type: string, value: any, subtype?: string) => {
-    console.log(type, value);
     if (subtype) {
       setSelectedMovie((prev: any) => ({
         ...prev,
@@ -130,17 +133,26 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
   };
 
   const saveMovie = async () => {
-    const categories = await agent.Search.categories(selectedMovie.genre_ids);
-
-    const mov = Mapper.mapToMovie(
-      selectedMovie,
-      {
-        id: currentUser?.id,
-        name: currentUser?.name,
-      },
-      categories
+    const defaultCategories = await agent.Search.categories(
+      selectedMovie.genre_ids
     );
+    const userCategoriesObjects = selectedMovie.userCategories.map((name) => {
+      const id = fetchedUserCategories.find(
+        (fuc: Category) => fuc.name === name
+      ).id;
+      return { id, name } as Category;
+    });
 
+    const finalMovieObject = {
+      ...selectedMovie,
+      defaultCategories,
+      userCategories: userCategoriesObjects,
+    };
+
+    const mov = Mapper.mapToMovie(finalMovieObject, {
+      id: currentUser?.id,
+      name: currentUser?.name,
+    });
     await agent.Movies.create(mov);
 
     handleClose();
@@ -152,20 +164,19 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
       onClose={handleClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
+      sx={{
+        margin: "auto 0",
+      }}
     >
       <Box sx={style}>
         <Typography id="title" variant="h6" component="h2">
           Save your personal information about the movie.
         </Typography>
-        <Typography id="description" sx={{ mt: 2 }}>
+        <Typography id="description" sx={{ mt: 2, paddingBottom: "1rem" }}>
           Below you can add your own comment, rating or assign the movie to you
           own categories.
         </Typography>
-        <Accordion
-          sx={{ marginTop: "1rem" }}
-          id="add-comment"
-          heading="Date watched"
-        >
+        <Accordion id="add-comment" heading="Date watched">
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               value={selectedMovie.dateWatched}
@@ -206,52 +217,54 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
             }
           />
         </Accordion>
-        <Accordion
-          sx={{ marginTop: "1rem" }}
-          id="add-categories"
-          heading="Add your own categories"
-        >
-          <FormControl sx={{ m: 1, width: 300 }}>
-            <InputLabel id="category-lbl">Categories</InputLabel>
-            <AddCategoryPopover
-              open={addCategoryOpened}
-              onClose={() => setAddCategoryOpened(false)}
-              handleAddCategory={handleAddCategory}
-            />
-            <Select
-              labelId="category-lbl"
-              name="categories"
-              multiple
-              value={selectedMovie.categories}
-              onChange={(e: any) => {
-                console.log("VAL", e.target);
-                handleChange(e.target.name, e.target.value, undefined);
-              }}
-              input={
-                <OutlinedInput id="select-multiple-chip" label="Categories" />
-              }
-              renderValue={(selected: any) => (
-                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                  {selected?.map((cat: any) => (
-                    <Chip key={cat} label={cat} />
-                  ))}
-                </Box>
-              )}
-              MenuProps={MenuProps}
-            >
-              <MenuItem key="create-new" value="createNew">
-                -- Create new --
-              </MenuItem>
-              {categories?.map((cat: Category) => (
-                <MenuItem key={cat.name} value={cat.name}>
-                  {cat.name}
+        <div className="relative">
+          <Accordion
+            sx={{ marginTop: "1rem" }}
+            id="add-categories"
+            heading="Add your own categories"
+          >
+            <FormControl sx={{ m: 1, width: 300 }}>
+              <InputLabel id="category-lbl">Categories</InputLabel>
+              <Select
+                labelId="category-lbl"
+                name="userCategories"
+                multiple
+                ref={ref}
+                value={selectedMovie.userCategories}
+                onChange={(e: any) => {
+                  console.log("VAL", e);
+                  handleChange(e.target.name, e.target.value, undefined);
+                }}
+                input={
+                  <OutlinedInput id="select-multiple-chip" label="Categories" />
+                }
+                renderValue={(selected: any) => (
+                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                    {selected?.map((cat: any) => (
+                      <Chip key={cat} label={cat} />
+                    ))}
+                  </Box>
+                )}
+                MenuProps={MenuProps}
+              >
+                <MenuItem key="create-new" value="createNew">
+                  -- Create new --
                 </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Accordion>
-
-        {/* toto bude user specific category */}
+                {fetchedUserCategories?.map((cat: Category) => (
+                  <MenuItem key={cat.name} value={cat.name} id={cat.id}>
+                    {cat.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Accordion>
+          <AddCategoryPopover
+            open={!!addCategoryOpened}
+            onClose={() => setAddCategoryOpened(false)}
+            handleAddCategory={handleAddCategory}
+            anchorEl={ref.current}
+          />
+        </div>
 
         <Button
           handleClick={saveMovie}

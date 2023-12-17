@@ -8,8 +8,8 @@ import {
 // from UserAdjustedSearchedMovie to Movie
 const mapToMovie = (
   sm: UserAdjustedSearchedMovie,
-  user: Profile,
-  categories: string[]
+  user: Profile
+  // defaultCategories: string[]
 ): Movie => {
   console.log(sm);
   return {
@@ -22,8 +22,8 @@ const mapToMovie = (
     user,
     rating: sm.rating,
     comment: sm.comment,
-    defaultCategories: ["TBD", "TBD"],
-    userCategories: categories.map((c) => ({ name: c })),
+    defaultCategories: sm.defaultCategories,
+    userCategories: sm.userCategories as Category[],
     // categories: sm.categories,
   };
 };

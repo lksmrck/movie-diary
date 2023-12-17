@@ -1,4 +1,9 @@
-export type User = {};
+export type User = {
+  id: string;
+  name: string;
+  userName: string;
+  token: string;
+};
 
 export type LoginFormValues = {
   username: string;

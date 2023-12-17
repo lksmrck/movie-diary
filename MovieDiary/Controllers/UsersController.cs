@@ -49,7 +49,7 @@ namespace API.Controllers
             {
                 _response.StatusCode = HttpStatusCode.BadRequest;
                 _response.IsSuccess = false;
-                _response.ErrorMessages.Add("Username or password is incorrect");
+                _response.ErrorMessage = "Username or password is incorrect";
                 return Unauthorized(_response);
             }
 
@@ -69,7 +69,7 @@ namespace API.Controllers
             {
                 _response.StatusCode = HttpStatusCode.BadRequest;
                 _response.IsSuccess = false;
-                _response.ErrorMessages.Add("User already exists");
+                _response.ErrorMessage = "User already exists";
                 return BadRequest(_response);
             }
 
@@ -79,7 +79,7 @@ namespace API.Controllers
             {
                 _response.StatusCode = HttpStatusCode.BadRequest;
                 _response.IsSuccess = false;
-                _response.ErrorMessages.Add("Error while registering");
+                _response.ErrorMessage = "Error while registering";
                 return BadRequest(_response);
             }
 
@@ -92,9 +92,17 @@ namespace API.Controllers
         [HttpGet("refreshToken")]
         public async Task<ActionResult<UserDto>> RefreshToken()
         {
-            var refreshToken = Request.Cookies["refreshToken"];
+            var refreshToken = Request.Cookies?["refreshToken"];
 
-         
+            if (refreshToken == null)
+            {
+                _response.StatusCode = HttpStatusCode.Unauthorized;
+                _response.IsSuccess = false;
+                _response.ErrorMessage = "No refresh token provided.";
+                return Unauthorized(_response);
+            }
+
+
             var user = await _users.GetUserFromRefreshToken(refreshToken);
 
             if (user == null)
@@ -115,7 +123,7 @@ namespace API.Controllers
             _response.IsSuccess = true;
             _response.Result = _users.CreateUserObject(user);
             return Ok(_response);
-          
+
         }
 
         private async Task SetRefreshToken(UserDto user)

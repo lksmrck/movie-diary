@@ -1,8 +1,9 @@
 import { useLocation, Outlet } from "react-router-dom";
 import Navbar from "./components/Navbar.tsx";
 import Landing from "./pages/Landing.tsx";
-import { Alert, Snackbar } from "@mui/material";
 import useAppContext from "./store/AppContext.tsx";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   const location = useLocation();
@@ -11,18 +12,18 @@ const App = () => {
 
   return (
     <>
-      <Snackbar
-        open={error.isError}
-        autoHideDuration={2000}
-        onClose={() => setError({ isError: false, message: "" })}
-      >
-        <Alert
-          onClose={() => setError({ isError: false, message: "" })}
-          severity="error"
-        >
-          {error.message}
-        </Alert>
-      </Snackbar>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
       {location.pathname === "/" ? (
         <Landing />
       ) : (

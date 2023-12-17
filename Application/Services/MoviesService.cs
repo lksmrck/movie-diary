@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Comments;
+﻿using Application.Core;
+using Application.DTOs.Comments;
 using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -18,6 +19,7 @@ namespace Application.Services
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContext;
         private readonly ICategoriesService _categories;
+        private readonly ServiceResponse<MovieDto> _response = new ServiceResponse<MovieDto>();
 
         public MoviesService(ApplicationDbContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor, ICategoriesService categories)
         {
@@ -26,11 +28,21 @@ namespace Application.Services
             _httpContext = httpContextAccessor;
             _categories = categories;
         }
-        public async Task<MovieDto> CreateMovie(MovieDto movie)
+        public async Task<ServiceResponse<MovieDto>> CreateMovie(MovieDto movie)
         {
             if (!CompareUser(movie.User.Id, _httpContext))
                 return null;
 
+            // Check if movie is already added
+            var movieAlreadyAdded = _context.Movies.Any(m => m.Title == movie.Title);
+
+            if (movieAlreadyAdded)
+            {
+                _response.IsValid = false;
+                _response.ErrorMessage = "Movie already added";
+                return _response;
+            }
+            
             Movie movieToAdd = _mapper.Map<Movie>(movie);
 
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == movie.User.Id);
@@ -61,8 +73,8 @@ namespace Application.Services
 
             MovieDto addedMovie = _mapper.Map<MovieDto>(movieToAdd);
 
-            return addedMovie;
-
+            _response.Result = addedMovie;
+            return _response;
         }
 
         //TODO: nesmaže se Comment z tab Comments, jen join z MovieComments - jinak ale funguje a zobrazuje jak má.

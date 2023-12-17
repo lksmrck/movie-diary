@@ -27,7 +27,8 @@ export type SearchedMovie = {
 export interface UserAdjustedSearchedMovie extends SearchedMovie {
   rating: { value: number };
   comment: { text: string };
-  categories: string[];
+  userCategories: Category[] | string[]; //pri vyberu kategorii string[], pak se preklopi do Category[]
+  defaultCategories: string[];
   dateWatched: any;
 }
 

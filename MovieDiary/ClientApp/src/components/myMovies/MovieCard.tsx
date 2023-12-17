@@ -4,7 +4,6 @@ import {
   CardContent,
   CardMedia,
   Chip,
-  Divider,
   Rating,
   Typography,
 } from "@mui/material";
@@ -29,9 +28,11 @@ const MovieCard = ({ movie }: Props) => {
       <Card
         sx={{
           width: 450,
-          height: 380,
+          height: 420,
           position: "relative",
           border: `1px solid ${Theme.Color.grey_3}`,
+          borderRadius: "10px",
+          backgroundColor: Theme.Color.grey_2,
         }}
       >
         {/* Img and Text */}
@@ -59,22 +60,41 @@ const MovieCard = ({ movie }: Props) => {
         {/* Categories */}
         {/* [&>*:not(:first-child)] */}
         <div className="p-2 [&>*]:ml-2">
+          {movie.defaultCategories.map((dc) => (
+            <Chip
+              label={dc}
+              className="not:first:m-2"
+              sx={{ fontSize: ".6rem", marginTop: ".4rem" }}
+            />
+          ))}
           {movie.userCategories.map((c) => (
             <Chip
-              label={typeof c != "string" ? c.name : c}
+              label={c.name}
               className=" not:first:m-2"
+              sx={{
+                backgroundColor: "#9f9f9f",
+                fontSize: ".6rem",
+                marginTop: ".4rem",
+              }}
             />
           ))}
         </div>
         {/* Comment and Rating */}
-        <CardActions sx={{ position: "absolute", bottom: 0 }}>
-          <div className="p-2">
+        <CardActions
+          sx={{
+            position: "absolute",
+            bottom: 0,
+            fontSize: ".8rem",
+          }}
+        >
+          <div className="p-2 ">
             <h2>Your comment</h2>
             <Button
               color="primary"
               text={hasComment ? "Show comment" : "Add comment"}
               variant="contained"
               handleClick={() => setCommentOpen(true)}
+              size="small"
             />
           </div>
           <div>

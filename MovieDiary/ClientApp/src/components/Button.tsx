@@ -1,5 +1,5 @@
 import React from "react";
-import { Button as MUIButton } from "@mui/material";
+import { ButtonPropsSizeOverrides, Button as MUIButton } from "@mui/material";
 
 import { Theme } from "../common/theme";
 
@@ -10,6 +10,7 @@ type Props = {
   text: string;
   color: "primary" | "secondary";
   sx?: Object;
+  size?: "small" | "medium" | "large";
 };
 
 const Button = ({
@@ -19,20 +20,28 @@ const Button = ({
   text,
   color,
   sx = {},
+  size,
 }: Props) => {
+  const backgroundColorHover =
+    color == "primary" ? Theme.Color.teal_2 : Theme.Color.teal_4;
+
   return (
     <MUIButton
       variant={variant}
       onClick={handleClick}
       disabled={disabled}
+      size={size}
       sx={{
         ...sx,
+        border: `1px solid ${
+          color == "primary" ? Theme.Color.teal_2 : Theme.Color.teal_3
+        }`,
         backgroundColor:
-          color == "primary" ? Theme.Color.teal_2 : Theme.Color.teal_3,
+          color == "primary" ? Theme.Color.teal_1 : Theme.Color.teal_3,
 
         "&:hover": {
-          backgroundColor:
-            color == "primary" ? Theme.Color.teal_1 : Theme.Color.teal_2,
+          backgroundColor: backgroundColorHover,
+          border: `1px solid ${backgroundColorHover}`,
         },
         color: "white",
       }}

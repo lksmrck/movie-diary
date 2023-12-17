@@ -7,6 +7,7 @@ import { MoviesContextProvider } from "./store/MoviesContext";
 import { AuthContextProvider } from "./store/AuthContext";
 import { AppContextProvider } from "./store/AppContext";
 import AxiosErrorHandler from "./api/AxiosErrorHandler";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -17,7 +18,9 @@ root.render(
       <AuthContextProvider>
         <MoviesContextProvider>
           <AxiosErrorHandler>
-            <RouterProvider router={router} />
+            <ErrorBoundary>
+              <RouterProvider router={router} />
+            </ErrorBoundary>
           </AxiosErrorHandler>
         </MoviesContextProvider>
       </AuthContextProvider>

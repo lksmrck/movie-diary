@@ -35,7 +35,7 @@ const SearchMovieWorking = ({ onClickSearchedMovie }: Props) => {
   };
 
   const handleSelectMovie = (movie: any) => {
-    setSelectedMovie({ ...movie, categories: [] });
+    setSelectedMovie({ ...movie, userCategories: [] });
     onClickSearchedMovie(movie);
   };
 

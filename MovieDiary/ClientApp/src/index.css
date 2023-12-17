@@ -1,3 +1,38 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500&display=swap");*/
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap");
+
+* {
+  font-family: "Montserrat";
+}
+
+.gradient-bg {
+  background: hsla(167, 49%, 37%, 1);
+
+  background: linear-gradient(
+    270deg,
+    hsla(167, 49%, 37%, 1) 0%,
+    hsla(274, 65%, 12%, 1) 77%
+  );
+
+  background: -moz-linear-gradient(
+    270deg,
+    hsla(167, 49%, 37%, 1) 0%,
+    hsla(274, 65%, 12%, 1) 77%
+  );
+
+  background: -webkit-linear-gradient(
+    270deg,
+    hsla(167, 49%, 37%, 1) 0%,
+    hsla(274, 65%, 12%, 1) 77%
+  );
+
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#318E7A", endColorstr="#220B34", GradientType=1 );
+
+  .checkIcon {
+    filter: invert(88%) sepia(33%) saturate(325%) hue-rotate(115deg)
+      brightness(89%) contrast(96%);
+  }
+}

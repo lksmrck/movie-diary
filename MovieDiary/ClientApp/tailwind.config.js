@@ -3,6 +3,16 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      backgroundColor: {
+        // boratBg: "#e3dcc2",
+      },
+      height: {
+        112: "28rem",
+        screenWithoutNavbar: "calc(100vh - 4rem)",
+      },
+      minHeight: {
+        screenWithoutNavbar: "calc(100vh - 4rem)",
+      },
       keyframes: {
         homeImageMoveIn: {
           "0%": { transform: "translatey(0) translatex(0)" },

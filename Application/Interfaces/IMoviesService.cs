@@ -1,4 +1,5 @@
-﻿using Domain.DTOs;
+﻿using Application.Core;
+using Domain.DTOs;
 using Domain.Movies;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Application.Interfaces
         Task<MovieDto> GetMovie(Guid id);
         Task<MovieDto> GetMovie(string name);
         Task<List<MovieDto>> GetMoviesForUser(Guid userId);
-        Task<MovieDto> CreateMovie(MovieDto movie);
+        Task<ServiceResponse<MovieDto>> CreateMovie(MovieDto movie);
         Task<MovieDto> UpdateMovie(MovieDto movie);
         Task DeleteMovie(Guid id);
     }

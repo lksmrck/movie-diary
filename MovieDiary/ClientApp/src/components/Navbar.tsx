@@ -82,7 +82,7 @@ const Navbar = () => {
             component="a"
             href="/"
             sx={{
-              mr: 2,
+              mr: 1,
               display: { xs: "none", md: "flex" },
               fontFamily: "monospace",
               fontWeight: 700,
@@ -91,7 +91,24 @@ const Navbar = () => {
               textDecoration: "none",
             }}
           >
-            MOVIE D I A R Y
+            MOVIE
+          </Typography>
+          <Typography
+            variant="h6"
+            noWrap
+            component="a"
+            href="/"
+            sx={{
+              mr: 2,
+              display: { xs: "none", md: "flex" },
+              fontFamily: "monospace",
+              fontWeight: 800,
+              letterSpacing: ".5rem",
+              color: "#552286",
+              textDecoration: "none",
+            }}
+          >
+            DIARY
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -140,9 +157,8 @@ const Navbar = () => {
             component="a"
             href="/"
             sx={{
-              mr: 2,
               display: { xs: "flex", md: "none" },
-              flexGrow: 1,
+              mr: 2,
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
@@ -150,7 +166,25 @@ const Navbar = () => {
               textDecoration: "none",
             }}
           >
-            MOVIE D I A R Y
+            MOVIE
+          </Typography>
+          <Typography
+            variant="h5"
+            noWrap
+            component="a"
+            href="/"
+            sx={{
+              mr: 2,
+              display: { xs: "flex", md: "none" },
+              flexGrow: 1,
+              fontFamily: "monospace",
+              fontWeight: 900,
+              letterSpacing: ".8rem",
+              color: "#552286",
+              textDecoration: "none",
+            }}
+          >
+            DIARY
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (

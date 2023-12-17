@@ -115,14 +115,13 @@ namespace Application.Services
 
         public async Task<AppUser> GetUserFromRefreshToken(string refreshToken)
         {
-
             var users = _userManager.Users
                 .Include(r => r.RefreshTokens)
                 .Where(u => u.RefreshTokens
                 .Any(t => t.Token == refreshToken))
                 .ToList();
 
-            return users.First();
+            return users?.First();
         }
 
 

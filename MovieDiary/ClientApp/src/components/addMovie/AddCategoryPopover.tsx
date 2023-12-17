@@ -3,32 +3,31 @@ import React, { useState } from "react";
 import Input from "../Input";
 import Button from "../Button";
 import { Theme } from "../../common/theme";
-import agent from "../../api/agent";
 import { Category } from "../../models/Movie";
 
 type Props = {
   open: boolean;
   onClose: () => void;
   handleAddCategory: (category: Category) => void;
+  anchorEl: any;
 };
 
-const AddCategoryPopover = ({ open, onClose, handleAddCategory }: Props) => {
+const AddCategoryPopover = ({
+  open,
+  onClose,
+  handleAddCategory,
+  anchorEl,
+}: Props) => {
   const [category, setCategory] = useState("");
 
   return (
     <Popover
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "left",
-      }}
       open={open}
       onClose={onClose}
+      anchorEl={anchorEl}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
     >
-      <div className="flex h-12">
+      <div className="flex h-12 ">
         <Input
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setCategory(e.target.value)
@@ -46,6 +45,7 @@ const AddCategoryPopover = ({ open, onClose, handleAddCategory }: Props) => {
           handleClick={() => handleAddCategory({ name: category })}
           variant="outlined"
           color="secondary"
+          size="small"
         />
       </div>
     </Popover>

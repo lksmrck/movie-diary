@@ -2,13 +2,16 @@ import React, { useState, useEffect } from "react";
 import Title from "../components/home/Title";
 import useScroll from "../hooks/useScroll";
 import GreenCircle from "../assets/greenCircle.png";
+import "../index.css";
+import Button from "../components/Button";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const { scrollPosition } = useScroll();
 
   // const [firstImageTop, setFirstImageTop] = useState(0);
   // const [firstImageLeft, setFirstImageLeft] = useState(0);
-
+  const navigate = useNavigate();
   const [shouldAnimationInStart, setShouldAnimationInStart] = useState(false);
   const [shouldAnimationOutStart, setShouldAnimationOutStart] = useState(false);
 
@@ -30,8 +33,36 @@ const Home = () => {
   }, [scrollPosition]);
 
   return (
-    <div className="relative h-full border border-red-700">
-      {!shouldHideTitle && (
+    <div className="gradient-bg h-screenWithoutNavbar flex">
+      {/* LEFT */}
+      <section className="ml-10 mt-10">
+        <h4 className="">
+          <span className="text-white">SOME</span>{" "}
+          <span className=" font-bold text-purple-900">T H I N G</span>
+        </h4>
+        <h1 className="py-10 text-5xl text-green-50">Will Be Here</h1>
+        <h2 className=" py-16 text-2xl font-bold text-white">
+          Meanwhile you can go to:
+        </h2>
+        <div className="flex mt-1">
+          <Button
+            color="primary"
+            text="My Movies"
+            variant="contained"
+            handleClick={() => navigate("/my-movies")}
+          />
+          <Button
+            color="secondary"
+            text="Add Movie"
+            variant="outlined"
+            sx={{ marginLeft: "1rem" }}
+            handleClick={() => navigate("/add-movie")}
+          />
+        </div>
+      </section>
+      {/* RIGHT */}
+      <section className=""></section>
+      {/* {!shouldHideTitle && (
         <>
           <Title
             scrollText={scrollState2}
@@ -50,7 +81,7 @@ const Home = () => {
       )}
 
       <div className="h-screen"></div>
-      <div className="h-screen"></div>
+      <div className="h-screen"></div> */}
     </div>
   );
 };

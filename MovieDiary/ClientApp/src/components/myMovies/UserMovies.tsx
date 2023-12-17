@@ -5,6 +5,7 @@ import MovieCard from "./MovieCard";
 import useAuthContext from "../../store/AuthContext";
 import useAppContext from "../../store/AppContext";
 import { CircularProgress } from "@mui/material";
+import "../../index.css";
 
 const UserMovies = () => {
   const { userMovies, setUserMovies } = useMoviesContext();
@@ -34,8 +35,8 @@ const UserMovies = () => {
   }, []);
 
   return (
-    <section className=" w-full h-full flex justify-center ">
-      <div className=" grid grid-cols-4 p-2 gap-2  ">
+    <section className=" w-full h-full min-h-screenWithoutNavbar flex justify-center gradient-bg">
+      <div className=" grid lg:grid-cols-3 sm:grid-cols-1 md:grid-cols-2 p-2 gap-2  ">
         {isLoading ? (
           <CircularProgress color="inherit" />
         ) : (

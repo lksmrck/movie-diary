@@ -16,7 +16,7 @@ type Props = {
 
 const Accordion = ({ id, expandIcon, heading, children, sx }: Props) => {
   return (
-    <MUIAccordion sx={sx}>
+    <MUIAccordion sx={sx} elevation={10}>
       <AccordionSummary
         id={id}
         aria-controls="add-comment"
