@@ -30,12 +30,12 @@ const Login = () => {
   };
 
   return (
-    <div className="w-full h-screen flex justify-center gradient-bg">
+    <div className="w-full h-screenWithoutNavbar flex justify-center items-center gradient-bg">
       <div>
         <Card
           sx={{
             padding: "5rem",
-            marginTop: "2rem",
+            marginTop: "-5rem",
             maxWidth: `${Theme.CardWidth.M}rem`,
             display: "flex",
             flexDirection: "column",
@@ -65,7 +65,7 @@ const Login = () => {
               size="small"
             />
           </CardContent>
-          <CardActions>
+          <CardActions sx={{ marginLeft: ".5rem" }}>
             <Button
               handleClick={handleSubmit}
               variant="contained"

@@ -48,6 +48,7 @@ public class Program
 
         app.UseAuthorization();
 
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
         app.UseMiddleware<JwtMiddleware>();
 
         app.MapControllerRoute(

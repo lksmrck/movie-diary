@@ -90,9 +90,9 @@ const Landing = () => {
       {/* RIGHT */}
       <section className="flex items-center  h-full  w-2/3 ">
         <div className=" flex ml-10 [&>*]:ml-8">
-          <LandingCard className="" />
-          <LandingCard className="mt-10" />
-          <LandingCard className="ml-10" />
+          <LandingCard className="" no="1" />
+          <LandingCard className="mt-10" no="2" />
+          <LandingCard className="ml-10" no="3" />
         </div>
       </section>
       {/* {!shouldHideTitle && (

@@ -17,12 +17,12 @@ const UserMovies = () => {
 
     const fetchMovies = async () => {
       setIsLoading(true);
-      let movies;
+      let res;
       if (currentUser?.id)
-        movies = await agent.Movies.getAll(currentUser?.id, {
+        res = await agent.Movies.getAll(currentUser?.id, {
           signal: controller.signal,
         });
-      if (movies) setUserMovies(movies);
+      if (res?.isSuccess) setUserMovies(res.result);
       setIsLoading(false);
     };
 

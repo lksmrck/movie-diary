@@ -22,7 +22,7 @@ const requests = {
 
 const Movies = {
   getAll: (userId: string, config: AxiosRequestConfig<any> | undefined) =>
-    requests.get<Movie[]>(`/movies/user/${userId}`, config),
+    requests.get<ApiResponse<Movie[]>>(`/movies/user/${userId}`, config),
   getOne: (movieId: string) => requests.get<Movie>(`/movies/${movieId}`),
   create: (movie: Movie) =>
     requests

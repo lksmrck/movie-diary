@@ -6,6 +6,7 @@ using Domain.Movies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using System.Net;
@@ -110,7 +111,21 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetMoviesForUser(Guid userId)
         {
-            return Ok(await _movies.GetMoviesForUser(userId));
+            try
+            {
+                var res = await _movies.GetMoviesForUser(userId);
+
+                _response.Result = res;
+                _response.StatusCode = HttpStatusCode.OK;
+                return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessage = ex.Message;
+            }
+
+            return BadRequest(_response);
         }
 
         // POST api/<MoviesController>
@@ -186,19 +201,9 @@ namespace API.Controllers
                     return BadRequest();
                 }
 
-                //MovieDto movie = await _movies.GetMovie(id);
-
-                //if (movie == null)
-                //{
-                //    return NotFound();
-                //}
-
-                //await _movies.DeleteMovie(movie);
-
                 await _movies.DeleteMovie(movieId);
 
                 _response.StatusCode = HttpStatusCode.NoContent;
-
                 _response.IsSuccess = true;
 
                 return Ok(_response);

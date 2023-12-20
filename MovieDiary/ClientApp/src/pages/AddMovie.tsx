@@ -39,11 +39,13 @@ const AddMovie = () => {
           flexDirection: "column",
           alignItems: "center",
           backgroundColor: Theme.Color.grey_2,
+          borderRadius: "10px",
         }}
       >
-        <Typography variant="h4" sx={{ fontFamily: "Plus Jakarta Sans" }}>
-          Find your movie!
-        </Typography>
+        <h4>
+          <span className="text-black">FIND YOUR</span>{" "}
+          <span className=" font-bold text-purple-900">M O V I E</span>
+        </h4>
         <CardContent>
           {/* <SearchMovie onClickSearchedMovie={handleOpenForm} /> */}
           <SearchMovieWorking onClickSearchedMovie={handleOpenForm} />
