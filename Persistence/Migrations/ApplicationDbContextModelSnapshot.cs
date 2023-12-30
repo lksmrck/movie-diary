@@ -51,7 +51,7 @@ namespace Persistence.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateWatched")
+                    b.Property<DateTime?>("DateWatched")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DefaultCategories")
@@ -143,8 +143,8 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Value")
-                        .HasColumnType("int");
+                    b.Property<float>("Value")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 

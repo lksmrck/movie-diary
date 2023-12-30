@@ -11,7 +11,6 @@ const mapToMovie = (
   user: Profile
   // defaultCategories: string[]
 ): Movie => {
-  console.log(sm);
   return {
     title: sm.title,
     description: sm.overview,

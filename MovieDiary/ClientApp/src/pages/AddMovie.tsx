@@ -11,7 +11,7 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AddMovieModal from "../components/addMovie/AddMovieModal";
 import { Movie } from "../models/Movie";
-import SearchMovieWorking from "../components/searchMovie/SearchMovieWorking";
+import SearchMovie from "../components/searchMovie/SearchMovie";
 import "../index.css";
 import { Theme } from "../common/theme";
 
@@ -28,7 +28,7 @@ const AddMovie = () => {
   };
 
   return (
-    <div className="flex items-center flex-col gradient-bg h-screenWithoutNavbar">
+    <div className="flex items-center flex-col gradient-bg  h-screenWithoutNavbar  overflow-hidden">
       <Card
         sx={{
           padding: "5rem",
@@ -47,8 +47,7 @@ const AddMovie = () => {
           <span className=" font-bold text-purple-900">M O V I E</span>
         </h4>
         <CardContent>
-          {/* <SearchMovie onClickSearchedMovie={handleOpenForm} /> */}
-          <SearchMovieWorking onClickSearchedMovie={handleOpenForm} />
+          <SearchMovie onClickSearchedMovie={handleOpenForm} />
         </CardContent>
       </Card>
       <AddMovieModal open={opened} handleClose={() => setOpened(false)} />

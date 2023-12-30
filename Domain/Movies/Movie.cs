@@ -13,15 +13,13 @@ namespace Domain.Movies
         public string Title { get; set; }
         public string Description { get; set; }
         public string PosterPath { get; set; }
-        //Tohle bude user specific category
-        //public ICollection<Category> Category { get; set; }
         public DateTime DateCreated { get; set; } = DateTime.UtcNow;
-        public DateTime DateWatched { get; set; }
+        public DateTime? DateWatched { get; set; } = null;
         public MovieUser User { get; set; }
         public MovieRating Rating { get; set; }
         public MovieComment Comment { get; set; }
         public List<string> DefaultCategories { get; set; }
-        public ICollection<UserCategory> UserCategories { get; set; }
+        public ICollection<UserCategory>? UserCategories { get; set; }
 
     }
 }

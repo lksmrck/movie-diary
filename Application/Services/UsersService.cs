@@ -32,14 +32,14 @@ namespace Application.Services
         private readonly ApplicationDbContext _db;
         private readonly UserManager<AppUser> _userManager;
         private readonly TokenService _tokenService;
-        private readonly IHttpContextAccessor _httpContext;
+        //private readonly IHttpContextAccessor _httpContext;
         private readonly IMapper _mapper;
-        private string secretKey;
+        //private string secretKey;
 
         public UsersService(ApplicationDbContext db, IConfiguration configuration, UserManager<AppUser> userManager, IMapper mapper, TokenService tokenService)
         {
             _db = db;
-            secretKey = configuration.GetValue<string>("ApiSettings:Secret");
+            //secretKey = configuration.GetValue<string>("ApiSettings:Secret");
             _userManager = userManager;
             _mapper = mapper;
             _tokenService = tokenService;
@@ -47,7 +47,6 @@ namespace Application.Services
         public bool IsUniqueUser(string username)
         {
             var user = _db.Users.FirstOrDefault(x => x.UserName == username);
-            //var user = _db.LocalUsers.FirstOrDefault(x => x.UserName == username);
 
             if (user == null)
             {
@@ -107,8 +106,6 @@ namespace Application.Services
 
             //var user = await _userManager.Users
             //    .SingleOrDefaultAsync(u => u.Email == userEmail);
-
-
 
             return CreateUserObject(user);
         }

@@ -13,6 +13,10 @@ import { useState } from "react";
 import CommentModal from "./CommentModal";
 import Button from "../Button";
 import { Theme } from "../../common/theme";
+import AreYouSureDialog from "./AreYouSureDialog";
+import agent from "../../api/agent";
+import useAuthContext from "../../store/AuthContext";
+import useMoviesContext from "../../store/MoviesContext";
 
 type Props = {
   movie: Movie;
@@ -20,8 +24,23 @@ type Props = {
 
 const MovieCard = ({ movie }: Props) => {
   const [commentOpen, setCommentOpen] = useState(false);
+  const [areYouSureDialogOpen, setAreYouSureDialogOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { currentUser } = useAuthContext();
+  const { setUserMovies } = useMoviesContext();
+
   const hasComment = movie.comment?.text?.length > 0;
-  const hasRating = movie.rating.value > 0;
+  const hasRating = movie.rating?.value > 0;
+
+  const handleDeleteMovie = async () => {
+    setIsLoading(true);
+    await agent.Movies.delete(movie.id!);
+    const res = await agent.Movies.getAll(currentUser?.id!);
+    if (res?.isSuccess) setUserMovies(res.result);
+    setAreYouSureDialogOpen(false);
+    setIsLoading(false);
+  };
 
   return (
     <>
@@ -85,6 +104,9 @@ const MovieCard = ({ movie }: Props) => {
             position: "absolute",
             bottom: 0,
             fontSize: ".8rem",
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-between",
           }}
         >
           <div className="p-2 ">
@@ -99,15 +121,33 @@ const MovieCard = ({ movie }: Props) => {
           </div>
           <div>
             <h2>Your rating</h2>
-            <Rating name="read-only" value={movie.rating.value} readOnly />
+            <Rating name="read-only" value={movie.rating?.value} readOnly />
+          </div>
+          <div className="mt-5 pr-2">
+            <Button
+              color="red"
+              text="X"
+              variant="contained"
+              handleClick={() => setAreYouSureDialogOpen(true)}
+              size="small"
+              sx={{ minWidth: "2rem" }}
+            />
           </div>
         </CardActions>
       </Card>
       <CommentModal
         open={commentOpen}
         handleClose={() => setCommentOpen(false)}
-        comment={movie.comment.text}
+        comment={movie.comment}
         title={movie.title}
+        movieID={movie.id}
+      />
+      <AreYouSureDialog
+        open={areYouSureDialogOpen}
+        handleClose={() => setAreYouSureDialogOpen(false)}
+        handleProceed={handleDeleteMovie}
+        purpose="delete movie"
+        isLoading={isLoading}
       />
     </>
   );

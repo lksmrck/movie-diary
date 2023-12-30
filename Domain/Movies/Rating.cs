@@ -10,7 +10,7 @@ namespace Domain.Movies
     public class Rating
     {
         public Guid Id { get; set; }
-        public int Value { get; set; }
+        public float Value { get; set; }
         public MovieRating Movie { get; set; }
     }
 }

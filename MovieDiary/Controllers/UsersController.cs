@@ -50,7 +50,7 @@ namespace API.Controllers
                 _response.StatusCode = HttpStatusCode.BadRequest;
                 _response.IsSuccess = false;
                 _response.ErrorMessage = "Username or password is incorrect";
-                return Unauthorized(_response);
+                return BadRequest(_response);
             }
 
             await SetRefreshToken(user);

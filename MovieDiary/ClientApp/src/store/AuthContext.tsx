@@ -1,4 +1,4 @@
-import { getLocalStorage } from "../utils/getLocalStorage";
+import { getLocalStorage, getSessionStorage } from "../utils/getLocalStorage";
 import { UserInLS } from "../models/UserInLS";
 import { router } from "../routes";
 import agent from "../api/agent";
@@ -13,12 +13,14 @@ import {
   FC,
   useContext,
 } from "react";
+import { toast } from "react-toastify";
 
 interface AuthContextInterface {
   currentUser: UserInLS | null;
   setCurrentUser: Dispatch<SetStateAction<UserInLS | null>>;
   loginUser: (user: any) => void;
   logoutUser: () => void;
+  isLoading: boolean;
 }
 
 const AuthContext = createContext({} as AuthContextInterface);
@@ -26,21 +28,21 @@ const AuthContext = createContext({} as AuthContextInterface);
 export const AuthContextProvider: FC<{
   children: ReactNode;
 }> = ({ children }) => {
-  const { setError } = useAppContext();
+  // const { setError } = useAppContext();
   //Stored data for user and company
   const [currentUser, setCurrentUser] = useState(
+    // getSessionStorage("user") || null
     getLocalStorage("user") || null
   );
+  const [isLoading, setIsLoading] = useState(false);
 
   const loginUser = async (formData: any) => {
-    try {
-      const res = await agent.Users.login(formData);
-      if (res.isSuccess) setCurrentUser(res.result);
-      // startRefreshTokenTimer(res.result);
-      router.navigate("/home");
-    } catch (error: any) {
-      setError({ isError: true, message: "Error during login." });
-    }
+    setIsLoading(true);
+    const res = await agent.Users.login(formData);
+    if (res?.isSuccess) setCurrentUser(res?.result);
+    if (res?.isSuccess) toast.error(res?.errorMessage);
+    setIsLoading(false);
+    router.navigate("/home");
   };
 
   const logoutUser = () => {
@@ -49,6 +51,7 @@ export const AuthContextProvider: FC<{
   };
 
   useEffect(() => {
+    // sessionStorage.setItem("user", JSON.stringify(currentUser));
     localStorage.setItem("user", JSON.stringify(currentUser));
   }, [currentUser]);
 
@@ -59,6 +62,7 @@ export const AuthContextProvider: FC<{
         setCurrentUser,
         loginUser,
         logoutUser,
+        isLoading,
       }}
     >
       {children}

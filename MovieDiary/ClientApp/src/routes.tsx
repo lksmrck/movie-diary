@@ -7,8 +7,6 @@ import App from "./App";
 import MyMovies from "./pages/MyMovies";
 import NotFound from "./pages/errors/NotFound";
 import ServerError from "./pages/errors/ServerError";
-import Discover from "./pages/Discover";
-import Statistics from "./pages/Statistics";
 import Register from "./pages/Register";
 import RequireAuth from "./hoc/RequireAuth";
 import Profile from "./pages/Profile";
@@ -24,8 +22,6 @@ export const routes: RouteObject[] = [
           { path: "home", element: <Home /> },
           { path: "my-movies", element: <MyMovies /> },
           { path: "add-movie", element: <AddMovie /> },
-          { path: "discover", element: <Discover /> },
-          { path: "statistics", element: <Statistics /> },
           { path: "profile", element: <Profile /> },
         ],
       },

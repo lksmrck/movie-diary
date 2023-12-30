@@ -11,7 +11,7 @@ import "../index.css";
 
 const Login = () => {
   const [formData, setFormData] = useState({} as LoginFormValues);
-  const { currentUser, loginUser } = useAuthContext();
+  const { currentUser, loginUser, isLoading } = useAuthContext();
   const navigate = useNavigate();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -20,6 +20,7 @@ const Login = () => {
 
   const handleSubmit = async () => {
     await loginUser(formData);
+
     // const res = await agent.Users.login(formData);
     // if (res.isSuccess) setCurrentUser(res.result);
     // navigate("/home");
@@ -66,11 +67,19 @@ const Login = () => {
             />
           </CardContent>
           <CardActions sx={{ marginLeft: ".5rem" }}>
+            {/* <Button
+              handleClick={handleSubmit}
+              variant="contained"
+              text="Login"
+              color="primary"
+            /> */}
             <Button
               handleClick={handleSubmit}
               variant="contained"
               text="Login"
               color="primary"
+              withLoading
+              loading={isLoading}
             />
             <Button
               handleClick={handleBack}

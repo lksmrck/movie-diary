@@ -2,16 +2,9 @@
 using Application.Interfaces;
 using Domain;
 using Domain.DTOs;
-using Domain.Movies;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.EntityFrameworkCore;
-using Persistence;
 using System.Net;
-using System.Security.Claims;
-using System.Xml.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -30,34 +23,31 @@ namespace API.Controllers
             _movies = movies;
         }
 
+        //[HttpGet]
+        //[ProducesResponseType(StatusCodes.Status403Forbidden)]
+        //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //public async Task<ActionResult<APIResponse>> GetMovies()
+        //{
+        //    try
+        //    {
+        //        IEnumerable<MovieDto> moviesList;
 
-        // GET: api/<MoviesController>
+        //        moviesList = await _movies.GetMovies();
 
-        [HttpGet]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<APIResponse>> GetMovies()
-        {
-            try
-            {
-                IEnumerable<MovieDto> moviesList;
+        //        _response.StatusCode = HttpStatusCode.OK;
+        //        _response.Result = moviesList;
 
-                moviesList = await _movies.GetMovies();
+        //        return Ok(_response);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _response.IsSuccess = false;
+        //        _response.ErrorMessage = ex.Message;
+        //    }
 
-                _response.StatusCode = HttpStatusCode.OK;
-                _response.Result = moviesList;
-
-                return Ok(_response);
-            }
-            catch (Exception ex)
-            {
-                _response.IsSuccess = false;
-                _response.ErrorMessage = ex.Message;
-            }
-
-            return BadRequest(_response);
-        }
+        //    return BadRequest(_response);
+        //}
 
         // GET api/<MoviesController>/5
         [Authorize(Policy = "IsSameUser")]
@@ -111,21 +101,11 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetMoviesForUser(Guid userId)
         {
-            try
-            {
-                var res = await _movies.GetMoviesForUser(userId);
+            var res = await _movies.GetMoviesForUser(userId);
 
-                _response.Result = res;
-                _response.StatusCode = HttpStatusCode.OK;
-                return Ok(_response);
-            }
-            catch (Exception ex)
-            {
-                _response.IsSuccess = false;
-                _response.ErrorMessage = ex.Message;
-            }
-
-            return BadRequest(_response);
+            _response.Result = res;
+            _response.StatusCode = HttpStatusCode.OK;
+            return Ok(_response);
         }
 
         // POST api/<MoviesController>
@@ -162,60 +142,46 @@ namespace API.Controllers
             return BadRequest(_response);
         }
 
-        // PUT api/<MoviesController>/5
-        [Authorize]
-        [HttpPut("{movieId}")]
-        public async Task<ActionResult<APIResponse>> Put(Guid movieId, [FromBody] MovieDto movie)
-        {
-            try
-            {
-                if (movie == null || movieId != movie.Id)
-                {
-                    return BadRequest();
-                }
+        //// PUT api/<MoviesController>/5
+        //[Authorize]
+        //[HttpPut("{movieId}")]
+        //public async Task<ActionResult<APIResponse>> Put(Guid movieId, [FromBody] MovieDto movie)
+        //{
+        //    if (movie == null || movieId != movie.Id)
+        //    {
+        //        return BadRequest();
+        //    }
 
-                await _movies.UpdateMovie(movie);
+        //    await _movies.UpdateMovie(movie);
 
-                _response.StatusCode = HttpStatusCode.NoContent;
-                return Ok(_response);
-
-            }
-            catch (Exception ex)
-            {
-                _response.IsSuccess = false;
-                _response.ErrorMessage = ex.Message;
-            }
-
-            return _response;
-        }
+        //    _response.StatusCode = HttpStatusCode.NoContent;
+        //    return Ok(_response);
+        //}
 
         // DELETE api/<MoviesController>/5
         [Authorize]
         [HttpDelete("{movieId}")]
         public async Task<ActionResult<APIResponse>> Delete(Guid movieId)
         {
-            try
+            if (movieId == Guid.Empty)
             {
-                if (movieId == Guid.Empty)
-                {
-                    return BadRequest();
-                }
-
-                await _movies.DeleteMovie(movieId);
-
-                _response.StatusCode = HttpStatusCode.NoContent;
-                _response.IsSuccess = true;
-
-                return Ok(_response);
-
+                return BadRequest();
             }
-            catch (Exception ex)
+
+            bool res = await _movies.DeleteMovie(movieId);
+
+            if (!res)
             {
+                _response.StatusCode = HttpStatusCode.BadRequest;
                 _response.IsSuccess = false;
-                _response.ErrorMessage = ex.Message;
+                _response.ErrorMessage = "Movie could not be deleted based on received data.";
+                return BadRequest(_response);
             }
 
-            return _response;
+            _response.StatusCode = HttpStatusCode.NoContent;
+            _response.IsSuccess = true;
+
+            return Ok(_response);
         }
     }
 }

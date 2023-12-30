@@ -1,7 +1,9 @@
-﻿using Application.DTOs.Comments;
+﻿using Application.Core;
+using Application.DTOs.Comments;
+using Application.DTOs.Movies;
 using Application.Interfaces;
+using Domain;
 using Domain.DTOs;
-using Domain.Movies;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -14,59 +16,54 @@ namespace API.Controllers
     {
 
         private readonly ICommentsService _comments;
+        protected APIResponse _response = new APIResponse();
 
         public CommentsController(ICommentsService comments)
         {
             _comments = comments;
         }
 
-        // GET: api/<CommentsController>
-        [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Comment>))]
-        public async Task<IActionResult> Get()
+        [HttpPost("createOrEdit")]
+        public async Task<ActionResult<APIResponse>> CreateOrEditComment([FromBody] CreateOrEditCommentDto commentDto)
         {
-            return Ok(await _comments.GetComments());
+            try
+            {
+                ServiceResponse<ShortComment> res = await _comments.CreateOrEditComment(commentDto);
+
+                if (res.IsValid == false)
+                {
+                    _response.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                    _response.ErrorMessage = res.ErrorMessage;
+                    _response.IsSuccess = false;
+                    return BadRequest(_response);
+                }
+
+                _response.StatusCode = System.Net.HttpStatusCode.OK;
+                _response.Result = res.Result;
+                return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                _response.IsSuccess = false;
+                _response.ErrorMessage = ex.Message;
+                return BadRequest(_response);
+            }
+
         }
 
-        // GET api/<CommentsController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+        //// DELETE api/<CommentsController>/5
+        //[HttpDelete("delete/{commentId}")]
+        //public async Task<IActionResult> DeleteComment(Guid commentId)
+        //{
+        //    return Ok(await _comments.DeleteComment(commentId));
+        //}
 
-        // GET api/<CommentsController>/5
-        [HttpGet("user/{userId}")]
-        public async Task<IActionResult> GetCommentsForUser(Guid userId)
-        {
-            return Ok(await _comments.GetCommentsForUser(userId));
-        }
 
-        // POST api/<CommentsController>
-        [HttpPost]
-        public async Task<IActionResult> CreateComment([FromBody] CreateCommentDto commentDto)
-        {
-            return Ok(await _comments.CreateComment(commentDto));
-        }
-
-        // PUT api/<CommentsController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<CommentsController>/5
-        [HttpDelete("delete/{commentId}")]
-        public async Task<IActionResult> DeleteComment(Guid commentId)
-        {
-            return Ok(await _comments.DeleteComment(commentId));
-        }
-
-      
-        [HttpDelete("delete")]
-        public async Task<IActionResult> DeleteComment(MovieDto movie)
-        {
-            return Ok(await _comments.DeleteComment(movie));
-        }
+        //[HttpDelete("delete")]
+        //public async Task<IActionResult> DeleteComment(MovieDto movie)
+        //{
+        //    return Ok(await _comments.DeleteComment(movie));
+        //}
     }
 }

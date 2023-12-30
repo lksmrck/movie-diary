@@ -10,6 +10,7 @@ type Props = {
   onClose: () => void;
   handleAddCategory: (category: Category) => void;
   anchorEl: any;
+  isLoading: boolean;
 };
 
 const AddCategoryPopover = ({
@@ -17,6 +18,7 @@ const AddCategoryPopover = ({
   onClose,
   handleAddCategory,
   anchorEl,
+  isLoading,
 }: Props) => {
   const [category, setCategory] = useState("");
 
@@ -43,9 +45,11 @@ const AddCategoryPopover = ({
         <Button
           text="Create"
           handleClick={() => handleAddCategory({ name: category })}
-          variant="outlined"
-          color="secondary"
+          variant="contained"
+          color="primary"
           size="small"
+          withLoading
+          loading={isLoading}
         />
       </div>
     </Popover>

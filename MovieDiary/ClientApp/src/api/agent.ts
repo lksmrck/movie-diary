@@ -1,27 +1,24 @@
 import { AxiosRequestConfig, AxiosResponse } from "axios";
-import { Category, Movie } from "../models/Movie";
+import { Category, Movie, Comment } from "../models/Movie";
 import { LoginFormValues, RegisterFormValues, User } from "../models/User";
 import AxiosInstances from "./axiosInstances";
-import { ApiResponse } from "../models/httpModels";
+import { ApiResponse } from "../models/ApiResponse";
 import { toast } from "react-toastify";
 
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 const requests = {
-  get: <T>(
-    url: string,
-    config: AxiosRequestConfig<any> | undefined = undefined
-  ) => AxiosInstances.internal.get<T>(url, config).then(responseBody),
+  get: <T>(url: string, config?: AxiosRequestConfig<any> | undefined) =>
+    AxiosInstances.internal.get<T>(url, config).then(responseBody),
   post: <T>(url: string, body: {}) =>
     AxiosInstances.internal.post<T>(url, body),
-  put: <T>(url: string, body: {}) =>
-    AxiosInstances.internal.put<T>(url, body).then(responseBody),
+  put: <T>(url: string, body: {}) => AxiosInstances.internal.put<T>(url, body),
   del: <T>(url: string) =>
     AxiosInstances.internal.delete<T>(url).then(responseBody),
 };
 
 const Movies = {
-  getAll: (userId: string, config: AxiosRequestConfig<any> | undefined) =>
+  getAll: (userId: string, config?: AxiosRequestConfig<any> | undefined) =>
     requests.get<ApiResponse<Movie[]>>(`/movies/user/${userId}`, config),
   getOne: (movieId: string) => requests.get<Movie>(`/movies/${movieId}`),
   create: (movie: Movie) =>
@@ -44,10 +41,30 @@ const Movies = {
       }),
   //   update: (movie: MovieFormValues) =>
   //     requests.put<void>(`/movies/${movie.id}`, movie),
-  delete: (id: string) => requests.del<void>(`/movies/${id}`),
+  delete: (id: string) => requests.del<ApiResponse<void>>(`/movies/${id}`),
 };
 
-const Comments = {};
+const Comments = {
+  createOrEdit: (comment: {
+    id: string;
+    text: string;
+    movieID: string;
+    userID: string;
+  }) =>
+    requests
+      .post<ApiResponse<any>>(`/comments/createOrEdit`, comment)
+      .then((res) => {
+        try {
+          if (res.data.isSuccess) {
+            toast.success("Comment sucessfully updated.");
+            return res.data;
+          }
+          toast.error(res.data.errorMessage);
+        } catch (error) {
+          toast.error("An error occured during updating the comment");
+        }
+      }),
+};
 
 const Categories = {
   getAll: (userId: string, config: AxiosRequestConfig<any> | undefined) =>
@@ -57,10 +74,11 @@ const Categories = {
       .post<ApiResponse<Category[]>>(`/categories/${userId}`, category)
       .then((res) => {
         try {
-          if (res.data) {
+          if (res.data.isSuccess) {
             toast.success("Category was successfully created");
             return res.data;
           }
+          toast.error(res.data.errorMessage);
         } catch (error) {
           toast.error("An error occured during creating the category");
         }

@@ -23,7 +23,8 @@ const FoundMovies = ({ items, onSelectMovie, onClose }: Props) => {
       ref={listRef}
       sx={{
         width: "100%",
-        maxHeight: 600,
+        height: "60vh",
+        maxHeight: 400,
         overflow: "auto",
         maxWidth: 360,
         bgcolor: "background.paper",

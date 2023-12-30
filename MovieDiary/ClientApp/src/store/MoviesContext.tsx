@@ -1,19 +1,13 @@
-import { getLocalStorage } from "../utils/getLocalStorage";
 import {
   createContext,
   ReactNode,
   useState,
   Dispatch,
   SetStateAction,
-  useEffect,
   FC,
   useContext,
 } from "react";
-import {
-  Movie,
-  SearchedMovie,
-  UserAdjustedSearchedMovie,
-} from "../models/Movie";
+import { Movie, UserAdjustedSearchedMovie } from "../models/Movie";
 
 interface MoviesContextInterface {
   selectedMovie: UserAdjustedSearchedMovie;

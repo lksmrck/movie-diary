@@ -18,7 +18,7 @@ import useAuthContext from "../store/AuthContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { currentUser } = useAuthContext();
+  const { currentUser, logoutUser } = useAuthContext();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -26,9 +26,21 @@ const Navbar = () => {
     null
   );
 
-  const handleLogout = () => {
-    console.log("Im out");
-  };
+  const settings = [
+    {
+      title: "Profile",
+      action: () => {
+        navigate({ pathname: `/profile`, search: `?id=${currentUser?.id}` });
+      },
+    },
+    { title: "Logout", action: () => logoutUser() },
+  ];
+
+  const pages = [
+    { title: "Home", action: () => navigate("/home") },
+    { title: "My movies", action: () => navigate("/my-movies") },
+    { title: "Add movie", action: () => navigate("/add-movie") },
+  ];
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -38,31 +50,12 @@ const Navbar = () => {
   };
 
   const handleCloseNavMenu = (action: any) => {
-    action();
+    if (typeof action == "function") action();
     setAnchorElNav(null);
   };
 
-  const settings = [
-    {
-      title: "Profile",
-      action: () => {
-        navigate({ pathname: `/profile`, search: `?id=${currentUser?.id}` });
-      },
-    },
-    // { title: "Dashboard", link: "/dashboard" },
-    { title: "Logout", action: () => handleLogout() },
-  ];
-
-  const pages = [
-    { title: "Home", action: () => navigate("/home") },
-    { title: "My movies", action: () => navigate("/my-movies") },
-    { title: "Add movie", action: () => navigate("/add-movie") },
-    { title: "Discover", action: () => navigate("/discover") },
-    { title: "Statistics", action: () => navigate("/statistics") },
-  ];
-
   const handleCloseUserMenu = (action: any) => {
-    action();
+    if (typeof action == "function") action();
     setAnchorElUser(null);
   };
 

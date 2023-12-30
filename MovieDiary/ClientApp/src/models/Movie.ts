@@ -1,5 +1,5 @@
 export type Movie = {
-  // id: string;
+  id?: string;
   title: string;
   description: string;
   dateCreated: Date;
@@ -42,7 +42,7 @@ export type Rating = {
   value: number;
 };
 export type Comment = {
-  //id: string;
+  id?: string;
   text: string;
 };
 

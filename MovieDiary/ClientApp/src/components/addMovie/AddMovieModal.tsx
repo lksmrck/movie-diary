@@ -42,8 +42,8 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 500,
   bgcolor: "background.paper",
-  border: `2px solid ${Theme.Color.teal_2}`,
-  borderRadius: Theme.BorderRadius.S,
+  "&::-webkit-scrollbar": { width: 0 },
+  borderRadius: "10px",
   boxShadow: 24,
   p: 4,
   maxHeight: "80vh",
@@ -87,11 +87,11 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
   }, []);
 
   const handleAddCategory = async (category: Category) => {
-    if (currentUser?.id) {
-      const res = await agent.Categories.create(currentUser?.id, category);
-      if (res?.isSuccess) setFetchedUserCategories(res?.result);
-      setAddCategoryOpened(null);
-    }
+    setIsLoading(true);
+    const res = await agent.Categories.create(currentUser?.id!, category);
+    if (res?.isSuccess) setFetchedUserCategories(res?.result);
+    setIsLoading(false);
+    setAddCategoryOpened(null);
   };
 
   const handleChange = (type: string, value: any, subtype?: string) => {
@@ -133,6 +133,7 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
   };
 
   const saveMovie = async () => {
+    setIsLoading(true);
     const defaultCategories = await agent.Search.categories(
       selectedMovie.genre_ids
     );
@@ -154,7 +155,7 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
       name: currentUser?.name,
     });
     await agent.Movies.create(mov);
-
+    setIsLoading(true);
     handleClose();
   };
 
@@ -263,6 +264,7 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
             onClose={() => setAddCategoryOpened(false)}
             handleAddCategory={handleAddCategory}
             anchorEl={ref.current}
+            isLoading={isLoading}
           />
         </div>
 
@@ -272,6 +274,8 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
           variant="outlined"
           color="secondary"
           sx={{ marginTop: "2rem" }}
+          withLoading
+          loading={isLoading}
         />
       </Box>
     </Modal>

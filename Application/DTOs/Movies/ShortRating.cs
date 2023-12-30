@@ -9,6 +9,6 @@ namespace Application.DTOs.Movies
     public record ShortRating
     {
         public Guid Id { get; set; }
-        public int Value { get; set; }
+        public float Value { get; set; }
     }
 }

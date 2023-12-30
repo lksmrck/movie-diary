@@ -4,7 +4,7 @@ import AxiosInstances from "./axiosInstances";
 import { AxiosError, AxiosResponse } from "axios";
 import { router } from "../routes";
 import useRefreshToken from "../hooks/useRefreshToken";
-import { getLocalStorage } from "../utils/getLocalStorage";
+import { getLocalStorage, getSessionStorage } from "../utils/getLocalStorage";
 import { toast } from "react-toastify";
 
 const AxiosErrorHandler: FC<{ children: ReactNode }> = ({ children }) => {
@@ -14,6 +14,7 @@ const AxiosErrorHandler: FC<{ children: ReactNode }> = ({ children }) => {
   useEffect(() => {
     const requestInterceptor = AxiosInstances.internal.interceptors.request.use(
       (config) => {
+        // const token = getSessionStorage("user")?.token;
         const token = getLocalStorage("user")?.token;
         // If Authorization headers were already set, it's a re-try of 401 (below)
         if (token && !config.headers.Authorization)
@@ -40,14 +41,15 @@ const AxiosErrorHandler: FC<{ children: ReactNode }> = ({ children }) => {
               if (config.method === "get" && data.errors.hasOwnProperty("id")) {
                 router.navigate("/not-found");
               }
-              if (data.errors) {
-                const modalStateErrors = [];
-                for (const key in data.errors) {
-                  if (data.errors[key]) {
-                    modalStateErrors.push(data.errors[key]);
-                  }
-                }
-                throw modalStateErrors.flat();
+              if (data.errorMessage) {
+                // const modalStateErrors = [];
+                // for (const key in data.errors) {
+                //   if (data.errors[key]) {
+                //     modalStateErrors.push(data.errors[key]);
+                //   }
+                // }
+                // throw modalStateErrors.flat();
+                toast.error(data.errorMessage);
               } else {
                 toast.error("An error occured");
               }

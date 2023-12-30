@@ -42,7 +42,7 @@ namespace Application.Services
                 _response.ErrorMessage = "Movie already added";
                 return _response;
             }
-            
+
             Movie movieToAdd = _mapper.Map<Movie>(movie);
 
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == movie.User.Id);
@@ -50,23 +50,33 @@ namespace Application.Services
             if (user != null)
             {
                 movieToAdd.User.User = user;
-                movieToAdd.Comment.UserID = user.Id;
-                movieToAdd.Rating.UserID = user.Id;
-            }
-
-            List<UserCategory> categories = new List<UserCategory>();
-
-            foreach (var cat in movie.UserCategories)
-            {
-                var category = await _categories.GetCategory(cat.Name);
-
-                if (category != null)
+                if (movieToAdd.Comment != null)
                 {
-                    categories.Add(category);
+                    movieToAdd.Comment.UserID = user.Id;
+                }
+
+                if (movieToAdd.Rating != null)
+                {
+                    movieToAdd.Rating.UserID = user.Id;
                 }
             }
 
-            movieToAdd.UserCategories = categories;
+            if (movieToAdd.UserCategories != null)
+            {
+                List<UserCategory> categories = new List<UserCategory>();
+
+                foreach (var cat in movie.UserCategories)
+                {
+                    var category = await _categories.GetCategory(cat.Name);
+
+                    if (category != null)
+                    {
+                        categories.Add(category);
+                    }
+                }
+
+                movieToAdd.UserCategories = categories;
+            }
 
             await _context.AddAsync(movieToAdd);
             await _context.SaveChangesAsync();
@@ -78,17 +88,18 @@ namespace Application.Services
         }
 
         //TODO: nesmaže se Comment z tab Comments, jen join z MovieComments - jinak ale funguje a zobrazuje jak má.
-        public async Task DeleteMovie(Guid movieId)
+        public async Task<bool> DeleteMovie(Guid movieId)
         {
             //Movie movieToDelete = _mapper.Map<Movie>(movie);
 
             Movie movieToDelete = await _context.Movies.FirstOrDefaultAsync(x => x.Id == movieId);
 
             if (movieToDelete != null && !CompareUser(movieToDelete.User.UserID, _httpContext))
-                return;
+                return false;
 
             _context.Movies.Remove(movieToDelete);
             await _context.SaveChangesAsync();
+            return true;
         }
 
         public async Task<MovieDto> GetMovie(Guid id)
@@ -101,18 +112,6 @@ namespace Application.Services
             return _mapper.Map<MovieDto>(movie);
         }
 
-        public Task<MovieDto> GetMovie(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<List<MovieDto>> GetMovies()
-        {
-            return await _context.Movies
-                .ProjectTo<MovieDto>(_mapper.ConfigurationProvider)
-                .ToListAsync();
-        }
-
         public async Task<List<MovieDto>> GetMoviesForUser(Guid userId)
         {
             //return new List<MovieDto>();
@@ -122,21 +121,6 @@ namespace Application.Services
                 .ToListAsync();
 
         }
-
-        public async Task<MovieDto> UpdateMovie(MovieDto movie)
-        {
-            if (!CompareUser(movie.User.Id, _httpContext))
-                return null;
-
-            Movie model = _mapper.Map<Movie>(movie);
-
-            _context.Movies.Update(model);
-
-            await _context.SaveChangesAsync();
-
-            return movie;
-        }
-
 
         private static bool CompareUser(Guid userId, IHttpContextAccessor _httpContext)
         {
