@@ -8,8 +8,6 @@ import "react-toastify/dist/ReactToastify.css";
 const App = () => {
   const location = useLocation();
 
-  const { error, setError } = useAppContext();
-
   return (
     <>
       <ToastContainer

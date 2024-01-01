@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace API.Controllers
 {
     [Route("api/[controller]")]
@@ -15,7 +13,6 @@ namespace API.Controllers
     public class MoviesController : ControllerBase
     {
         private readonly IMoviesService _movies;
-        //private readonly HttpContext _context;
         protected APIResponse _response = new APIResponse();
 
         public MoviesController(IMoviesService movies)
@@ -23,33 +20,6 @@ namespace API.Controllers
             _movies = movies;
         }
 
-        //[HttpGet]
-        //[ProducesResponseType(StatusCodes.Status403Forbidden)]
-        //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //public async Task<ActionResult<APIResponse>> GetMovies()
-        //{
-        //    try
-        //    {
-        //        IEnumerable<MovieDto> moviesList;
-
-        //        moviesList = await _movies.GetMovies();
-
-        //        _response.StatusCode = HttpStatusCode.OK;
-        //        _response.Result = moviesList;
-
-        //        return Ok(_response);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _response.IsSuccess = false;
-        //        _response.ErrorMessage = ex.Message;
-        //    }
-
-        //    return BadRequest(_response);
-        //}
-
-        // GET api/<MoviesController>/5
         [Authorize(Policy = "IsSameUser")]
         [HttpGet("/user/{userId}/movie/{movieId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -88,10 +58,8 @@ namespace API.Controllers
             }
 
             return BadRequest(_response);
-
         }
 
-        // api/movies/userId
         //[Authorize(Policy = "IsSameUser")]
         [Authorize]
         [HttpGet("user/{userId}")]
@@ -142,23 +110,6 @@ namespace API.Controllers
             return BadRequest(_response);
         }
 
-        //// PUT api/<MoviesController>/5
-        //[Authorize]
-        //[HttpPut("{movieId}")]
-        //public async Task<ActionResult<APIResponse>> Put(Guid movieId, [FromBody] MovieDto movie)
-        //{
-        //    if (movie == null || movieId != movie.Id)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    await _movies.UpdateMovie(movie);
-
-        //    _response.StatusCode = HttpStatusCode.NoContent;
-        //    return Ok(_response);
-        //}
-
-        // DELETE api/<MoviesController>/5
         [Authorize]
         [HttpDelete("{movieId}")]
         public async Task<ActionResult<APIResponse>> Delete(Guid movieId)

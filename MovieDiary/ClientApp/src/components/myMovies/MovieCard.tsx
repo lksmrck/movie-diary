@@ -121,7 +121,13 @@ const MovieCard = ({ movie }: Props) => {
           </div>
           <div>
             <h2>Your rating</h2>
-            <Rating name="read-only" value={movie.rating?.value} readOnly />
+            <Rating
+              name="read-only"
+              value={movie.rating?.value}
+              max={10}
+              precision={0.5}
+              size={"small"}
+            />
           </div>
           <div className="mt-5 pr-2">
             <Button

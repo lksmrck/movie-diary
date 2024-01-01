@@ -90,8 +90,6 @@ namespace Application.Services
         //TODO: nesmaže se Comment z tab Comments, jen join z MovieComments - jinak ale funguje a zobrazuje jak má.
         public async Task<bool> DeleteMovie(Guid movieId)
         {
-            //Movie movieToDelete = _mapper.Map<Movie>(movie);
-
             Movie movieToDelete = await _context.Movies.FirstOrDefaultAsync(x => x.Id == movieId);
 
             if (movieToDelete != null && !CompareUser(movieToDelete.User.UserID, _httpContext))
@@ -119,7 +117,6 @@ namespace Application.Services
                 .Where(c => c.User.UserID == userId)
                 .ProjectTo<MovieDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
-
         }
 
         private static bool CompareUser(Guid userId, IHttpContextAccessor _httpContext)

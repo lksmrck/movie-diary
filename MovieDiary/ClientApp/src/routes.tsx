@@ -10,6 +10,7 @@ import ServerError from "./pages/errors/ServerError";
 import Register from "./pages/Register";
 import RequireAuth from "./hoc/RequireAuth";
 import Profile from "./pages/Profile";
+import BadRequest from "./pages/errors/BadRequest";
 
 export const routes: RouteObject[] = [
   {
@@ -29,6 +30,7 @@ export const routes: RouteObject[] = [
       { path: "register", element: <Register /> },
       { path: "not-found", element: <NotFound /> },
       { path: "server-error", element: <ServerError /> },
+      { path: "bad-request", element: <BadRequest /> },
       { path: "*", element: <Navigate replace to="/not-found" /> },
     ],
   },

@@ -1,9 +1,11 @@
 import "../index.css";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
+import useAuthContext from "../store/AuthContext";
 
 const Home = () => {
   const navigate = useNavigate();
+  const { currentUser } = useAuthContext();
   return (
     <div className="gradient-bg h-screenWithoutNavbar flex">
       {/* LEFT */}
@@ -30,10 +32,20 @@ const Home = () => {
             sx={{ marginLeft: "1rem" }}
             handleClick={() => navigate("/add-movie")}
           />
+          <Button
+            color="red"
+            text="Profile"
+            variant="contained"
+            sx={{ marginLeft: "1rem" }}
+            handleClick={() =>
+              navigate({
+                pathname: `/profile`,
+                search: `?id=${currentUser?.id}`,
+              })
+            }
+          />
         </div>
       </section>
-      {/* RIGHT */}
-      <section className=""></section>
     </div>
   );
 };

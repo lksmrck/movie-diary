@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import harry from "../../assets/backdrop_images/Harry_Potter_Bckdrp.jpg";
 import twilight from "../../assets/backdrop_images/Twilight_Bckdrp.jpg";
+import shades from "../../assets/backdrop_images/Fifty_shades_Bckdrp.jpg";
 import { Box, Rating, Chip } from "@mui/material";
 import Button from "../Button";
 import Input from "../Input";
@@ -24,7 +25,7 @@ const LandingCard = ({ className, no }: Props) => {
     no === "1"
       ? "This movie sucks! But my GF liked it"
       : no === "2"
-      ? "Nice! Avada Kedavra spell would be much needed sometimes."
+      ? "RIP Dobby"
       : "Meh, I've seen better.";
   const rating = no === "1" ? 1 : no === "2" ? 5 : 2;
   const categories =
@@ -33,7 +34,7 @@ const LandingCard = ({ className, no }: Props) => {
       : no === "2"
       ? ["Spels and magic", "Long evenings"]
       : ["When bored", "Funny"];
-  const image = no === "1" ? twilight : no === "2" ? harry : twilight;
+  const image = no === "1" ? twilight : no === "2" ? harry : shades;
 
   useEffect(() => {
     if (flipped) {
@@ -45,7 +46,7 @@ const LandingCard = ({ className, no }: Props) => {
 
   return (
     <div
-      className={`h-112 w-64 border border-slate-900 rounded-lg  rotate-12 bg-black ${className} ${
+      className={`h-112 w-64   rounded-lg  rotate-12 bg-black ${className} ${
         flipped ? "card" : ""
       } `}
     >
@@ -53,7 +54,7 @@ const LandingCard = ({ className, no }: Props) => {
         shouldRenderBackSide && (
           <div className="card-back text-white flex flex-col justify-center h-full items-center">
             <p>Not that easy.</p>
-            <p>Firstly sign in bro.</p>
+            <p>Sign in first, bro.</p>
             <Button
               color="primary"
               text="Sign In"
@@ -103,9 +104,8 @@ const LandingCard = ({ className, no }: Props) => {
               color={Theme.Color.teal_2}
               value={comment}
               onChange={(e) => console.log("Y")}
-              rows={1}
               sx={{
-                width: "10rem",
+                width: "15rem",
 
                 marginTop: ".5rem",
               }}

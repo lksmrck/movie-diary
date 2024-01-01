@@ -39,10 +39,11 @@ export const AuthContextProvider: FC<{
   const loginUser = async (formData: any) => {
     setIsLoading(true);
     const res = await agent.Users.login(formData);
-    if (res?.isSuccess) setCurrentUser(res?.result);
-    if (res?.isSuccess) toast.error(res?.errorMessage);
+    if (res?.isSuccess) {
+      setCurrentUser(res?.result);
+      router.navigate("/home");
+    }
     setIsLoading(false);
-    router.navigate("/home");
   };
 
   const logoutUser = () => {

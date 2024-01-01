@@ -50,24 +50,6 @@ export const useFetch = (url: string, defaultData: {}) => {
   };
 };
 
-// const useRequest = (
-//   method: string,
-//   url: string,
-//   data: {},
-//   errorMessage: string,
-//   responseType: any
-// ) => {
-//   const [isLoading, setIsLoading] = useState(false);
-//   const [error, setError] = useState<any>(null);
-
-//   const sendRequest = async () => {
-//     setIsLoading(true);
-//     try {
-//       const response = await axios({ method, url, data, responseType });
-//     } catch (error) {}
-//   };
-// };
-
 export const useTypingDebounce = (callback: () => void, time: number) => {
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("" as any);
   const [isLoading, setIsLoading] = useState(false);
@@ -109,4 +91,32 @@ export const useClickOutside = (ref: any, actionCallback: () => void) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [ref]);
+};
+
+export const useUserCategories = () => {
+  const { currentUser } = useAuthContext();
+  const { setIsLoading } = useAppContext();
+  const [fetchedUserCategories, setFetchedUserCategories] = useState([] as any);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const fetchCategories = async () => {
+      setIsLoading(true);
+      const res = await agent.Categories.getAll(currentUser?.id!, {
+        signal: controller.signal,
+      });
+      if (res?.isSuccess) setFetchedUserCategories(res.result);
+      setIsLoading(false);
+    };
+
+    fetchCategories();
+
+    return () => {
+      controller.abort();
+      setIsLoading(false);
+    };
+  }, []);
+
+  return { fetchedUserCategories, setFetchedUserCategories };
 };

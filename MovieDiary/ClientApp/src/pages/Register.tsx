@@ -5,24 +5,33 @@ import { Theme } from "../common/theme";
 import { RegisterFormValues } from "../models/User";
 import Button from "../components/Button";
 import agent from "../api/agent";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const [formData, setFormData] = useState({} as RegisterFormValues);
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const navigate = useNavigate();
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
 
   const handleSubmit = async () => {
-    const res = await agent.Users.register(formData);
-    if (res.isSuccess) setRegistrationSuccess(true);
+    if (
+      formData.username?.length > 0 &&
+      formData.password?.length > 0 &&
+      formData.email?.length > 0 &&
+      formData.name?.length > 0
+    ) {
+      const res = await agent.Users.register(formData);
+      if (res?.isSuccess) setRegistrationSuccess(true);
+    } else {
+      toast.info("Please fill in all fields");
+    }
   };
 
-  const handleBack = () => {
-    console.log("back");
-  };
+  const handleBack = () => navigate(-1);
 
   return (
     <div className="w-full h-full flex justify-center">
@@ -53,6 +62,7 @@ const Register = () => {
             value={formData.name}
             onChange={handleChange}
             variant="outlined"
+            sx={{ marginTop: ".5rem" }}
             size="small"
           />
           <Input

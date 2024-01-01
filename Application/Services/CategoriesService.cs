@@ -21,8 +21,6 @@ namespace Application.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
-        //protected ServiceResponse<UserCategory> _response = new ServiceResponse<UserCategory>();
-
 
         public CategoriesService(ApplicationDbContext context, IMapper mapper)
         {

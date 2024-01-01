@@ -1,5 +1,5 @@
 import { AxiosRequestConfig, AxiosResponse } from "axios";
-import { Category, Movie, Comment } from "../models/Movie";
+import { Category, Movie } from "../models/Movie";
 import { LoginFormValues, RegisterFormValues, User } from "../models/User";
 import AxiosInstances from "./axiosInstances";
 import { ApiResponse } from "../models/ApiResponse";
@@ -12,9 +12,8 @@ const requests = {
     AxiosInstances.internal.get<T>(url, config).then(responseBody),
   post: <T>(url: string, body: {}) =>
     AxiosInstances.internal.post<T>(url, body),
-  put: <T>(url: string, body: {}) => AxiosInstances.internal.put<T>(url, body),
-  del: <T>(url: string) =>
-    AxiosInstances.internal.delete<T>(url).then(responseBody),
+  // put: <T>(url: string, body: {}) => AxiosInstances.internal.put<T>(url, body),
+  del: <T>(url: string) => AxiosInstances.internal.delete<T>(url),
 };
 
 const Movies = {
@@ -39,9 +38,24 @@ const Movies = {
           );
         }
       }),
-  //   update: (movie: MovieFormValues) =>
-  //     requests.put<void>(`/movies/${movie.id}`, movie),
-  delete: (id: string) => requests.del<ApiResponse<void>>(`/movies/${id}`),
+  delete: (id: string) =>
+    requests
+      .del<ApiResponse<void>>(`/movies/${id}`)
+      .then((res: AxiosResponse<ApiResponse<void>>) => {
+        try {
+          if (res?.data?.isSuccess) {
+            toast.success("Movie was successfully deleted");
+            return res?.data!;
+          }
+          toast.error(res?.data?.errorMessage);
+          return;
+        } catch (error) {
+          toast.error(
+            res?.data?.errorMessage ??
+              "An error occured during deleting the movie"
+          );
+        }
+      }),
 };
 
 const Comments = {

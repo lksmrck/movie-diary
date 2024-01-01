@@ -8,6 +8,7 @@ import agent from "../api/agent";
 import useAuthContext from "../store/AuthContext";
 import { useNavigate } from "react-router-dom";
 import "../index.css";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [formData, setFormData] = useState({} as LoginFormValues);
@@ -19,16 +20,14 @@ const Login = () => {
   };
 
   const handleSubmit = async () => {
-    await loginUser(formData);
-
-    // const res = await agent.Users.login(formData);
-    // if (res.isSuccess) setCurrentUser(res.result);
-    // navigate("/home");
+    if (formData.username?.length > 0 && formData.password?.length > 0) {
+      await loginUser(formData);
+    } else {
+      toast.info("Please fill in all fields");
+    }
   };
 
-  const handleBack = () => {
-    console.log("back");
-  };
+  const handleBack = () => navigate(-1);
 
   return (
     <div className="w-full h-screenWithoutNavbar flex justify-center items-center gradient-bg">
@@ -67,12 +66,6 @@ const Login = () => {
             />
           </CardContent>
           <CardActions sx={{ marginLeft: ".5rem" }}>
-            {/* <Button
-              handleClick={handleSubmit}
-              variant="contained"
-              text="Login"
-              color="primary"
-            /> */}
             <Button
               handleClick={handleSubmit}
               variant="contained"

@@ -32,14 +32,11 @@ namespace Application.Services
         private readonly ApplicationDbContext _db;
         private readonly UserManager<AppUser> _userManager;
         private readonly TokenService _tokenService;
-        //private readonly IHttpContextAccessor _httpContext;
         private readonly IMapper _mapper;
-        //private string secretKey;
 
         public UsersService(ApplicationDbContext db, IConfiguration configuration, UserManager<AppUser> userManager, IMapper mapper, TokenService tokenService)
         {
             _db = db;
-            //secretKey = configuration.GetValue<string>("ApiSettings:Secret");
             _userManager = userManager;
             _mapper = mapper;
             _tokenService = tokenService;
@@ -101,12 +98,7 @@ namespace Application.Services
 
         public async Task<UserDto> GetCurrentUser(string userEmail)
         {
-            //var user = await _userManager.FindByEmailAsync(userEmail);
             var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
-
-            //var user = await _userManager.Users
-            //    .SingleOrDefaultAsync(u => u.Email == userEmail);
-
             return CreateUserObject(user);
         }
 
@@ -127,8 +119,6 @@ namespace Application.Services
             var refreshToken = _tokenService.GenerateRefreshToken();
 
             var domainUser = await _db.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
-
-            //var domainUser = _mapper.Map<AppUser>(user);
 
             domainUser?.RefreshTokens.Add(refreshToken);
 

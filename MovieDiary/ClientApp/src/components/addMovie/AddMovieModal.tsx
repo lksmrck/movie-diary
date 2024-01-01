@@ -26,6 +26,7 @@ import useAuthContext from "../../store/AuthContext";
 import { useEffect, useState, useRef } from "react";
 import AddCategoryPopover from "./AddCategoryPopover";
 import useAppContext from "../../store/AppContext";
+import { useUserCategories } from "../../hooks/hooks";
 
 type Props = {
   open: boolean;
@@ -60,31 +61,8 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
   );
 
   const ref = useRef();
-
-  const [fetchedUserCategories, setFetchedUserCategories] = useState([] as any);
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    const fetchCategories = async () => {
-      setIsLoading(true);
-      let res;
-      if (currentUser?.id)
-        res = await agent.Categories.getAll(currentUser.id, {
-          signal: controller.signal,
-        });
-      if (res?.isSuccess) setFetchedUserCategories(res.result);
-      console.log(res?.result);
-      setIsLoading(false);
-    };
-
-    fetchCategories();
-
-    return () => {
-      controller.abort();
-      setIsLoading(false);
-    };
-  }, []);
+  const { fetchedUserCategories, setFetchedUserCategories } =
+    useUserCategories();
 
   const handleAddCategory = async (category: Category) => {
     setIsLoading(true);
