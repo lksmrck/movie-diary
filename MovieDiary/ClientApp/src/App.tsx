@@ -1,12 +1,13 @@
 import { useLocation, Outlet } from "react-router-dom";
 import Navbar from "./components/Navbar.tsx";
 import Landing from "./pages/Landing.tsx";
-import useAppContext from "./store/AppContext.tsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import useAuthContext from "./store/AuthContext.tsx";
 
 const App = () => {
   const location = useLocation();
+  const { currentUser } = useAuthContext();
 
   return (
     <>
@@ -26,7 +27,7 @@ const App = () => {
         <Landing />
       ) : (
         <>
-          <Navbar />
+          {currentUser && <Navbar />}
           <Outlet />
         </>
       )}

@@ -26,8 +26,8 @@ const Button = ({
   withLoading,
   loading,
 }: Props) => {
-  const backgroundColorHover =
-    color == "primary" ? Theme.Color.teal_2 : Theme.Color.teal_4;
+  // const backgroundColorHover =
+  //   color == "primary" ? Theme.Color.teal_2 : Theme.Color.teal_4;
 
   const primaryStyle = {
     backgroundColor: Theme.Color.teal_1,
@@ -44,6 +44,7 @@ const Button = ({
     color: "white",
     "&:hover": {
       backgroundColor: Theme.Color.teal_4,
+      border: `1px solid ${Theme.Color.teal_4}`,
     },
   };
 

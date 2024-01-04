@@ -46,13 +46,13 @@ const LandingCard = ({ className, no }: Props) => {
 
   return (
     <div
-      className={`h-112 w-64   rounded-lg  rotate-12 bg-black ${className} ${
-        flipped ? "card" : ""
-      } `}
+      className={` h-112 w-64   rounded-lg  rotate-12 bg-black ${className} ${
+        flipped ? "card " : ""
+      } scale-75 md:scale-100 `}
     >
       {flipped ? (
         shouldRenderBackSide && (
-          <div className="card-back text-white flex flex-col justify-center h-full items-center">
+          <div className="card-back text-white flex flex-col justify-center h-full items-center ">
             <p>Not that easy.</p>
             <p>Sign in first, bro.</p>
             <Button
@@ -65,7 +65,7 @@ const LandingCard = ({ className, no }: Props) => {
           </div>
         )
       ) : (
-        <div className="card-front ">
+        <div className="card-front  ">
           <div>
             <img
               alt="backdrop_image"

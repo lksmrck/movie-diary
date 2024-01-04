@@ -6,7 +6,7 @@ import { LoginFormValues } from "../models/User";
 import Button from "../components/Button";
 import agent from "../api/agent";
 import useAuthContext from "../store/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../index.css";
 import { toast } from "react-toastify";
 
@@ -30,7 +30,7 @@ const Login = () => {
   const handleBack = () => navigate(-1);
 
   return (
-    <div className="w-full h-screenWithoutNavbar flex justify-center items-center gradient-bg">
+    <div className="w-full h-screen flex justify-center items-center gradient-bg">
       <div>
         <Card
           sx={{
@@ -64,7 +64,14 @@ const Login = () => {
               variant="outlined"
               size="small"
             />
+            <p className=" text-sm">
+              Dont have account yet?{" "}
+              <Link to={"/register"} className={" text-teal-700"}>
+                Register
+              </Link>
+            </p>
           </CardContent>
+
           <CardActions sx={{ marginLeft: ".5rem" }}>
             <Button
               handleClick={handleSubmit}

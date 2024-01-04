@@ -52,7 +52,6 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-
                 _response.IsSuccess = false;
                 _response.ErrorMessage = ex.Message;
             }

@@ -6,10 +6,23 @@ import useAuthContext from "../store/AuthContext";
 import { useUserCategories } from "../hooks/hooks";
 import { Category } from "../models/Movie";
 import Button from "../components/Button";
+import { useEffect, useState } from "react";
+import agent from "../api/agent";
+import Accordion from "../components/Accordion";
+import { Statistics } from "../models/Statistics";
 
 const Profile = () => {
   const { currentUser, logoutUser } = useAuthContext();
   const { fetchedUserCategories } = useUserCategories();
+  const [userStats, setUserStats] = useState({} as Statistics);
+
+  useEffect(() => {
+    const fetchStatistics = async () => {
+      const res = await agent.Statistics.get(currentUser?.id!);
+      setUserStats(res.result);
+    };
+    fetchStatistics();
+  }, []);
 
   return (
     <div className="gradient-bg flex justify-center items-center h-screenWithoutNavbar">
@@ -28,7 +41,7 @@ const Profile = () => {
           alignItems: "center",
         }}
       >
-        <div className="h-32 w-32 mt-5 overflow-hidden rounded-full">
+        <div className="h-32 w-32 mt-5 overflow-hidden rounded-full ">
           <Avatar
             alt={currentUser?.name}
             src="/static/images/avatar/2.jpg"
@@ -56,7 +69,7 @@ const Profile = () => {
             marginLeft: "1.5rem",
           }}
         >
-          <div className="flex h-full ">
+          <div className="flex h-full  ">
             {/* RIGHT */}
             <div className="flex w-72 [&>p]:ml-5 mt-5 ml-5">
               <ul className="ml-3 [&>li]:pr-5 [&>li]:leading-10 [&>li]:font-bold">
@@ -89,7 +102,9 @@ const Profile = () => {
             marginLeft: "1.5rem",
             marginTop: 1,
             padding: "1rem",
+            overflowY: "scroll",
           }}
+          className="no-scrollbar"
         >
           <Typography variant="h6" component="h6" sx={{ marginLeft: ".75rem" }}>
             Your categories
@@ -105,19 +120,32 @@ const Profile = () => {
               }}
             />
           ))}
+          {/* <Accordion
+            sx={{ marginTop: "1rem" }}
+            id="statistics"
+            heading="Movies statistics"
+          > */}
           <Typography
             variant="h6"
             component="h6"
-            sx={{ marginLeft: ".75rem", marginTop: ".5rem", fontSize: "1rem" }}
+            sx={{
+              marginLeft: ".75rem",
+              marginTop: ".5rem",
+              fontSize: "1rem",
+            }}
           >
-            Total added movies: 5
+            Total watched movies: {userStats?.moviesWatched}
           </Typography>
           <Typography
             variant="h6"
             component="h6"
-            sx={{ marginLeft: ".75rem", marginTop: ".5rem", fontSize: "1rem" }}
+            sx={{
+              marginLeft: ".75rem",
+              marginTop: ".5rem",
+              fontSize: "1rem",
+            }}
           >
-            Average rating: 8.4
+            Average rating: {userStats?.averageRating}
           </Typography>
           <div>
             <Typography
@@ -140,7 +168,7 @@ const Profile = () => {
                 fontSize: ".8rem",
               }}
             >
-              Comedy: 1
+              Comedy: {userStats?.totalComedy}
             </Typography>
             <Typography
               variant="h6"
@@ -151,7 +179,7 @@ const Profile = () => {
                 fontSize: ".8rem",
               }}
             >
-              Horror: 1
+              Horror: {userStats?.totalHorror}
             </Typography>
             <Typography
               variant="h6"
@@ -162,7 +190,7 @@ const Profile = () => {
                 fontSize: ".8rem",
               }}
             >
-              Adventure: 2
+              Adventure: {userStats?.totalAdventure}
             </Typography>
             <Typography
               variant="h6"
@@ -173,9 +201,21 @@ const Profile = () => {
                 fontSize: ".8rem",
               }}
             >
-              Romance: 1
+              Romantic: {userStats?.totalRomantic}
+            </Typography>
+            <Typography
+              variant="h6"
+              component="p"
+              sx={{
+                marginLeft: ".75rem",
+                marginTop: ".5rem",
+                fontSize: ".8rem",
+              }}
+            >
+              Drama: {userStats?.totalDrama}
             </Typography>
           </div>
+          {/* </Accordion> */}
         </Card>
       </div>
     </div>

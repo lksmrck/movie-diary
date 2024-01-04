@@ -12,12 +12,14 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import Avatar from "@mui/material/Avatar";
 import { Theme } from "../common/theme";
-import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import useAuthContext from "../store/AuthContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const { currentUser, logoutUser } = useAuthContext();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -58,6 +60,9 @@ const Navbar = () => {
     if (typeof action == "function") action();
     setAnchorElUser(null);
   };
+
+  if (location.pathname === "/login" || location.pathname === "/register")
+    return null;
 
   return (
     <>

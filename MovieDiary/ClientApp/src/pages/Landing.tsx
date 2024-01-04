@@ -7,7 +7,7 @@ import check_icon from "../assets/check_icon.png";
 import LandingCard from "../components/landing/LandingCard";
 
 const Landing = () => {
-  const { scrollPosition } = useScroll();
+  // const { scrollPosition } = useScroll();
   const navigate = useNavigate();
   const listItems = [
     "Search for movie you watched",
@@ -18,9 +18,9 @@ const Landing = () => {
   ];
 
   return (
-    <div className="gradient-bg min-h-screen flex">
+    <div className="gradient-bg min-h-screen flex flex-col lg:flex-row overflow-hidden">
       {/* LEFT */}
-      <section className=" m-24 mt-14 w-1/3">
+      <section className=" m-24 mt-14 md:w-1/3">
         <div className="flex">
           {/* <img src={tv_icon} className="tvIcon " width="40px" /> */}
           <h4 className="ml-3">
@@ -63,11 +63,11 @@ const Landing = () => {
         </div>
       </section>
       {/* RIGHT */}
-      <section className="flex items-center  h-full w-2/3 mt-28 ">
-        <div className=" flex ml-10 [&>*]:ml-8">
-          <LandingCard className="" no="1" />
-          <LandingCard className="mt-10" no="2" />
-          <LandingCard className="ml-10" no="3" />
+      <section className="flex items-center h-full w-2/3 md:mt-28 ">
+        <div className=" flex flex-col ml-10 [&>*]:ml-8 md:flex-row">
+          <LandingCard className="-mt-10" no="1" />
+          <LandingCard className="-mt-10 md:mt-10 " no="2" />
+          <LandingCard className=" -mt-10 md:ml-10" no="3" />
         </div>
       </section>
       {/* {!shouldHideTitle && (

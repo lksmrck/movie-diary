@@ -51,29 +51,6 @@ const AddMovie = () => {
         </CardContent>
       </Card>
       <AddMovieModal open={opened} handleClose={() => setOpened(false)} />
-      <Accordion
-        sx={{
-          maxWidth: `${width - 4}rem`,
-          marginTop: "3rem",
-          backgroundColor: Theme.Color.grey_2,
-        }}
-      >
-        <AccordionSummary
-          id="how-does-it-work"
-          aria-controls="how-does-it-work"
-          expandIcon={<ExpandMoreIcon />}
-        >
-          <Typography>How does it work?</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum
-            dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada
-            lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
     </div>
   );
 };

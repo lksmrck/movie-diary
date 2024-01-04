@@ -40,6 +40,7 @@ namespace API.Config
             services.AddScoped<ICommentsService, CommentsService>();
             services.AddScoped<ICategoriesService, CategoriesService>();
             services.AddScoped<IUsersService, UsersService>();
+            services.AddScoped<IStatisticsService, StatisticsService>();
             services.AddScoped<TokenService>();
             services.AddHttpContextAccessor();
 

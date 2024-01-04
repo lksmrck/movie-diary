@@ -11,7 +11,6 @@ import { toast } from "react-toastify";
 const Register = () => {
   const [formData, setFormData] = useState({} as RegisterFormValues);
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
-
   const navigate = useNavigate();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
@@ -25,7 +24,7 @@ const Register = () => {
       formData.name?.length > 0
     ) {
       const res = await agent.Users.register(formData);
-      if (res?.isSuccess) setRegistrationSuccess(true);
+      if (res?.isSuccess) navigate("/login");
     } else {
       toast.info("Please fill in all fields");
     }
@@ -34,14 +33,16 @@ const Register = () => {
   const handleBack = () => navigate(-1);
 
   return (
-    <div className="w-full h-full flex justify-center">
+    <div className="w-full h-screen flex justify-center items-center gradient-bg">
       <Card
         sx={{
-          padding: "5rem",
+          padding: "4rem",
           marginTop: "2rem",
           maxWidth: `${Theme.CardWidth.M}rem`,
           display: "flex",
           flexDirection: "column",
+          height: 450,
+          backgroundColor: Theme.Color.grey_2,
         }}
       >
         <Typography variant="h4">Sign Up</Typography>
@@ -87,7 +88,13 @@ const Register = () => {
             size="small"
           />
         </CardContent>
-        <CardActions>
+        <p className="text-sm -mt-3 ml-4">
+          Already have an account?{" "}
+          <Link to={"/login"} className={" text-teal-700"}>
+            Login
+          </Link>
+        </p>
+        <CardActions sx={{ marginLeft: ".5rem", marginTop: "1rem" }}>
           <Button
             handleClick={handleSubmit}
             variant="contained"
@@ -101,12 +108,6 @@ const Register = () => {
             color="secondary"
           />
         </CardActions>
-        {registrationSuccess && (
-          <Box>
-            Registration was successful. You can now{" "}
-            <Link to="/login">Login</Link>
-          </Box>
-        )}
       </Card>
     </div>
   );

@@ -1,15 +1,9 @@
 .card {
-  transition: transform 0.8s;
+  transition: all 0.8s;
   transform-style: preserve-3d;
-  /* perspective: 1000px; */
   transform: rotateY(180deg) rotate(-12deg);
 
-  /* &:hover {
-    transform: rotateY(180deg) rotate(-12deg);
-  } */
-
   .card-back {
-    /* transition: transform 0.8s; */
     transform-style: preserve-3d;
     transform: rotateY(180deg);
   }

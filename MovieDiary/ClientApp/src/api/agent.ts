@@ -126,6 +126,11 @@ const Users = {
   refreshToken: () => requests.get<ApiResponse<User>>("/users/refreshToken"), //returns User místo any
 };
 
+const Statistics = {
+  get: (userId: string) =>
+    requests.get<ApiResponse<any>>(`/statistics/${userId}`),
+};
+
 // TMDB API Requests
 const Search = {
   movie: (searchTerm: string) => {
@@ -186,6 +191,7 @@ const agent = {
   Categories,
   Users,
   Search,
+  Statistics,
 };
 
 export default agent;

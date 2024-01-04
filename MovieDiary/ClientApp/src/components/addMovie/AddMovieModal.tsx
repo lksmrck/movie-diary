@@ -179,8 +179,8 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
             onChange={(e) =>
               handleChange(e.target.name, e.target.value, "text")
             }
-            rows={10}
-            sx={{ width: "18.5rem" }}
+            rows={9}
+            sx={{ width: "24.5rem" }}
           />
         </Accordion>
         <Accordion
@@ -202,7 +202,15 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
             id="add-categories"
             heading="Add your own categories"
           >
-            <FormControl sx={{ m: 1, width: 300 }}>
+            <FormControl
+              sx={{
+                m: 1,
+                width: 300,
+                "& .MuiFormLabel-root.MuiInputLabel-root.Mui-focused": {
+                  color: Theme.Color.teal_2,
+                },
+              }}
+            >
               <InputLabel id="category-lbl">Categories</InputLabel>
               <Select
                 labelId="category-lbl"
@@ -210,12 +218,26 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
                 multiple
                 ref={ref}
                 value={selectedMovie.userCategories}
-                onChange={(e: any) => {
-                  console.log("VAL", e);
-                  handleChange(e.target.name, e.target.value, undefined);
-                }}
+                onChange={(e: any) =>
+                  handleChange(e.target.name, e.target.value, undefined)
+                }
                 input={
-                  <OutlinedInput id="select-multiple-chip" label="Categories" />
+                  <OutlinedInput
+                    id="select-multiple-chip"
+                    label="Categories"
+                    sx={{
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        borderColor: Theme.Color.teal_2,
+                      },
+                      "&:hover > .MuiOutlinedInput-notchedOutline": {
+                        borderColor: Theme.Color.teal_2,
+                      },
+
+                      "&.Mui-focused > .MuiOutlinedInput-notchedOutline": {
+                        borderColor: Theme.Color.teal_2,
+                      },
+                    }}
+                  />
                 }
                 renderValue={(selected: any) => (
                   <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
