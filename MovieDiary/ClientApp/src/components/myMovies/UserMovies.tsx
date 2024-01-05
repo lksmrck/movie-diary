@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import agent from "../../api/agent";
 import useMoviesContext from "../../store/MoviesContext";
 import MovieCard from "./MovieCard";

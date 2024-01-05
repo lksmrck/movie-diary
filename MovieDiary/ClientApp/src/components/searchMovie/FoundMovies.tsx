@@ -23,8 +23,6 @@ const FoundMovies = ({ items, onSelectMovie, onClose }: Props) => {
       ref={listRef}
       sx={{
         width: "100%",
-        height: "60vh",
-        maxHeight: 400,
         overflow: "auto",
         maxWidth: 360,
         bgcolor: "background.paper",
@@ -34,9 +32,11 @@ const FoundMovies = ({ items, onSelectMovie, onClose }: Props) => {
         borderLeft: `1px solid ${Theme.Color.grey_3}`,
         paddingTop: 0,
       }}
+      className="max-h-72"
     >
       {items.map((data: any) => (
         <ListItem
+          disablePadding
           alignItems="flex-start"
           onClick={() => onSelectMovie(data)}
           sx={{
@@ -47,15 +47,18 @@ const FoundMovies = ({ items, onSelectMovie, onClose }: Props) => {
               backgroundColor: Theme.Color.grey_1,
             },
           }}
+          className="pb-2"
         >
           <ListItemAvatar>
             <img
               alt="poster"
               src={process.env.REACT_APP_MOVIES_IMG_API + data.poster_path}
-              width="45px"
+              width="72px"
+              style={{ objectFit: "cover", marginLeft: ".25rem" }}
             />
           </ListItemAvatar>
           <ListItemText
+            className="ml-3"
             primary={data.title}
             secondary={
               <>

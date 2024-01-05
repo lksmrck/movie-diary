@@ -1,6 +1,3 @@
-import React, { useState } from "react";
-import useScroll from "../../hooks/useScroll";
-
 type Props = {
   scrollText: boolean;
   top: number;

@@ -4,7 +4,6 @@ import Input from "../components/Input";
 import { Theme } from "../common/theme";
 import { LoginFormValues } from "../models/User";
 import Button from "../components/Button";
-import agent from "../api/agent";
 import useAuthContext from "../store/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import "../index.css";
@@ -12,7 +11,7 @@ import { toast } from "react-toastify";
 
 const Login = () => {
   const [formData, setFormData] = useState({} as LoginFormValues);
-  const { currentUser, loginUser, isLoading } = useAuthContext();
+  const { loginUser, isLoading } = useAuthContext();
   const navigate = useNavigate();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

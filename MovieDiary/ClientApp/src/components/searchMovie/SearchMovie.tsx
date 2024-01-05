@@ -5,7 +5,6 @@ import { useTypingDebounce } from "../../hooks/hooks";
 import FoundMovies from "./FoundMovies";
 import Input from "../Input";
 import useMoviesContext from "../../store/MoviesContext";
-import { List } from "@mui/material";
 import LinearProgress from "../LinearProgress";
 
 type Props = {
@@ -16,18 +15,14 @@ const SearchMovie = ({ onClickSearchedMovie }: Props) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [options, setOptions] = useState([] as any);
   const { setSelectedMovie } = useMoviesContext();
-  // const [isLoading, setIsLoading] = useState(false);
 
   const fetchMovies = async () => {
-    // setIsLoading(true);
     const movies = await agent.Search.movie(searchTerm);
     setOptions(movies);
-    // setIsLoading(false);
   };
 
   const { debouncedSearchTerm, setDebouncedSearchTerm, isLoading } =
     useTypingDebounce(fetchMovies, 1000);
-  console.log(isLoading);
   const handleChangeSearchTerm = (value: string) => {
     setSearchTerm(value);
     clearTimeout(debouncedSearchTerm);

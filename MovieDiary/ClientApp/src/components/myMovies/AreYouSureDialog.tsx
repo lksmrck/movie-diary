@@ -1,6 +1,4 @@
-import { Box, Modal, Typography } from "@mui/material";
-import React from "react";
-import Input from "../Input";
+import { Box, Modal } from "@mui/material";
 import Button from "../Button";
 
 type Props = {
@@ -25,10 +23,8 @@ const AreYouSureDialog = ({
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 500,
     height: 150,
     bgcolor: "background.paper",
-    // border: `2px solid ${Theme.Color.teal_2}`,
     borderRadius: "10px",
     boxShadow: 24,
     p: 4,
@@ -41,7 +37,7 @@ const AreYouSureDialog = ({
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style}>
+      <Box sx={style} className="w-96 md:w-125">
         <span> {`Are you sure you want to ${purpose}?`}</span>
         <div className="flex mt-5 justify-center">
           <Button

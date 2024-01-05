@@ -15,8 +15,8 @@ const AxiosInterceptors: FC<{ children: ReactNode }> = ({ children }) => {
   useEffect(() => {
     const requestInterceptor = AxiosInstances.internal.interceptors.request.use(
       (config) => {
-        // const token = getSessionStorage("user")?.token;
-        const token = getLocalStorage("user")?.token;
+        const token = getSessionStorage("user")?.token;
+        // const token = getLocalStorage("user")?.token;
         // If Authorization headers were already set, it's a re-try of 401 (below)
         if (token && !config.headers.Authorization)
           config.headers.Authorization = `Bearer ${token}`;
@@ -41,17 +41,7 @@ const AxiosInterceptors: FC<{ children: ReactNode }> = ({ children }) => {
               if (config.method === "get" && data.errors.hasOwnProperty("id")) {
                 router.navigate("/not-found");
               }
-              // else {
-              //   router.navigate("/bad-request");
-              // }
               if (data.errorMessage) {
-                // const modalStateErrors = [];
-                // for (const key in data.errors) {
-                //   if (data.errors[key]) {
-                //     modalStateErrors.push(data.errors[key]);
-                //   }
-                // }
-                // throw modalStateErrors.flat();
                 toast.error(data.errorMessage);
               } else {
                 toast.error("An error occured");
@@ -61,10 +51,7 @@ const AxiosInterceptors: FC<{ children: ReactNode }> = ({ children }) => {
               if (
                 // Pokud je invalid token, tak usera odhlásíme
                 status === 401 &&
-                headers["www-authenticate"]?.startsWith(
-                  // 'Bearer error="invalid_token'
-                  "Bearer"
-                ) &&
+                headers["www-authenticate"]?.startsWith("Bearer") &&
                 !refreshSent
               ) {
                 refreshSent = true;

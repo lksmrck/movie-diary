@@ -3,39 +3,28 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
-      backgroundColor: {
-        // boratBg: "#e3dcc2",
-      },
       height: {
         112: "28rem",
+        140: "35rem",
+
         screenWithoutNavbar: "calc(100vh - 4rem)",
+      },
+      width: {
+        75: "18.75rem",
+        112: "28rem",
+        125: "31.25rem",
+        200: "50rem",
+        175: "43.75rem",
       },
       minHeight: {
         screenWithoutNavbar: "calc(100vh - 4rem)",
+        109: "27.25rem",
       },
-      keyframes: {
-        homeImageMoveIn: {
-          "0%": { transform: "translatey(0) translatex(0)" },
-          "25%": { transform: "translatey(100px) translatex(25px)" },
-          "50%": { transform: "translatey(175px) translatex(40px)" },
-          "75%": { transform: "translatey(250px) translatex(100px)" },
-          "100%": { transform: "translatey(400px) translatex(250px)" },
-          // from: { transform: "translatey(0) translatex(0)" },
-          // to: { transform: "translatey(400px) translatex(200px)" },
-        },
-        homeImageMoveOut: {
-          "0%": { transform: "translatey(0) translatex(0)" },
-          "25%": { transform: "translatey(100px) translatex(25px)" },
-          "50%": { transform: "translatey(175px) translatex(40px)" },
-          "75%": { transform: "translatey(250px) translatex(100px)" },
-          "100%": { transform: "translatey(400px) translatex(250px)" },
-          // from: { transform: "translatey(400px) translatex(200px)" },
-          // to: { transform: "translatey(0) translatex(0)" },
-        },
+      padding: {
+        100: "25rem",
       },
-      animation: {
-        home_image_move_in: "homeImageMoveIn 3s linear forwards",
-        home_image_move_out: "homeImageMoveOut 2s linear forwards",
+      spacing: {
+        105: "26.25rem",
       },
     },
   },

@@ -19,7 +19,9 @@ root.render(
         <MoviesContextProvider>
           <AxiosInterceptors>
             <ErrorBoundary>
-              <RouterProvider router={router} />
+              <div className="gradient-bg">
+                <RouterProvider router={router} />
+              </div>
             </ErrorBoundary>
           </AxiosInterceptors>
         </MoviesContextProvider>

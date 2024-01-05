@@ -18,7 +18,6 @@ namespace API.Config
         {
             _next = next;
             _config = config;
-
         }
 
         public async Task Invoke(HttpContext context, IUsersService userService)

@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react";
-import useScroll from "../hooks/useScroll";
 import "../index.css";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +5,6 @@ import check_icon from "../assets/check_icon.png";
 import LandingCard from "../components/landing/LandingCard";
 
 const Landing = () => {
-  // const { scrollPosition } = useScroll();
   const navigate = useNavigate();
   const listItems = [
     "Search for movie you watched",
@@ -18,9 +15,9 @@ const Landing = () => {
   ];
 
   return (
-    <div className="gradient-bg min-h-screen flex flex-col lg:flex-row overflow-hidden">
+    <div className="gradient-bg min-h-screen flex flex-col lg:flex-row overflow-hidden w-screen md:w-auto">
       {/* LEFT */}
-      <section className=" m-24 mt-14 md:w-1/3">
+      <section className=" m-24 mt-14 w-full lg:w-1/3">
         <div className="flex">
           {/* <img src={tv_icon} className="tvIcon " width="40px" /> */}
           <h4 className="ml-3">
@@ -28,12 +25,14 @@ const Landing = () => {
             <span className=" font-bold text-purple-900">D I A R Y</span>
           </h4>
         </div>
-        <h1 className="py-10 text-5xl text-green-50">Movie Diary</h1>
-        <h2 className=" py-24 text-2xl font-bold text-white">
+        <h1 className="py-10 text-5xl text-green-50  pb-96 md:pb-0">
+          Movie Diary
+        </h1>
+        <h2 className=" py-24 text-2xl font-bold text-white  relative pb-100 md:pb-0">
           3000+ movies in database
         </h2>
 
-        <ul className="text-green-50 [&>*]:mt-2">
+        <ul className="text-green-50 [&>*]:mt-2 -mx-12 md:mx-0 py-5 md:py-0 w-96">
           {listItems.map((li) => (
             <div className="flex">
               <img
@@ -63,33 +62,16 @@ const Landing = () => {
         </div>
       </section>
       {/* RIGHT */}
-      <section className="flex items-center h-full w-2/3 md:mt-28 ">
+      <section className="flex items-center h-full w-full lg:w-2/3 md:mt-28 ">
         <div className=" flex flex-col ml-10 [&>*]:ml-8 md:flex-row">
-          <LandingCard className="-mt-10" no="1" />
-          <LandingCard className="-mt-10 md:mt-10 " no="2" />
+          <LandingCard className=" absolute md:static bottom-36 " no="1" />
+          <LandingCard
+            className=" md:mt-10 absolute md:static -bottom-80"
+            no="2"
+          />
           <LandingCard className=" -mt-10 md:ml-10" no="3" />
         </div>
       </section>
-      {/* {!shouldHideTitle && (
-      <>
-        <Title
-          scrollText={scrollState2}
-          top={scrollPosition}
-          switchPosition={scrollPosition > 300}
-        />
-        <div
-          className={`fixed ${
-            shouldAnimationInStart ? "animate-home_image_move_in" : ""
-          } ${shouldAnimationOutStart ? "animate-home_image_move_out" : ""}`}
-          style={{ top: 0, left: 0 }}
-        >
-          <img src={GreenCircle} />
-        </div>
-      </>
-    )}
-
-    <div className="h-screen"></div>
-    <div className="h-screen"></div> */}
     </div>
   );
 };

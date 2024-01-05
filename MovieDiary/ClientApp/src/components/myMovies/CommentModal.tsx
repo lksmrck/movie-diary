@@ -29,7 +29,6 @@ const CommentModal = ({
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 700,
     height: 400,
     bgcolor: "background.paper",
     // border: `2px solid ${Theme.Color.teal_2}`,
@@ -71,7 +70,7 @@ const CommentModal = ({
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style}>
+      <Box sx={style} className="w-96 md:w-175">
         <Typography id="title" variant="h6" component="h2">
           Comment of <Box component="span">{title}</Box>
         </Typography>

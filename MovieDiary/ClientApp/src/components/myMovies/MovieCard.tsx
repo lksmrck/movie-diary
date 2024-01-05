@@ -31,7 +31,6 @@ const MovieCard = ({ movie }: Props) => {
   const { setUserMovies } = useMoviesContext();
 
   const hasComment = movie.comment?.text?.length > 0;
-  const hasRating = movie.rating?.value > 0;
 
   const handleDeleteMovie = async () => {
     setIsLoading(true);
@@ -46,13 +45,13 @@ const MovieCard = ({ movie }: Props) => {
     <>
       <Card
         sx={{
-          width: 450,
           height: 420,
           position: "relative",
           border: `1px solid ${Theme.Color.grey_3}`,
           borderRadius: "10px",
           backgroundColor: Theme.Color.grey_2,
         }}
+        className="w-96 md:w-112"
       >
         {/* Img and Text */}
         <div className="flex h-64 border-b-2 border-grey-100 shadow-sm overflow-auto p-2">
@@ -77,7 +76,6 @@ const MovieCard = ({ movie }: Props) => {
           </CardContent>
         </div>
         {/* Categories */}
-        {/* [&>*:not(:first-child)] */}
         <div className="p-2 [&>*]:ml-2">
           {movie.defaultCategories.map((dc) => (
             <Chip

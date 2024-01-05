@@ -33,7 +33,5 @@ namespace API.Controllers
             _response.Result = statistics.Result;
             return Ok(_response);
         }
-
-
     }
 }

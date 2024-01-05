@@ -3,12 +3,9 @@ import Navbar from "./components/Navbar.tsx";
 import Landing from "./pages/Landing.tsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import useAuthContext from "./store/AuthContext.tsx";
 
 const App = () => {
   const location = useLocation();
-  const { currentUser } = useAuthContext();
-
   return (
     <>
       <ToastContainer
@@ -27,7 +24,7 @@ const App = () => {
         <Landing />
       ) : (
         <>
-          {currentUser && <Navbar />}
+          <Navbar />
           <Outlet />
         </>
       )}

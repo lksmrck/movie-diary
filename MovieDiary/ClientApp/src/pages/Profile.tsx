@@ -8,7 +8,6 @@ import { Category } from "../models/Movie";
 import Button from "../components/Button";
 import { useEffect, useState } from "react";
 import agent from "../api/agent";
-import Accordion from "../components/Accordion";
 import { Statistics } from "../models/Statistics";
 
 const Profile = () => {
@@ -25,12 +24,12 @@ const Profile = () => {
   }, []);
 
   return (
-    <div className="gradient-bg flex justify-center items-center h-screenWithoutNavbar">
+    <div className="gradient-bg flex flex-col md:flex-row justify-center items-center min-h-screenWithoutNavbar">
       {/* LEFT */}
       <Card
         sx={{
-          width: 175,
-          height: 560,
+          // width: 175,
+          // height: "560px",
           position: "relative",
           border: `1px solid ${Theme.Color.grey_3}`,
           borderRadius: "10px",
@@ -40,6 +39,7 @@ const Profile = () => {
           justifyContent: "space-between",
           alignItems: "center",
         }}
+        className="mt-3 md:mt-0 h-56 md:h-140 w-75 md:w-40 ml-6 md:ml-0"
       >
         <div className="h-32 w-32 mt-5 overflow-hidden rounded-full ">
           <Avatar
@@ -48,13 +48,15 @@ const Profile = () => {
             sx={{ width: "100%", height: "100%", fontSize: "3rem" }}
           />
         </div>
-        <Button
-          color="red"
-          text="Logout"
-          variant="contained"
-          sx={{ marginBottom: "2rem" }}
-          handleClick={logoutUser}
-        />
+        <div className="mt-2">
+          <Button
+            color="red"
+            text="Logout"
+            variant="contained"
+            sx={{ marginBottom: "2rem" }}
+            handleClick={logoutUser}
+          />
+        </div>
       </Card>
       {/* RIGHT */}
       <div>
@@ -68,6 +70,7 @@ const Profile = () => {
             backgroundColor: Theme.Color.grey_2,
             marginLeft: "1.5rem",
           }}
+          className="mt-2 md:mt-0"
         >
           <div className="flex h-full  ">
             {/* RIGHT */}
@@ -120,11 +123,6 @@ const Profile = () => {
               }}
             />
           ))}
-          {/* <Accordion
-            sx={{ marginTop: "1rem" }}
-            id="statistics"
-            heading="Movies statistics"
-          > */}
           <Typography
             variant="h6"
             component="h6"
@@ -215,7 +213,6 @@ const Profile = () => {
               Drama: {userStats?.totalDrama}
             </Typography>
           </div>
-          {/* </Accordion> */}
         </Card>
       </div>
     </div>

@@ -4,6 +4,7 @@ using Application.DTOs.Movies;
 using Application.Interfaces;
 using Domain;
 using Domain.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -23,6 +24,7 @@ namespace API.Controllers
             _comments = comments;
         }
 
+        [Authorize]
         [HttpPost("createOrEdit")]
         public async Task<ActionResult<APIResponse>> CreateOrEditComment([FromBody] CreateOrEditCommentDto commentDto)
         {
@@ -51,19 +53,5 @@ namespace API.Controllers
             }
 
         }
-
-        //// DELETE api/<CommentsController>/5
-        //[HttpDelete("delete/{commentId}")]
-        //public async Task<IActionResult> DeleteComment(Guid commentId)
-        //{
-        //    return Ok(await _comments.DeleteComment(commentId));
-        //}
-
-
-        //[HttpDelete("delete")]
-        //public async Task<IActionResult> DeleteComment(MovieDto movie)
-        //{
-        //    return Ok(await _comments.DeleteComment(movie));
-        //}
     }
 }

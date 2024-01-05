@@ -1,5 +1,4 @@
-import React, { Component, ErrorInfo, ReactNode } from "react";
-import AxiosInstances from "../api/axiosInstances";
+import { Component, ErrorInfo, ReactNode } from "react";
 import { env } from "process";
 
 interface Props {
@@ -21,10 +20,7 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // this.setState({ hasError: true });
-
     const log = async () => {
-      //   await AxiosInstances.internal.post("url", { error: error.stack });
       console.log("Error boundary cought Error!");
     };
     if (env.ENV === "production") {

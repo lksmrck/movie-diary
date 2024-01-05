@@ -137,8 +137,6 @@ namespace API.Controllers
                 Expires = DateTime.UtcNow.AddDays(7),
                 Secure = true,
                 SameSite = SameSiteMode.None,
-                //Domain = "https://localhost:44460"
-
             };
 
             Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);

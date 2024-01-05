@@ -59,8 +59,7 @@ namespace API.Controllers
             return BadRequest(_response);
         }
 
-        //[Authorize(Policy = "IsSameUser")]
-        [Authorize]
+        [Authorize(Policy = "IsSameUser")]
         [HttpGet("user/{userId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -75,7 +74,6 @@ namespace API.Controllers
             return Ok(_response);
         }
 
-        // POST api/<MoviesController>
         [Authorize]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]

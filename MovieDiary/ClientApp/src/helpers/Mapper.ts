@@ -6,15 +6,10 @@ import {
 } from "../models/Movie";
 
 // from UserAdjustedSearchedMovie to Movie
-const mapToMovie = (
-  sm: UserAdjustedSearchedMovie,
-  user: Profile
-  // defaultCategories: string[]
-): Movie => {
+const mapToMovie = (sm: UserAdjustedSearchedMovie, user: Profile): Movie => {
   return {
     title: sm.title,
     description: sm.overview,
-    // User specific categories
     dateCreated: new Date(),
     dateWatched: sm.dateWatched,
     posterPath: sm.poster_path,
@@ -23,7 +18,6 @@ const mapToMovie = (
     comment: sm.comment,
     defaultCategories: sm.defaultCategories,
     userCategories: sm.userCategories as Category[],
-    // categories: sm.categories,
   };
 };
 

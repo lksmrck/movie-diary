@@ -48,7 +48,6 @@ namespace API.Controllers
                 _response.StatusCode = HttpStatusCode.BadRequest;
                 _response.ErrorMessage = "Error occured when creating category.";
                 return BadRequest(_response);
-
             }
 
             _response.StatusCode = HttpStatusCode.OK;
@@ -56,14 +55,5 @@ namespace API.Controllers
 
             return Ok(_response);
         }
-
-
-
-        //// DELETE api/<CommentsController>/5
-        //[HttpDelete("delete/{commentId}")]
-        //public async Task<IActionResult> DeleteComment(Guid categoryId)
-        //{
-        //    return Ok(await _categories.DeleteCategory(categoryId));
-        //}
     }
 }

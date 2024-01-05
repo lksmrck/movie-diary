@@ -102,15 +102,6 @@ namespace API.Config
                 });
             });
 
-            //FluentValidation
-            //services.AddControllers().AddFluentValidation(fv =>
-            //{
-            //    fv.RegisterValidatorsFromAssemblyContaining<Program>();
-            //});
-
-            //Register services of other projects
-            //Notes.Validation.Config.ServicesConfig.RegisterServices(services);
-
             return services;
         }
     }

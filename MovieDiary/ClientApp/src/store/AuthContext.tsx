@@ -2,7 +2,6 @@ import { getLocalStorage, getSessionStorage } from "../utils/getLocalStorage";
 import { UserInLS } from "../models/UserInLS";
 import { router } from "../routes";
 import agent from "../api/agent";
-import useAppContext from "./AppContext";
 import {
   createContext,
   ReactNode,
@@ -13,7 +12,6 @@ import {
   FC,
   useContext,
 } from "react";
-import { toast } from "react-toastify";
 
 interface AuthContextInterface {
   currentUser: UserInLS | null;
@@ -28,11 +26,10 @@ const AuthContext = createContext({} as AuthContextInterface);
 export const AuthContextProvider: FC<{
   children: ReactNode;
 }> = ({ children }) => {
-  // const { setError } = useAppContext();
   //Stored data for user and company
   const [currentUser, setCurrentUser] = useState(
-    // getSessionStorage("user") || null
-    getLocalStorage("user") || null
+    getSessionStorage("user") || null
+    // getLocalStorage("user") || null
   );
   const [isLoading, setIsLoading] = useState(false);
 
@@ -52,8 +49,8 @@ export const AuthContextProvider: FC<{
   };
 
   useEffect(() => {
-    // sessionStorage.setItem("user", JSON.stringify(currentUser));
-    localStorage.setItem("user", JSON.stringify(currentUser));
+    sessionStorage.setItem("user", JSON.stringify(currentUser));
+    // localStorage.setItem("user", JSON.stringify(currentUser));
   }, [currentUser]);
 
   return (

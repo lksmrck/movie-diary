@@ -1,6 +1,5 @@
-import React, { ChangeEvent } from "react";
+import { ChangeEvent } from "react";
 import { TextField as MuiInput } from "@mui/material";
-import { Theme } from "../common/theme";
 import { TextFieldVariants } from "@mui/material";
 
 type Props = {

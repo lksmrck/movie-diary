@@ -13,7 +13,7 @@ import Input from "../Input";
 import { Theme } from "../../common/theme";
 import Rating from "../Rating";
 import agent from "../../api/agent";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import Accordion from "../Accordion";
 import useMoviesContext from "../../store/MoviesContext";
 import Button from "../Button";
@@ -21,9 +21,9 @@ import Mapper from "../../helpers/Mapper";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { Category, SearchedMovie } from "../../models/Movie";
+import { Category } from "../../models/Movie";
 import useAuthContext from "../../store/AuthContext";
-import { useEffect, useState, useRef } from "react";
+import { useState, useRef } from "react";
 import AddCategoryPopover from "./AddCategoryPopover";
 import useAppContext from "../../store/AppContext";
 import { useUserCategories } from "../../hooks/hooks";
@@ -31,7 +31,6 @@ import { useUserCategories } from "../../hooks/hooks";
 type Props = {
   open: boolean;
   handleClose: () => void;
-  //handleChange: () => void
 };
 
 const style = {
@@ -267,7 +266,6 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
             isLoading={isLoading}
           />
         </div>
-
         <Button
           handleClick={saveMovie}
           text="Save"

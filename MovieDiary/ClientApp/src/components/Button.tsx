@@ -1,5 +1,5 @@
 import React from "react";
-import { ButtonPropsSizeOverrides, Button as MUIButton } from "@mui/material";
+import { Button as MUIButton } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Theme } from "../common/theme";
 
@@ -13,6 +13,7 @@ type Props = {
   size?: "small" | "medium" | "large";
   withLoading?: boolean;
   loading?: boolean;
+  className?: string;
 };
 
 const Button = ({
@@ -25,10 +26,8 @@ const Button = ({
   size,
   withLoading,
   loading,
+  className,
 }: Props) => {
-  // const backgroundColorHover =
-  //   color == "primary" ? Theme.Color.teal_2 : Theme.Color.teal_4;
-
   const primaryStyle = {
     backgroundColor: Theme.Color.teal_1,
     border: `1px solid ${Theme.Color.teal_2}`,
@@ -74,6 +73,7 @@ const Button = ({
       size={size}
       color={color === "red" ? "error" : undefined}
       sx={{ ...styleToApply, ...sx }}
+      className={className}
     >
       {text}
     </MUIButton>

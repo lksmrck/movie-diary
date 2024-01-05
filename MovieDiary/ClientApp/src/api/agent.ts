@@ -12,7 +12,6 @@ const requests = {
     AxiosInstances.internal.get<T>(url, config).then(responseBody),
   post: <T>(url: string, body: {}) =>
     AxiosInstances.internal.post<T>(url, body),
-  // put: <T>(url: string, body: {}) => AxiosInstances.internal.put<T>(url, body),
   del: <T>(url: string) => AxiosInstances.internal.delete<T>(url),
 };
 
@@ -105,7 +104,7 @@ const Users = {
     requests.post<ApiResponse<any>>("/users/login", user).then((res) => {
       try {
         if (res.data) {
-          toast.success("Logged in");
+          toast.success("Successfully logged in");
           return res.data;
         }
       } catch (error) {
@@ -116,7 +115,7 @@ const Users = {
     requests.post<ApiResponse<any>>("/users/register", user).then((res) => {
       try {
         if (res.data) {
-          toast.success("Registered");
+          toast.success("Successfully registered");
           return res.data;
         }
       } catch (error) {
@@ -143,7 +142,7 @@ const Search = {
       })
       .then((res) =>
         res.data.results.map((m: any) => {
-          console.log(res.data.results);
+          // console.log(res.data.results);
           // Destructuring and take only few properties from whole object
 
           return (({

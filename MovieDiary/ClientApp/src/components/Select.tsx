@@ -1,4 +1,3 @@
-import React, { ChangeEvent } from "react";
 import {
   InputLabel,
   Select as MUISelect,
@@ -9,15 +8,13 @@ import {
 
 type Props = {
   value: any;
-  onChange: (e: SelectChangeEvent) => void; //ChangeEvent<HTMLSelectElement>
+  onChange: (e: SelectChangeEvent) => void;
   label: string;
-  options: any; //{ id: string; name: string }[]
+  options: any;
   name: string;
 };
 
 const Select = ({ value, onChange, label, options, name }: Props) => {
-  console.log(value);
-  const values = value?.map((c: any) => c?.name) ?? [];
   return (
     <>
       <InputLabel id={label}>{label}</InputLabel>

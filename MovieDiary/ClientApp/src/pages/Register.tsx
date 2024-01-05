@@ -1,4 +1,4 @@
-import { Box, Card, CardActions, CardContent, Typography } from "@mui/material";
+import { Card, CardActions, CardContent, Typography } from "@mui/material";
 import { ChangeEvent, useState } from "react";
 import Input from "../components/Input";
 import { Theme } from "../common/theme";
@@ -10,7 +10,6 @@ import { toast } from "react-toastify";
 
 const Register = () => {
   const [formData, setFormData] = useState({} as RegisterFormValues);
-  const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
