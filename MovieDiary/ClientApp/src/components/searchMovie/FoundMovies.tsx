@@ -52,7 +52,7 @@ const FoundMovies = ({ items, onSelectMovie, onClose }: Props) => {
           <ListItemAvatar>
             <img
               alt="poster"
-              src={process.env.REACT_APP_MOVIES_IMG_API + data.poster_path}
+              src={import.meta.env.VITE_MOVIES_IMG_API + data.poster_path}
               width="72px"
               style={{ objectFit: "cover", marginLeft: ".25rem" }}
             />

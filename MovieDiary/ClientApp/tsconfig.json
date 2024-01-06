@@ -1,14 +1,14 @@
 {
-  "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "Create React App",
-  "_version": "2.0.0",
+  // "$schema": "https://json.schemastore.org/tsconfig",
+  // "display": "Create React App",
+  // "_version": "2.0.0",
 
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "Node",
     "target": "es2015",
-
+    "types": ["vite/client"],
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
@@ -17,9 +17,11 @@
     "jsx": "react-jsx",
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
-    "resolveJsonModule": true,
+    // "resolveJsonModule": true,
     "skipLibCheck": true,
-    "strict": true,
-    "allowImportingTsExtensions": true
-  }
+    "strict": true
+    // "allowImportingTsExtensions": true
+  },
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }

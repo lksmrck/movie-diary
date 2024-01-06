@@ -7,7 +7,7 @@ import useRefreshToken from "../hooks/useRefreshToken";
 import { getLocalStorage, getSessionStorage } from "../utils/getLocalStorage";
 import { toast } from "react-toastify";
 
-const AxiosInterceptors: FC<{ children: ReactNode }> = ({ children }) => {
+const AxiosInterceptors: FC<{ children: any }> = ({ children }) => {
   const [isSet, setIsSet] = useState(false);
   const { logoutUser, currentUser } = useAuthContext();
   const refresh = useRefreshToken();

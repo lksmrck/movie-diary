@@ -44,9 +44,12 @@ public class Program
 
         app.UseRouting();
         app.UseCors("ReactAppPolicy"); // Apply the CORS policy
-        app.UseAuthentication();
 
+        app.UseAuthentication();
         app.UseAuthorization();
+
+        app.UseDefaultFiles();
+        app.UseStaticFiles();
 
         app.UseMiddleware<ExceptionHandlingMiddleware>();
         app.UseMiddleware<JwtMiddleware>();
@@ -55,7 +58,9 @@ public class Program
             name: "default",
             pattern: "{controller}/{action=Index}/{id?}");
 
-        app.MapFallbackToFile("index.html"); ;
+        // when no controller route is hit, use the fallback controller
+        app.MapFallbackToController("Index", "Fallback");
+        //app.MapFallbackToFile("index.html"); ;
 
 
 

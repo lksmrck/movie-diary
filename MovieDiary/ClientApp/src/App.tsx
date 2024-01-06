@@ -1,6 +1,6 @@
 import { useLocation, Outlet } from "react-router-dom";
-import Navbar from "./components/Navbar.tsx";
-import Landing from "./pages/Landing.tsx";
+import Navbar from "./components/Navbar";
+import Landing from "./pages/Landing";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

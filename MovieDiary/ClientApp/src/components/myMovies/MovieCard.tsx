@@ -59,7 +59,7 @@ const MovieCard = ({ movie }: Props) => {
             <CardMedia
               component="img"
               // image={process.env.REACT_APP_MOVIES_IMG_API + movie.posterPath}
-              src={process.env.REACT_APP_MOVIES_IMG_API + movie.posterPath}
+              src={import.meta.env.VITE_MOVIES_IMG_API + movie.posterPath}
               sx={{
                 height: "150px",
                 width: "120px",

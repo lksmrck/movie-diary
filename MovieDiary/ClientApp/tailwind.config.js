@@ -29,4 +29,9 @@ module.exports = {
     },
   },
   plugins: [],
+  content: [
+    "./index.html",
+    "./src/**/*.{vue,jsx,tsx,ts,js}",
+    // etc.
+  ],
 };

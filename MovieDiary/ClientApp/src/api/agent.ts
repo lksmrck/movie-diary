@@ -133,9 +133,10 @@ const Statistics = {
 // TMDB API Requests
 const Search = {
   movie: (searchTerm: string) => {
+    console.log(import.meta.env);
     return AxiosInstances.external
       .request({
-        baseURL: process.env.REACT_APP_MOVIES_SEARCH_URL,
+        baseURL: import.meta.env.VITE_MOVIES_SEARCH_URL,
         url: searchTerm,
         method: "get",
         validateStatus: null,
@@ -169,7 +170,7 @@ const Search = {
   categories: (genreIds: number[]) => {
     return AxiosInstances.external
       .request({
-        baseURL: process.env.REACT_APP_CATEGORIES_SEARCH_URL,
+        baseURL: import.meta.env.CATEGORIES_SEARCH_URL,
         method: "get",
         validateStatus: null,
       })
