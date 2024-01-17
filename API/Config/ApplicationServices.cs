@@ -9,12 +9,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Persistence;
-using System.Configuration;
 using System.Text;
-using static Azure.Core.HttpHeader;
 
 namespace API.Config
 {
@@ -24,8 +21,9 @@ namespace API.Config
         {
             services.AddDbContext<ApplicationDbContext>(opt =>
             {
-                opt/*.UseLazyLoadingProxies()*/.UseSqlServer(config.GetConnectionString("DefaultSQLConnection"), b =>
+                opt.UseNpgsql(config.GetConnectionString("DefaultSQLConnection"), b =>
                 {
+                    Console.WriteLine(config.GetConnectionString("DefaultSQLConnection"));
                     b.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
                 })
                 .EnableSensitiveDataLogging()

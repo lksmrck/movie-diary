@@ -24,7 +24,6 @@ const AxiosInterceptors: FC<{ children: any }> = ({ children }) => {
       },
       (error) => Promise.reject(error)
     );
-    console.log("YO");
     const responseInterceptor =
       AxiosInstances.internal.interceptors.response.use(
         // Response handling
@@ -70,9 +69,6 @@ const AxiosInterceptors: FC<{ children: any }> = ({ children }) => {
               break;
             case 404:
               router.navigate("/not-found");
-              break;
-            case 500:
-              router.navigate("/server-error");
               break;
           }
           return Promise.resolve(error);

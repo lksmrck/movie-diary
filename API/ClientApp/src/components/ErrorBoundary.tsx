@@ -20,6 +20,7 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.log("Error boundary cought Error");
     const log = async () => {
       console.log("Error boundary cought Error!");
     };
@@ -33,10 +34,13 @@ class ErrorBoundary extends Component<Props, State> {
     const { hasError } = this.state;
 
     if (hasError) {
+      console.log("y");
       return (
-        <>
-          <h2>An error occured in the application.</h2>
-        </>
+        <div className="h-screen w-screen flex justify-center">
+          <h2 className=" mt-10 text-xl font-bold text-gray-800">
+            An error occured in the application.
+          </h2>
+        </div>
       );
     }
 

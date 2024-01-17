@@ -5,20 +5,37 @@ import AxiosInstances from "./axiosInstances";
 import { ApiResponse } from "../models/ApiResponse";
 import { toast } from "react-toastify";
 
-const responseBody = <T>(response: AxiosResponse<T>) => response.data;
+// const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 const requests = {
   get: <T>(url: string, config?: AxiosRequestConfig<any> | undefined) =>
-    AxiosInstances.internal.get<T>(url, config).then(responseBody),
-  post: <T>(url: string, body: {}) =>
-    AxiosInstances.internal.post<T>(url, body),
+    AxiosInstances.internal.get<T>(url, config),
+  post: <T>(url: string, body: {}) => {
+    return AxiosInstances.internal.post<T>(url, body);
+  },
   del: <T>(url: string) => AxiosInstances.internal.delete<T>(url),
 };
 
 const Movies = {
   getAll: (userId: string, config?: AxiosRequestConfig<any> | undefined) =>
-    requests.get<ApiResponse<Movie[]>>(`/movies/user/${userId}`, config),
-  getOne: (movieId: string) => requests.get<Movie>(`/movies/${movieId}`),
+    requests
+      .get<ApiResponse<Movie[]>>(`/movies/user/${userId}`, config)
+      .then((res: any) => {
+        try {
+          if (res?.data?.isSuccess) {
+            return res?.data;
+          }
+          toast.error(
+            res?.data?.errorMessage ?? "An error occured during loading movies"
+          );
+          return;
+        } catch (error) {
+          toast.error(
+            res?.data?.errorMessage ?? "An error occured during loading movies"
+          );
+        }
+      }),
+  // getOne: (movieId: string) => requests.get<Movie>(`/movies/${movieId}`),
   create: (movie: Movie) =>
     requests
       .post<ApiResponse<Movie>>(`/movies`, movie)
@@ -28,7 +45,10 @@ const Movies = {
             toast.success("Movie was successfully added");
             return res?.data?.result;
           }
-          toast.error(res?.data?.errorMessage);
+          toast.error(
+            res?.data?.errorMessage ??
+              "An error occured during saving the movie"
+          );
           return;
         } catch (error) {
           toast.error(
@@ -46,7 +66,10 @@ const Movies = {
             toast.success("Movie was successfully deleted");
             return res?.data!;
           }
-          toast.error(res?.data?.errorMessage);
+          toast.error(
+            res?.data?.errorMessage ??
+              "An error occured during deleting the movie"
+          );
           return;
         } catch (error) {
           toast.error(
@@ -72,7 +95,10 @@ const Comments = {
             toast.success("Comment sucessfully updated.");
             return res.data;
           }
-          toast.error(res.data.errorMessage);
+          toast.error(
+            res?.data?.errorMessage ??
+              "An error occured during updating the comment"
+          );
         } catch (error) {
           toast.error("An error occured during updating the comment");
         }
@@ -170,7 +196,7 @@ const Search = {
   categories: (genreIds: number[]) => {
     return AxiosInstances.external
       .request({
-        baseURL: import.meta.env.CATEGORIES_SEARCH_URL,
+        baseURL: import.meta.env.VITE_CATEGORIES_SEARCH_URL,
         method: "get",
         validateStatus: null,
       })

@@ -18,11 +18,9 @@ root.render(
       <AuthContextProvider>
         <MoviesContextProvider>
           <AxiosInterceptors>
-            <ErrorBoundary>
               <div className="gradient-bg">
                 <RouterProvider router={router} />
               </div>
-            </ErrorBoundary>
           </AxiosInterceptors>
         </MoviesContextProvider>
       </AuthContextProvider>

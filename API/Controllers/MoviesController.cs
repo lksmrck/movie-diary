@@ -64,7 +64,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+ 
         public async Task<IActionResult> GetMoviesForUser(Guid userId)
         {
             var res = await _movies.GetMoviesForUser(userId);
@@ -83,6 +83,7 @@ namespace API.Controllers
         {
             try
             {
+               
                 ServiceResponse<MovieDto> serviceResponse = await _movies.CreateMovie(movie);
 
                 if (!serviceResponse.IsValid)
