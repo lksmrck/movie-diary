@@ -21,6 +21,7 @@ const UserMovies = () => {
       res = await agent.Movies.getAll(currentUser?.id!, {
         signal: controller.signal,
       });
+      console.log(res);
       if (res?.isSuccess) setUserMovies(res.result);
       setIsLoading(false);
     };

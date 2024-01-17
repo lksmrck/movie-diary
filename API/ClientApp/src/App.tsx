@@ -3,11 +3,13 @@ import Navbar from "./components/Navbar";
 import Landing from "./pages/Landing";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const App = () => {
   const location = useLocation();
   return (
     <>
+    <ErrorBoundary>
       <ToastContainer
         position="bottom-right"
         autoClose={3000}
@@ -28,6 +30,7 @@ const App = () => {
           <Outlet />
         </>
       )}
+      </ErrorBoundary>
     </>
   );
 };

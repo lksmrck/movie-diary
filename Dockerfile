@@ -23,5 +23,4 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0
 
 COPY --from=build-env /app/out .
 
-# command to run when container starts
 ENTRYPOINT ["dotnet", "API.dll"]

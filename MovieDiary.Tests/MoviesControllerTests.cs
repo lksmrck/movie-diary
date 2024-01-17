@@ -2,11 +2,9 @@
 using Application.Core;
 using Application.Interfaces;
 using AutoFixture;
-using Azure;
 using Domain.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.Net;
 
 namespace MovieDiary.Tests
 {
