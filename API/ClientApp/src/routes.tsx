@@ -6,7 +6,6 @@ import AddMovie from "./pages/AddMovie";
 import App from "./App";
 import MyMovies from "./pages/MyMovies";
 import NotFound from "./pages/errors/NotFound";
-import ServerError from "./pages/errors/ServerError";
 import Register from "./pages/Register";
 import RequireAuth from "./hoc/RequireAuth";
 import Profile from "./pages/Profile";
@@ -29,7 +28,6 @@ export const routes: RouteObject[] = [
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
       { path: "not-found", element: <NotFound /> },
-      { path: "server-error", element: <ServerError /> },
       { path: "bad-request", element: <BadRequest /> },
       { path: "*", element: <Navigate replace to="/not-found" /> },
     ],

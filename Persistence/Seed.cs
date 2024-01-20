@@ -7,112 +7,42 @@ using System.Threading.Tasks;
 using Domain;
 using Domain.Movies;
 using Domain.Users;
+using Microsoft.AspNetCore.Identity;
 
 namespace Persistence
 {
     public class Seed
     {
-        private readonly ApplicationDbContext _context;
-
-        public Seed(ApplicationDbContext context)
+        public static async Task SeedData(ApplicationDbContext context, UserManager<AppUser> userManager)
         {
-            _context = context;
-        }
-
-        public void SeedData()
-        {
-            if (_context.Movies.Any()) return;
-
-            var users = new List<AppUser>
+            if (!userManager.Users.Any() && !context.Movies.Any())
             {
-                new AppUser
+
+                var users = new List<AppUser>
                 {
-                    Id = Guid.NewGuid(),
-                    Name = "Jan Novák",
-                    Email = "jannovak@novak.com"
-                },
-                 new AppUser
+                    new AppUser
+                    {
+                        Id = Guid.NewGuid(),
+                        UserName = "admin",
+                        Name = "Jan Novák",
+                        Email = "jannovak@novak.com"
+                    },
+                     new AppUser
+                    {
+                        Id = Guid.NewGuid(),
+                        UserName = "Pablo",
+                        Name = "Pablo Picasso",
+                        Email = "danadrabova@drabova.com"
+                    }
+                };
+
+                foreach (var user in users)
                 {
-                    Id = Guid.NewGuid(),
-                    Name = "Dana Drábová",
-                    Email = "danadrabova@drabova.com"
+                    await userManager.CreateAsync(user, "Pa$$w0rd");
                 }
-            };
-
-            //var categories = new List<UserCategory>
-            //{
-            //   new UserCategory
-            //   { Id = Guid.NewGuid(),
-            //     Name = "Komedie",
-            //   },
-            //   new UserCategory
-            //   { Id = Guid.NewGuid(),
-            //     Name = "Krimi"
-            //   },
-            //   new UserCategory
-            //   { Id = Guid.NewGuid(),
-            //     Name = "Horor"
-            //   },
-            //   new UserCategory
-            //   { Id = Guid.NewGuid(),
-            //     Name = "Akční"
-            //   }
-            //};
-
-            //var categories0 = new List<UserCategory>
-            //{
-            //   new UserCategory
-            //   { Id = Guid.NewGuid(),
-            //     Name = "Komedie",
-            //     User = users[0]
-            //   },
-            //   new UserCategory
-            //   { Id = Guid.NewGuid(),
-            //     Name = "Krimi",
-            //     User = users[0]
-            //   },
-            //   new UserCategory
-            //   { Id = Guid.NewGuid(),
-            //     Name = "Horor",
-            //     User = users[0]
-            //   },
-            //   new UserCategory
-            //   { Id = Guid.NewGuid(),
-            //     Name = "Akční",
-            //     User = users[0]
-            //   }
-            //};
-
-            //var categories1 = new List<UserCategory>
-            //{
-            //   new UserCategory
-            //   { Id = Guid.NewGuid(),
-            //     Name = "Komedie",
-            //     User = users[1]
-            //   },
-            //   new UserCategory
-            //   { Id = Guid.NewGuid(),
-            //     Name = "Krimi",
-            //     User = users[1]
-            //   },
-            //   new UserCategory
-            //   { Id = Guid.NewGuid(),
-            //     Name = "Horor",
-            //     User = users[1]
-            //   },
-            //   new UserCategory
-            //   { Id = Guid.NewGuid(),
-            //     Name = "Akční",
-            //     User = users[1]
-            //   }
-            //};
 
 
-
-
-
-
-            var categories = new List<UserCategory>();
+                var categories = new List<UserCategory>();
 
             foreach (var user in users)
             {
@@ -211,9 +141,10 @@ namespace Persistence
                 },
 
             };
-            _context.Users.AddRange(users);
-            _context.Movies.AddRange(movies);
-            _context.SaveChanges();
+            await context.Users.AddRangeAsync(users);
+            await context.Movies.AddRangeAsync(movies);
+            await context.SaveChangesAsync();
+             }
         }
     }
 }

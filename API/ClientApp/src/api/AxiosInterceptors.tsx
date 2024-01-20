@@ -33,17 +33,28 @@ const AxiosInterceptors: FC<{ children: any }> = ({ children }) => {
         async (error: AxiosError) => {
           let prevRequest = error?.config;
           let refreshSent = false;
-          const { data, status, config, headers } =
+          const { data, status, config, headers, request } =
             error.response as AxiosResponse;
           switch (status) {
             case 400:
-              if (config.method === "get" && data.errors.hasOwnProperty("id")) {
+              if (
+                config.method === "get" &&
+                data?.errors?.hasOwnProperty("id")
+              ) {
                 router.navigate("/not-found");
-              }
-              if (data.errorMessage) {
-                toast.error(data.errorMessage);
+              } else if (data?.errorMessage) {
+                if (
+                  request.responseURL.includes("register") ||
+                  request.responseURL.includes("login")
+                ) {
+                  toast.error(data.errorMessage);
+                } else {
+                  router.navigate("/bad-request");
+                  toast.error(data?.errorMessage);
+                }
               } else {
-                toast.error("An error occured");
+                router.navigate("/bad-request");
+                toast.error("An error occured - bad request.");
               }
               break;
             case 401:

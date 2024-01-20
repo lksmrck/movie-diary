@@ -64,28 +64,35 @@ namespace API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Registration([FromBody] RegistrationRequestDto model)
         {
-            bool isUserNameUnique = _users.IsUniqueUser(model.UserName);
-            if (!isUserNameUnique)
+            try
             {
-                _response.StatusCode = HttpStatusCode.BadRequest;
-                _response.IsSuccess = false;
-                _response.ErrorMessage = "User already exists";
-                return BadRequest(_response);
+                bool isUserNameUnique = _users.IsUniqueUser(model.UserName);
+                if (!isUserNameUnique)
+                {
+                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    _response.IsSuccess = false;
+                    _response.ErrorMessage = "User already exists";
+                    return BadRequest(_response);
+                }
+
+                var res = await _users.Register(model);
+
+                if (!res.IsValid)
+                {
+                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    _response.IsSuccess = false;
+                    _response.ErrorMessage = res.ErrorMessage;
+                    return BadRequest(_response);
+                }
+
+                _response.StatusCode = HttpStatusCode.OK;
+                _response.IsSuccess = true;
+                return Ok(_response);
             }
-
-            var user = await _users.Register(model);
-
-            if (user == null)
+            catch (Exception ex)
             {
-                _response.StatusCode = HttpStatusCode.BadRequest;
-                _response.IsSuccess = false;
-                _response.ErrorMessage = "Error while registering";
-                return BadRequest(_response);
+                return BadRequest(ex.Message);
             }
-
-            _response.StatusCode = HttpStatusCode.OK;
-            _response.IsSuccess = true;
-            return Ok(_response);
         }
 
         [Authorize]

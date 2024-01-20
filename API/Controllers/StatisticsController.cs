@@ -29,6 +29,13 @@ namespace API.Controllers
         {
             var statistics = await _statistics.GetStatisticsForUser(userId);
 
+            if (!statistics.IsValid)
+            {
+                _response.StatusCode = HttpStatusCode.BadRequest;
+                _response.ErrorMessage = statistics.ErrorMessage;
+                return BadRequest(_response);
+            }
+
             _response.StatusCode = HttpStatusCode.OK;
             _response.Result = statistics.Result;
             return Ok(_response);

@@ -67,11 +67,19 @@ namespace API.Controllers
  
         public async Task<IActionResult> GetMoviesForUser(Guid userId)
         {
-            var res = await _movies.GetMoviesForUser(userId);
-
-            _response.Result = res;
-            _response.StatusCode = HttpStatusCode.OK;
-            return Ok(_response);
+            try
+            {
+                var res = await _movies.GetMoviesForUser(userId);
+                _response.Result = res;
+                _response.StatusCode = HttpStatusCode.OK;
+                return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessage = ex.Message;
+            }
+           return BadRequest(_response);
         }
 
         [Authorize]

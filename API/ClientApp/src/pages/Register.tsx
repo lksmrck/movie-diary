@@ -15,18 +15,32 @@ const Register = () => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const handleSubmit = async () => {
+  const isValidEmail = (email: string) => {
+    return /\S+@\S+\.\S+/.test(email);
+  };
+
+  const validateInputs = (): boolean => {
     if (
       formData.username?.length > 0 &&
       formData.password?.length > 0 &&
       formData.email?.length > 0 &&
       formData.name?.length > 0
     ) {
-      const res = await agent.Users.register(formData);
-      if (res?.isSuccess) navigate("/login");
-    } else {
-      toast.info("Please fill in all fields");
+      if (!isValidEmail(formData.email)) {
+        toast.info("Email has invalid format");
+        return false;
+      }
+      return true;
     }
+    toast.info("Please fill in all fields");
+    return false;
+  };
+
+  const handleSubmit = async () => {
+    if (!validateInputs()) return;
+
+    const res = await agent.Users.register(formData);
+    if (res?.isSuccess) navigate("/login");
   };
 
   const handleBack = () => navigate(-1);

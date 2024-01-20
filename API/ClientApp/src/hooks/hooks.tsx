@@ -60,7 +60,7 @@ export const useUserCategories = () => {
       const res = await agent.Categories.getAll(currentUser?.id!, {
         signal: controller.signal,
       });
-      if (res?.isSuccess) setFetchedUserCategories(res.result);
+      if (res?.data.isSuccess) setFetchedUserCategories(res.data.result);
       setIsLoading(false);
     };
 
