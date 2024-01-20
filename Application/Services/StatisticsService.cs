@@ -34,6 +34,13 @@ namespace Application.Services
         {
             var movies = await _moviesService.GetMoviesForUser(id);
 
+            if (movies == null)
+            {
+                _response.IsValid = false;
+                _response.ErrorMessage = "No movies found for this user";
+                return _response;
+            }
+
             _response.Result = new Statistics
             {
                 MoviesWatched = movies.Count(),

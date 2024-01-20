@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Users;
+﻿using Application.Core;
+using Application.DTOs.Users;
 using Domain;
 using Domain.Users;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +15,7 @@ namespace Application.Interfaces
     {
         bool IsUniqueUser(string username);
         Task<UserDto> Login(LoginRequestDto loginRequestDto);
-        Task<UserDto> Register(RegistrationRequestDto registrationRequestDto);
+        Task<ServiceResponse<UserDto>> Register(RegistrationRequestDto registrationRequestDto);
         Task<UserDto> GetCurrentUser(string userEmail);
         Task<RefreshToken> SetRefreshToken(UserDto user);
         Task<AppUser> GetUserFromRefreshToken(string refreshToken);

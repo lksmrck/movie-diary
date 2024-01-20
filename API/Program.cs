@@ -5,31 +5,18 @@ using Application.Services;
 using System.Text.Json.Serialization;
 using Application.Core;
 using API.Config;
+using Domain.Users;
+using Microsoft.AspNetCore.Identity;
 
 public class Program
 {
-    private static void Main(string[] args)
+    private static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.RegisterServices(builder.Configuration);
 
         var app = builder.Build();
-
-        // Seed DB context before app starts
-        if (args.Length == 1 && args[0].ToLower() == "seeddata")
-            SeedData(app);
-
-        void SeedData(IHost app)
-        {
-            var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
-
-            using (var scope = scopedFactory.CreateScope())
-            {
-                var service = scope.ServiceProvider.GetService<Seed>();
-                service.SeedData();
-            }
-        }
 
 
         // Configure the HTTP request pipeline.
@@ -62,6 +49,22 @@ public class Program
         app.MapFallbackToController("Index", "Fallback");
         //app.MapFallbackToFile("index.html"); ;
 
+        using var scope = app.Services.CreateScope();
+        var services = scope.ServiceProvider;
+
+        try
+        {
+            var context = services.GetRequiredService<ApplicationDbContext>();
+            var userManager = services.GetRequiredService<UserManager<AppUser>>();
+            await context.Database.MigrateAsync();
+
+            await Seed.SeedData(context, userManager);
+        }
+        catch (Exception ex)
+        {
+            var logger = services.GetRequiredService<ILogger<Program>>();
+            logger.LogError(ex, "An error occured during migration");
+        }
 
 
         app.Run();

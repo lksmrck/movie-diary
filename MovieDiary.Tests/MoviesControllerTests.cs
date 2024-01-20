@@ -74,7 +74,7 @@ namespace MovieDiary.Tests
             // Arrange
             Guid movieId = Guid.NewGuid();
 
-            _moviesServiceMock.Setup(repo => repo.DeleteMovie(movieId));
+            _moviesServiceMock.Setup(repo => repo.DeleteMovie(movieId)).ReturnsAsync(true);
             _controller = new MoviesController(_moviesServiceMock.Object);
 
             // Act

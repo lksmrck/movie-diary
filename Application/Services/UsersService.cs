@@ -24,6 +24,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using API.Services;
 using Microsoft.AspNetCore.Http;
+using Application.Core;
+using Domain.DTOs;
 
 namespace Application.Services
 {
@@ -33,6 +35,7 @@ namespace Application.Services
         private readonly UserManager<AppUser> _userManager;
         private readonly TokenService _tokenService;
         private readonly IMapper _mapper;
+        private readonly ServiceResponse<UserDto> _response = new ServiceResponse<UserDto>();
 
         public UsersService(ApplicationDbContext db, IConfiguration configuration, UserManager<AppUser> userManager, IMapper mapper, TokenService tokenService)
         {
@@ -68,7 +71,7 @@ namespace Application.Services
             return new UserDto();
         }
 
-        public async Task<UserDto> Register(RegistrationRequestDto registrationRequestDto)
+        public async Task<ServiceResponse<UserDto>> Register(RegistrationRequestDto registrationRequestDto)
         {
             AppUser user = new()
             {
@@ -78,22 +81,23 @@ namespace Application.Services
                 Email = registrationRequestDto.Email,
             };
 
-            try
-            {
                 var result = await _userManager.CreateAsync(user, registrationRequestDto.Password);
                 if (result.Succeeded)
                 {
                     var userToReturn = _db.Users.FirstOrDefault(u => u.UserName == registrationRequestDto.UserName);
-                    return _mapper.Map<UserDto>(userToReturn);
+                    var mappedUser = _mapper.Map<UserDto>(userToReturn);
+
+                    _response.Result = mappedUser;
+                    return _response;
                 }
-            }
-            catch (Exception e)
-            {
 
-                throw;
-            }
-
-            return new UserDto();
+                _response.IsValid = false;
+                foreach (var error in result.Errors)
+                {
+                    _response.ErrorMessage += error.Description + " || ";
+                }
+                //_response.ErrorMessage = "User creation failed! Please check user details and try again.";
+                return _response;
         }
 
         public async Task<UserDto> GetCurrentUser(string userEmail)

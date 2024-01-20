@@ -18,7 +18,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchStatistics = async () => {
       const res = await agent.Statistics.get(currentUser?.id!);
-      setUserStats(res.result);
+      setUserStats(res.data.result);
     };
     fetchStatistics();
   }, []);
