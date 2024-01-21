@@ -9,11 +9,15 @@ on:
   #     branches:
   #       - 'main'
 
-  # Auto CICD on pull request/push to main branch
+  # Auto CICD on closed pull request/push to main branch
   push:
+    branches:
+      - "main"
   pull_request:
     branches:
       - "main"
+    types:
+      - "closed"
 jobs:
   docker:
     runs-on: ubuntu-latest
