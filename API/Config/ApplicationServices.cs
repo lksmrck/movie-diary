@@ -2,6 +2,7 @@
 using Application.Core;
 using Application.Interfaces;
 using Application.Services;
+using Domain.Movies;
 using Domain.Users;
 using Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -21,14 +22,25 @@ namespace API.Config
         {
             services.AddDbContext<ApplicationDbContext>(opt =>
             {
-                opt.UseNpgsql(config.GetConnectionString("DefaultSQLConnection"), b =>
+                var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+                string connStr;
+
+                if (env == "Development")
                 {
-                    Console.WriteLine(config.GetConnectionString("DefaultSQLConnection"));
+                    // Use connection string from file.
+                    connStr = config.GetConnectionString("DefaultSqlConnection");
+                }
+                else
+                {
+                    // Use connection string provided at runtime by Flyio.
+                    connStr = Environment.GetEnvironmentVariable("PostgresConnString");
+                }
+
+                opt.UseNpgsql(connStr, b =>
+                {
                     b.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
-                })
-                .EnableSensitiveDataLogging()
-                .LogTo(Console.WriteLine, LogLevel.Information);
-            });
+                 });
+             });
 
             services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -36,6 +48,7 @@ namespace API.Config
 
             services.AddScoped<IMoviesService, MoviesService>();
             services.AddScoped<ICommentsService, CommentsService>();
+            services.AddScoped<IRatingsService, RatingsService>();
             services.AddScoped<ICategoriesService, CategoriesService>();
             services.AddScoped<IUsersService, UsersService>();
             services.AddScoped<IStatisticsService, StatisticsService>();
@@ -55,7 +68,7 @@ namespace API.Config
 
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
-            var key = config.GetValue<string>("ApiSettings:Secret");
+            var key = config.GetValue<string>("TokenKey");
 
             services.AddAuthentication(opt =>
             {

@@ -27,6 +27,7 @@ import { useState, useRef } from "react";
 import AddCategoryPopover from "./AddCategoryPopover";
 import useAppContext from "../../store/AppContext";
 import { useUserCategories } from "../../hooks/hooks";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   open: boolean;
@@ -60,6 +61,7 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
   );
 
   const ref = useRef();
+  const navigate = useNavigate();
   const { fetchedUserCategories, setFetchedUserCategories } =
     useUserCategories();
 
@@ -111,32 +113,33 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
 
   const saveMovie = async () => {
     setIsLoading(true);
-    console.log("1")
+    console.log("1");
     const defaultCategories = await agent.Search.categories(
       selectedMovie.genre_ids
-      );
-      const userCategoriesObjects = selectedMovie.userCategories.map((name) => {
-        const id = fetchedUserCategories.find(
-          (fuc: Category) => fuc.name === name
-          ).id;
-          return { id, name } as Category;
-        });
-        
-        console.log("2")
-        const finalMovieObject = {
-          ...selectedMovie,
-          defaultCategories,
-          userCategories: userCategoriesObjects,
-        };
-        
-        console.log("3")
-        const mov = Mapper.mapToMovie(finalMovieObject, {
+    );
+    const userCategoriesObjects = selectedMovie.userCategories.map((name) => {
+      const id = fetchedUserCategories.find(
+        (fuc: Category) => fuc.name === name
+      ).id;
+      return { id, name } as Category;
+    });
+
+    console.log("2");
+    const finalMovieObject = {
+      ...selectedMovie,
+      defaultCategories,
+      userCategories: userCategoriesObjects,
+    };
+
+    console.log("3");
+    const mov = Mapper.mapToMovie(finalMovieObject, {
       id: currentUser?.id,
       name: currentUser?.name,
     });
-    console.log(mov)
+    console.log(mov);
     await agent.Movies.create(mov);
-    setIsLoading(true);
+    setIsLoading(false);
+    navigate("/my-movies");
     handleClose();
   };
 

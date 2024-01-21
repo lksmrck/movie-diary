@@ -37,14 +37,16 @@ namespace Application.Services
             if (movies == null)
             {
                 _response.IsValid = false;
-                _response.ErrorMessage = "No movies found for this user";
+                _response.ErrorMessage = "No movies found for this user";  
                 return _response;
             }
+
+            var moviesWithFilledRating = movies.Where(m => m.Rating != null && m.Rating?.Value != null);
 
             _response.Result = new Statistics
             {
                 MoviesWatched = movies.Count(),
-                AverageRating = movies.Average(m => m.Rating.Value),
+                AverageRating = (float)(moviesWithFilledRating.Any() ? moviesWithFilledRating.Average(m => m.Rating?.Value) : 0),
                 TotalHorror = movies.Where(m => m.DefaultCategories.Contains(CategoryEnumMethods.GetCategoryName(CategoryEnum.Horror))).Count(),
                 TotalComedy = movies.Where(m => m.DefaultCategories.Contains(CategoryEnumMethods.GetCategoryName(CategoryEnum.Comedy))).Count(),
                 TotalAdventure = movies.Where(m => m.DefaultCategories.Contains(CategoryEnumMethods.GetCategoryName(CategoryEnum.Adventure))).Count(),

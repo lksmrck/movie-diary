@@ -27,7 +27,7 @@ namespace API.Services
             };
 
             // Symmetric security key = same key which encrypted is used for decrypt (other variant is AssymetricSecurityKey)
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetValue<string>("ApiSettings:Secret")));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetValue<string>("TokenKey")));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
 
             var tokenDescriptor = new SecurityTokenDescriptor

@@ -17,7 +17,7 @@ const Landing = () => {
   return (
     <div className="gradient-bg min-h-screen flex flex-col lg:flex-row overflow-hidden w-screen md:w-auto">
       {/* LEFT */}
-      <section className=" m-24 mt-14 w-full lg:w-1/3">
+      <section className=" m-24 mt-14 min-w-48 w-screen lg:w-1/3">
         <div className="flex">
           {/* <img src={tv_icon} className="tvIcon " width="40px" /> */}
           <h4 className="ml-3">
@@ -25,10 +25,10 @@ const Landing = () => {
             <span className=" font-bold text-purple-900">D I A R Y</span>
           </h4>
         </div>
-        <h1 className="py-10 text-5xl text-green-50  pb-96 md:pb-0">
+        <h1 className="py-10 text-5xl text-green-50  pb-96 md:pb-0 relative">
           Movie Diary
         </h1>
-        <h2 className=" py-24 text-2xl font-bold text-white  relative pb-100 md:pb-0">
+        <h2 className="w-80 py-24 text-2xl font-bold text-white pb-100 md:pb-0 border border-red-600">
           3000+ movies in database
         </h2>
 
@@ -64,12 +64,12 @@ const Landing = () => {
       {/* RIGHT */}
       <section className="flex items-center h-full w-full lg:w-2/3 md:mt-28 ">
         <div className=" flex flex-col ml-10 [&>*]:ml-8 md:flex-row">
-          <LandingCard className=" absolute md:static bottom-36 " no="1" />
+          <LandingCard className=" absolute md:static bottom-64 " no="1" />
           <LandingCard
-            className=" md:mt-10 absolute md:static -bottom-80"
+            className=" md:mt-10 absolute md:static -bottom-60"
             no="2"
           />
-          <LandingCard className=" -mt-10 md:ml-10" no="3" />
+          <LandingCard className="-mt-10 md:ml-10" no="3" />
         </div>
       </section>
     </div>
