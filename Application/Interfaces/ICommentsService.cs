@@ -1,6 +1,7 @@
 ﻿using Application.Core;
 using Application.DTOs.Comments;
 using Application.DTOs.Movies;
+using Application.DTOs.Ratings;
 using Domain.DTOs;
 using Domain.Movies;
 using System;
@@ -19,6 +20,6 @@ namespace Application.Interfaces
         /// <param name="userId">Specific user id</param>
         /// /// <returns> Returs list of comments</returns>
         Task<ServiceResponse<CommentDto>> DeleteComment(Guid commentId);
-        Task<ServiceResponse<ShortComment>> CreateOrEditComment(CreateOrEditCommentDto shortComment);
+        Task<ServiceResponse<ShortComment>> CreateOrEditComment(CreateOrEditCommentDto commentDto);
     }
 }

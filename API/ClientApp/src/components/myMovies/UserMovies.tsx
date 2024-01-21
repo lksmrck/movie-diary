@@ -39,8 +39,10 @@ const UserMovies = () => {
       <div className=" grid lg:grid-cols-3 sm:grid-cols-1 md:grid-cols-2 p-2 gap-2  ">
         {isLoading ? (
           <CircularProgress color="inherit" />
-        ) : (
+        ) : userMovies.length > 0 ? (
           userMovies.map((m) => <MovieCard movie={m} />)
+        ) : (
+          <div className="mt-10 font-bold text-xl text-gray-800">No movies</div>
         )}
       </div>
     </section>

@@ -90,17 +90,26 @@ const Comments = {
     requests
       .post<ApiResponse<any>>(`/comments/createOrEdit`, comment)
       .then((res) => {
-        try {
-          if (res.data.isSuccess) {
-            toast.success("Comment sucessfully updated.");
-            return res.data;
-          }
-          toast.error(
-            res?.data?.errorMessage ??
-              "An error occured during updating the comment"
-          );
-        } catch (error) {
-          toast.error("An error occured during updating the comment");
+        if (res.data.isSuccess) {
+          toast.success("Comment sucessfully updated.");
+          return res.data;
+        }
+      }),
+};
+
+const Ratings = {
+  createOrEdit: (rating: {
+    id: string | undefined;
+    value: number;
+    movieID: string;
+    userID: string;
+  }) =>
+    requests
+      .post<ApiResponse<any>>(`/ratings/createOrEdit`, rating)
+      .then((res) => {
+        if (res.data.isSuccess) {
+          toast.success("Rating sucessfully updated.");
+          return res.data;
         }
       }),
 };
@@ -214,6 +223,7 @@ const Search = {
 const agent = {
   Movies,
   Comments,
+  Ratings,
   Categories,
   Users,
   Search,

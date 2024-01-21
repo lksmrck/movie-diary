@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import Card from "@mui/material/Card";
 import { Movie } from "../../models/Movie";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CommentModal from "./CommentModal";
 import Button from "../Button";
 import { Theme } from "../../common/theme";
@@ -24,8 +24,18 @@ type Props = {
 
 const MovieCard = ({ movie }: Props) => {
   const [commentOpen, setCommentOpen] = useState(false);
-  const [areYouSureDialogOpen, setAreYouSureDialogOpen] = useState(false);
+  const [
+    areYouSureDialogOpen_deleteMovie,
+    setAreYouSureDialogOpen_deleteMovie,
+  ] = useState(false);
+  const [
+    areYouSureDialogOpen_updateRating,
+    setAreYouSureDialogOpen_updateRating,
+  ] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [ratingToUpdate, setRatingToUpdate] = useState(0);
+
+  const cardRef = useRef(null);
 
   const { currentUser } = useAuthContext();
   const { setUserMovies } = useMoviesContext();
@@ -37,9 +47,30 @@ const MovieCard = ({ movie }: Props) => {
     await agent.Movies.delete(movie.id!);
     const res = await agent.Movies.getAll(currentUser?.id!);
     if (res?.isSuccess) setUserMovies(res.result);
-    setAreYouSureDialogOpen(false);
+    setAreYouSureDialogOpen_deleteMovie(false);
     setIsLoading(false);
   };
+
+  const handleCreateOrEditRating = async () => {
+    setIsLoading(true);
+    await agent.Ratings.createOrEdit({
+      id: movie.rating?.id,
+      value: ratingToUpdate,
+      movieID: movie.id!,
+      userID: currentUser!.id,
+    });
+    const res = await agent.Movies.getAll(currentUser?.id!);
+    if (res?.isSuccess) setUserMovies(res.result);
+    setRatingToUpdate(0);
+    setAreYouSureDialogOpen_updateRating(false);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    if (!areYouSureDialogOpen_updateRating && cardRef?.current) {
+      (cardRef.current as HTMLImageElement).focus();
+    }
+  }, [areYouSureDialogOpen_updateRating]);
 
   return (
     <>
@@ -57,6 +88,7 @@ const MovieCard = ({ movie }: Props) => {
         <div className="flex h-64 border-b-2 border-grey-100 shadow-sm overflow-auto p-2">
           <CardActionArea sx={{ width: 120 }}>
             <CardMedia
+              ref={cardRef}
               component="img"
               // image={process.env.REACT_APP_MOVIES_IMG_API + movie.posterPath}
               src={import.meta.env.VITE_MOVIES_IMG_API + movie.posterPath}
@@ -120,11 +152,17 @@ const MovieCard = ({ movie }: Props) => {
           <div>
             <h2>Your rating</h2>
             <Rating
-              name="read-only"
+              name="rating"
               value={movie.rating?.value}
               max={10}
               precision={0.5}
               size={"small"}
+              onFocus={(e) => console.log(e)}
+              onFocusCapture={(e) => console.log(e)}
+              onChange={(e: any, nw: any) => {
+                setRatingToUpdate(e.target.value);
+                setAreYouSureDialogOpen_updateRating(true);
+              }}
             />
           </div>
           <div className="mt-5 pr-2">
@@ -132,7 +170,7 @@ const MovieCard = ({ movie }: Props) => {
               color="red"
               text="X"
               variant="contained"
-              handleClick={() => setAreYouSureDialogOpen(true)}
+              handleClick={() => setAreYouSureDialogOpen_deleteMovie(true)}
               size="small"
               sx={{ minWidth: "2rem" }}
             />
@@ -147,10 +185,17 @@ const MovieCard = ({ movie }: Props) => {
         movieID={movie.id}
       />
       <AreYouSureDialog
-        open={areYouSureDialogOpen}
-        handleClose={() => setAreYouSureDialogOpen(false)}
+        open={areYouSureDialogOpen_deleteMovie}
+        handleClose={() => setAreYouSureDialogOpen_deleteMovie(false)}
         handleProceed={handleDeleteMovie}
         purpose="delete movie"
+        isLoading={isLoading}
+      />
+      <AreYouSureDialog
+        open={areYouSureDialogOpen_updateRating}
+        handleClose={() => setAreYouSureDialogOpen_updateRating(false)}
+        handleProceed={handleCreateOrEditRating}
+        purpose="update rating"
         isLoading={isLoading}
       />
     </>

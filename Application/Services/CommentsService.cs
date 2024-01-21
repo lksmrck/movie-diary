@@ -1,6 +1,7 @@
 ﻿using Application.Core;
 using Application.DTOs.Comments;
 using Application.DTOs.Movies;
+using Application.DTOs.Ratings;
 using Application.Interfaces;
 using AutoMapper;
 using Domain.DTOs;

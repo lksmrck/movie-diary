@@ -1,6 +1,7 @@
 ﻿using Application.DTOs.Categories;
 using Application.DTOs.Comments;
 using Application.DTOs.Movies;
+using Application.DTOs.Ratings;
 using Application.DTOs.Users;
 using AutoMapper;
 using Domain.DTOs;
@@ -39,6 +40,11 @@ namespace Application.Core
             CreateMap<MovieRating, DTOs.Movies.ShortRating>()
                 .ForMember(d => d.Id, o => o.MapFrom(s => s.Rating.Id))
                 .ForMember(d => d.Value, o => o.MapFrom(s => s.Rating.Value))
+                .ReverseMap();
+
+            CreateMap<Rating, DTOs.Movies.ShortRating>()
+                .ForMember(d => d.Id, o => o.MapFrom(s => s.Id))
+                .ForMember(d => d.Value, o => o.MapFrom(s => s.Value))
                 .ReverseMap();
 
             CreateMap<UserCategory, DTOs.Movies.ShortCategory>()

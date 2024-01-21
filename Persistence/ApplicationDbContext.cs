@@ -28,7 +28,8 @@ namespace Persistence
         public DbSet<Comment> Comments { get; set; }
         public DbSet<MovieComment> MovieComments { get; set; }
 
-
+        // Ratings
+        public DbSet<MovieRating> MovieRatings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

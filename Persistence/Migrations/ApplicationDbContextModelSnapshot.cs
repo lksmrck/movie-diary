@@ -116,7 +116,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("MovieRating");
+                    b.ToTable("MovieRatings");
                 });
 
             modelBuilder.Entity("Domain.Movies.MovieUser", b =>

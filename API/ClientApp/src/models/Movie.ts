@@ -25,7 +25,7 @@ export type SearchedMovie = {
 };
 
 export interface UserAdjustedSearchedMovie extends SearchedMovie {
-  rating: { value: number };
+  rating: { id?: string; value: number };
   comment: { text: string };
   userCategories: Category[] | string[]; //pri vyberu kategorii string[], pak se preklopi do Category[]
   defaultCategories: string[];
@@ -38,7 +38,7 @@ export type Profile = {
 };
 
 export type Rating = {
-  //id: string;
+  id?: string;
   value: number;
 };
 export type Comment = {

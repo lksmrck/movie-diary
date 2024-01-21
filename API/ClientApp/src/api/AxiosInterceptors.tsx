@@ -81,6 +81,9 @@ const AxiosInterceptors: FC<{ children: any }> = ({ children }) => {
             case 404:
               router.navigate("/not-found");
               break;
+            case 500:
+              toast.error("Server error");
+              break;
           }
           return Promise.resolve(error);
         }

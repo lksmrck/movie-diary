@@ -35,7 +35,7 @@ namespace API.Config
             try
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(_config.GetValue<string>("ApiSettings:Secret"));
+                var key = Encoding.ASCII.GetBytes(_config.GetValue<string>("TokenKey"));
                 tokenHandler.ValidateToken(token, new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
