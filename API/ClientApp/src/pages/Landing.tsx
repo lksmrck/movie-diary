@@ -28,7 +28,7 @@ const Landing = () => {
         <h1 className="py-10 text-5xl text-green-50  pb-96 md:pb-0 relative">
           Movie Diary
         </h1>
-        <h2 className="w-80 py-24 text-2xl font-bold text-white pb-100 md:pb-0 border border-red-600">
+        <h2 className="w-80 py-24 text-2xl font-bold text-white pb-100 md:pb-0">
           3000+ movies in database
         </h2>
 

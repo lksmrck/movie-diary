@@ -2,12 +2,18 @@ name: docker-push
 
 on:
   # Manual CICD on push to main branch
-  workflow_dispatch:
-# Auto CICD on push to main branch
-#   push:
-#     branches:
-#       - 'main'
+  #   workflow_dispatch:
 
+  # Auto CICD on push to main branch
+  #   push:
+  #     branches:
+  #       - 'main'
+
+  # Auto CICD on pull request/push to main branch
+  push:
+  pull_request:
+    branches:
+      - "main"
 jobs:
   docker:
     runs-on: ubuntu-latest
@@ -24,3 +30,15 @@ jobs:
         with:
           push: true
           tags: lukasthevicious/movie-diary:latest
+  deploy:
+    # needs: docker - waits docker job to finish
+    needs: docker
+    name: Deploy app
+    runs-on: ubuntu-latest
+    concurrency: deploy-group # optional: ensure only one action runs at a time
+    steps:
+      - uses: actions/checkout@v3
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
