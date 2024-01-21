@@ -33,7 +33,7 @@ const Login = () => {
       <div>
         <Card
           sx={{
-            padding: "5rem",
+            padding: "4rem",
             marginTop: "-5rem",
             maxWidth: `${Theme.CardWidth.M}rem`,
             display: "flex",
