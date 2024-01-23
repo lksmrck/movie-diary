@@ -4,6 +4,7 @@ import {
   CardContent,
   CardMedia,
   Chip,
+  Grid,
   Rating,
   Typography,
 } from "@mui/material";
@@ -73,7 +74,16 @@ const MovieCard = ({ movie }: Props) => {
   }, [areYouSureDialogOpen_updateRating]);
 
   return (
-    <>
+    <Grid
+      item
+      xs={12}
+      sm={12}
+      md={12}
+      lg={4}
+      xl={3}
+      className="flex justify-center lg:justify-start  "
+      sx={{ minWidth: "445px" }}
+    >
       <Card
         sx={{
           height: 420,
@@ -81,8 +91,11 @@ const MovieCard = ({ movie }: Props) => {
           border: `1px solid ${Theme.Color.grey_3}`,
           borderRadius: "10px",
           backgroundColor: Theme.Color.grey_2,
+          // maxWidth: "93vw",
+          maxWidth: "565px",
+          width: "100%",
         }}
-        className="w-96 md:w-112"
+        className=""
       >
         {/* Img and Text */}
         <div className="flex h-64 border-b-2 border-grey-100 shadow-sm overflow-auto p-2">
@@ -198,7 +211,7 @@ const MovieCard = ({ movie }: Props) => {
         purpose="update rating"
         isLoading={isLoading}
       />
-    </>
+    </Grid>
   );
 };
 

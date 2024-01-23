@@ -28,8 +28,8 @@ export const AuthContextProvider: FC<{
 }> = ({ children }) => {
   //Stored data for user and company
   const [currentUser, setCurrentUser] = useState(
-    getSessionStorage("user") || null
-    // getLocalStorage("user") || null
+    // getSessionStorage("user") || null
+    getLocalStorage("user") || null
   );
   const [isLoading, setIsLoading] = useState(false);
 
@@ -49,8 +49,8 @@ export const AuthContextProvider: FC<{
   };
 
   useEffect(() => {
-    sessionStorage.setItem("user", JSON.stringify(currentUser));
-    // localStorage.setItem("user", JSON.stringify(currentUser));
+    // sessionStorage.setItem("user", JSON.stringify(currentUser));
+    localStorage.setItem("user", JSON.stringify(currentUser));
   }, [currentUser]);
 
   return (

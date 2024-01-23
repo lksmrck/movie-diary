@@ -1,5 +1,5 @@
 import { Card, CardActions, CardContent, Typography } from "@mui/material";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import Input from "../components/Input";
 import { Theme } from "../common/theme";
 import { LoginFormValues } from "../models/User";
@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 
 const Login = () => {
   const [formData, setFormData] = useState({} as LoginFormValues);
-  const { loginUser, isLoading } = useAuthContext();
+  const { loginUser, isLoading, currentUser } = useAuthContext();
   const navigate = useNavigate();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -27,6 +27,10 @@ const Login = () => {
   };
 
   const handleBack = () => navigate(-1);
+
+  useEffect(() => {
+    if (currentUser?.token) navigate("/home");
+  }, []);
 
   return (
     <div className="w-full h-screen flex justify-center items-center gradient-bg">

@@ -39,3 +39,34 @@ export const Theme = {
   CardWidth,
   BorderRadius,
 };
+
+///////////////////////////////
+// MUI theme //////////////////
+///////////////////////////////
+import { createTheme } from "@mui/material/styles";
+
+declare module "@mui/material/styles" {
+  interface Theme {
+    status: {
+      danger: string;
+    };
+  }
+  // allow configuration using `createTheme`
+  interface ThemeOptions {
+    status?: {
+      danger?: string;
+    };
+  }
+}
+
+export const mui_theme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+    },
+  },
+});
