@@ -1,7 +1,7 @@
 .card {
   transition: all 0.8s;
   transform-style: preserve-3d;
-  transform: rotateY(180deg) rotate(-12deg);
+  transform: rotateY(-180deg) rotate(12deg);
 
   .card-back {
     transform-style: preserve-3d;

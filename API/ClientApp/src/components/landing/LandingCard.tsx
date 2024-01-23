@@ -12,9 +12,11 @@ import { useNavigate } from "react-router-dom";
 type Props = {
   className?: string;
   no: "1" | "2" | "3";
+  leftRotate?: boolean;
+  noRotate?: boolean;
 };
 
-const LandingCard = ({ className, no }: Props) => {
+const LandingCard = ({ className, no, leftRotate, noRotate }: Props) => {
   const [flipped, setFlipped] = useState(false);
   const [shouldRenderBackSide, setShouldRenderBackSide] = useState(false);
   const navigate = useNavigate();
@@ -44,11 +46,13 @@ const LandingCard = ({ className, no }: Props) => {
     }
   }, [flipped]);
 
+  const rotation = leftRotate ? "-rotate-12" : noRotate ? "" : "rotate-12";
+
   return (
     <div
-      className={` h-112 w-64   rounded-lg  rotate-12 bg-black ${className} ${
+      className={` h-112 w-64   rounded-lg  ${rotation} bg-black ${className} ${
         flipped ? "card " : ""
-      } scale-75 md:scale-100 `}
+      } scale-75 md:scale-100  }`}
     >
       {flipped ? (
         shouldRenderBackSide && (

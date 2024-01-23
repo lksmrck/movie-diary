@@ -4,7 +4,7 @@ import useMoviesContext from "../../store/MoviesContext";
 import MovieCard from "./MovieCard";
 import useAuthContext from "../../store/AuthContext";
 import useAppContext from "../../store/AppContext";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Grid } from "@mui/material";
 import "../../index.css";
 
 const UserMovies = () => {
@@ -35,8 +35,9 @@ const UserMovies = () => {
   }, []);
 
   return (
-    <section className=" w-full h-full min-h-screenWithoutNavbar flex justify-center gradient-bg">
-      <div className=" grid lg:grid-cols-3 sm:grid-cols-1 md:grid-cols-2 p-2 gap-2  ">
+    <section className=" w-full h-full min-h-screenWithoutNavbar flex justify-center lg:p-8">
+      {/* <div className=" grid lg:grid-cols-3 sm:grid-cols-1 md:grid-cols-2 p-2 gap-2  border border-red-500"> */}
+      <Grid container gap={1}>
         {isLoading ? (
           <CircularProgress color="inherit" />
         ) : userMovies.length > 0 ? (
@@ -44,7 +45,9 @@ const UserMovies = () => {
         ) : (
           <div className="mt-10 font-bold text-xl text-gray-800">No movies</div>
         )}
-      </div>
+      </Grid>
+
+      {/* </div> */}
     </section>
   );
 };

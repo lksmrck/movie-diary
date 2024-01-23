@@ -39,7 +39,7 @@ const Profile = () => {
           justifyContent: "space-between",
           alignItems: "center",
         }}
-        className="mt-3 md:mt-0 h-56 md:h-140 w-75 md:w-40 ml-6 md:ml-0"
+        className="mt-3 md:mt-0 h-56 md:h-140 w-100 md:w-40 ml-6 md:ml-0"
       >
         <div className="h-32 w-32 mt-5 overflow-hidden rounded-full ">
           <Avatar
@@ -62,7 +62,7 @@ const Profile = () => {
       <div>
         <Card
           sx={{
-            width: 300,
+            width: 400,
             height: 200,
             position: "relative",
             border: `1px solid ${Theme.Color.grey_3}`,
@@ -96,7 +96,7 @@ const Profile = () => {
         </Card>
         <Card
           sx={{
-            width: 300,
+            width: 400,
             height: 350,
             position: "relative",
             border: `1px solid ${Theme.Color.grey_3}`,

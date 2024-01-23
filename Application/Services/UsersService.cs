@@ -144,12 +144,14 @@ namespace Application.Services
                 UserName = user.UserName,
                 Name = user.Name,
                 //Image = user?.Photos?.FirstOrDefault(x => x.IsMain)?.Url,
-                Token = _tokenService.CreateToken(user)
+                Token = _tokenService.CreateToken(user),
+                Email= user.Email
             } : new UserDto
             {
                 Id = user.Id,
                 UserName = user.UserName,
                 Name = user.Name,
+                Email = user.Email
             };
         }
 
