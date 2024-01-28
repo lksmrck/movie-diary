@@ -15,8 +15,8 @@ const AxiosInterceptors: FC<{ children: any }> = ({ children }) => {
   useEffect(() => {
     const requestInterceptor = AxiosInstances.internal.interceptors.request.use(
       (config) => {
-        const token = getSessionStorage("user")?.token;
-        // const token = getLocalStorage("user")?.token;
+        // const token = getSessionStorage("user")?.token;
+        const token = getLocalStorage("user")?.token;
         // If Authorization headers were already set, it's a re-try of 401 (below)
         if (token && !config.headers.Authorization)
           config.headers.Authorization = `Bearer ${token}`;
@@ -33,12 +33,20 @@ const AxiosInterceptors: FC<{ children: any }> = ({ children }) => {
         async (error: AxiosError) => {
           let prevRequest = error?.config;
           let refreshSent = false;
-          const { data, status, config, headers, request } =
-            error.response as AxiosResponse;
+
+          const err = error.response as AxiosResponse;
+          const data = err?.data ?? null;
+          const status = err?.status ?? null;
+          const config = err?.config ?? null;
+          const headers = err?.headers ?? null;
+          const request = err?.request ?? null;
+
+          // const { data, status, config, headers, request } =
+          //   error.response as AxiosResponse;
           switch (status) {
             case 400:
               if (
-                config.method === "get" &&
+                config?.method === "get" &&
                 data?.errors?.hasOwnProperty("id")
               ) {
                 router.navigate("/not-found");
@@ -69,10 +77,12 @@ const AxiosInterceptors: FC<{ children: any }> = ({ children }) => {
                 prevRequest!.headers.Authorization = `Bearer ${newAccessToken}`;
                 return AxiosInstances.internal(prevRequest!);
               } else {
+                data?.errorMessage
+                  ? toast.error("Your session expired. Please login again.")
+                  : toast.error("Unauthorized");
                 console.log("Logging out.");
                 logoutUser();
                 router.navigate("/login");
-                toast.error("Unauthorized");
               }
               break;
             case 403:

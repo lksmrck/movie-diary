@@ -8,7 +8,7 @@ const RequireAuth: FC = () => {
   const { currentUser } = useAuthContext();
   const { isLoading } = useAppContext();
 
-  return currentUser ? (
+  return currentUser?.token ? (
     <Outlet />
   ) : isLoading ? (
     <LinearProgress color="secondary" />

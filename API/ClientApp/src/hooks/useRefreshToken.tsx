@@ -9,9 +9,9 @@ const useRefreshToken = () => {
     const res = await agent.Users.refreshToken();
 
     setCurrentUser((prev) => {
-      return { ...prev, token: res.data.result.token } as UserInLS;
+      return { ...prev, token: res.data?.result?.token } as UserInLS;
     });
-    return res.data.result.token;
+    return res.data?.result?.token;
   };
   return refresh;
 };

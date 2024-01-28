@@ -19,11 +19,11 @@ const Landing = () => {
   ];
 
   return (
-    <div className="gradient-bg min-h-screen flex flex-col xl:flex-row overflow-hidden w-screen md:w-auto items-center justify-center">
+    <div className="gradient-bg min-h-screen flex flex-col xl:flex-row overflow-hidden w-screen md:w-auto items-center justify-center xl:justify-start">
       {/* LEFT */}
-      <section className=" m-0 xl:ml-24 mt-14 mr-5 w-1/3 min-w-105  flex xxl:block  flex-col items-center justify-center ">
+      <section className=" m-0 xl:ml-24 mt-14 mr-5 w-1/3 min-w-105  flex xxl:block flex-col items-center justify-center xl:items-start ">
         <div className="flex">
-          <h4 className="ml-3">
+          <h4 className="ml-3 xl:ml-0">
             <span className="font-bold text-white">W E L C O M E</span>
             <span className=" font-bold text-purple-900"> T O</span>
             <span className=" font-bold text-white"> Y O U R</span>

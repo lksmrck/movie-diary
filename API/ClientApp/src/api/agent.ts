@@ -21,62 +21,35 @@ const Movies = {
     requests
       .get<ApiResponse<Movie[]>>(`/movies/user/${userId}`, config)
       .then((res: any) => {
-        try {
-          if (res?.data?.isSuccess) {
-            return res?.data;
-          }
-          toast.error(
-            res?.data?.errorMessage ?? "An error occured during loading movies"
-          );
-          return;
-        } catch (error) {
-          toast.error(
-            res?.data?.errorMessage ?? "An error occured during loading movies"
-          );
+        if (res?.data?.isSuccess) {
+          return res?.data;
         }
+        return;
       }),
   // getOne: (movieId: string) => requests.get<Movie>(`/movies/${movieId}`),
   create: (movie: Movie) =>
     requests
       .post<ApiResponse<Movie>>(`/movies`, movie)
       .then((res: AxiosResponse<ApiResponse<Movie>>) => {
-        try {
-          if (res?.data?.isSuccess) {
-            toast.success("Movie was successfully added");
-            return res?.data?.result;
-          }
-          toast.error(
-            res?.data?.errorMessage ??
-              "An error occured during saving the movie"
-          );
+        console.log("AG", res);
+        if (res?.data?.isSuccess) {
+          toast.success("Movie was successfully added");
+          return res?.data?.result;
+        } else {
+          // Custom API error message při 200 status codu
+          if (res?.data?.errorMessage) toast.error(res.data.errorMessage);
           return;
-        } catch (error) {
-          toast.error(
-            res?.data?.errorMessage ??
-              "An error occured during saving the movie"
-          );
         }
       }),
   delete: (id: string) =>
     requests
       .del<ApiResponse<void>>(`/movies/${id}`)
       .then((res: AxiosResponse<ApiResponse<void>>) => {
-        try {
-          if (res?.data?.isSuccess) {
-            toast.success("Movie was successfully deleted");
-            return res?.data!;
-          }
-          toast.error(
-            res?.data?.errorMessage ??
-              "An error occured during deleting the movie"
-          );
-          return;
-        } catch (error) {
-          toast.error(
-            res?.data?.errorMessage ??
-              "An error occured during deleting the movie"
-          );
+        if (res?.data?.isSuccess) {
+          toast.success("Movie was successfully deleted");
+          return res?.data!;
         }
+        return;
       }),
 };
 
@@ -157,7 +130,7 @@ const Users = {
         toast.error("An error occured during the registration");
       }
     }),
-  refreshToken: () => requests.get<ApiResponse<User>>("/users/refreshToken"), //returns User místo any
+  refreshToken: () => requests.get<ApiResponse<User>>("/users/refreshToken"),
 };
 
 const Statistics = {
@@ -168,7 +141,6 @@ const Statistics = {
 // TMDB API Requests
 const Search = {
   movie: (searchTerm: string) => {
-    console.log(import.meta.env);
     return AxiosInstances.external
       .request({
         baseURL: import.meta.env.VITE_MOVIES_SEARCH_URL,
@@ -178,9 +150,7 @@ const Search = {
       })
       .then((res) =>
         res.data.results.map((m: any) => {
-          // console.log(res.data.results);
           // Destructuring and take only few properties from whole object
-
           return (({
             title,
             poster_path,

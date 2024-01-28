@@ -113,7 +113,6 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
 
   const saveMovie = async () => {
     setIsLoading(true);
-    console.log("1");
     const defaultCategories = await agent.Search.categories(
       selectedMovie.genre_ids
     );
@@ -124,20 +123,16 @@ const AddMovieModal = ({ open, handleClose }: Props) => {
       return { id, name } as Category;
     });
 
-    console.log("2");
     const finalMovieObject = {
       ...selectedMovie,
       defaultCategories,
       userCategories: userCategoriesObjects,
     };
-
-    console.log("3");
     const mov = Mapper.mapToMovie(finalMovieObject, {
       id: currentUser?.id,
       name: currentUser?.name,
     });
-    console.log(mov);
-    await agent.Movies.create(mov);
+    const res = await agent.Movies.create(mov);
     setIsLoading(false);
     navigate("/my-movies");
     handleClose();
