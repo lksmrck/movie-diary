@@ -1,0 +1,22 @@
+name: e2e-tests
+
+on:
+  push:
+    branches:
+      - "e2e-tests"
+jobs:
+  cypress:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Run .NET API
+        run: dotnet run --project ./API/API.csproj
+      - name: Install client dependencies
+        run: cd ./API/ClientApp
+      - name: Install dependencies
+        run: npm install
+      - name: Start client
+        run: npm run dev
+      - name: Run cypress tests
+        run: npx cypress run
