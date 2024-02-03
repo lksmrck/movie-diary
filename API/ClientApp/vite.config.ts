@@ -38,6 +38,9 @@ export default defineConfig({
       cert: certFilePath,
     },
   },
+  optimizeDeps: {
+    include: ["@emotion/react", "@emotion/styled", "@mui/material/Tooltip"],
+  },
   plugins: [react(), mkcert()],
   css: {
     postcss: {

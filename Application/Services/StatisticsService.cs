@@ -1,21 +1,7 @@
 ﻿using Application.Core;
-using Application.DTOs.Categories;
-using Application.DTOs.Comments;
 using Application.Enums;
 using Application.Interfaces;
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Domain;
-using Domain.DTOs;
-using Domain.Movies;
 using Domain.Statistics;
-using Microsoft.EntityFrameworkCore;
-using Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Services
 {
@@ -46,7 +32,7 @@ namespace Application.Services
             _response.Result = new Statistics
             {
                 MoviesWatched = movies.Count(),
-                AverageRating = (float)(moviesWithFilledRating.Any() ? moviesWithFilledRating.Average(m => m.Rating?.Value) : 0),
+                AverageRating = ((float)(moviesWithFilledRating.Any() ? moviesWithFilledRating.Average(m => m.Rating?.Value) : 0)).ToString("F1"),
                 TotalHorror = movies.Where(m => m.DefaultCategories.Contains(CategoryEnumMethods.GetCategoryName(CategoryEnum.Horror))).Count(),
                 TotalComedy = movies.Where(m => m.DefaultCategories.Contains(CategoryEnumMethods.GetCategoryName(CategoryEnum.Comedy))).Count(),
                 TotalAdventure = movies.Where(m => m.DefaultCategories.Contains(CategoryEnumMethods.GetCategoryName(CategoryEnum.Adventure))).Count(),

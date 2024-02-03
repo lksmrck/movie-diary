@@ -11,7 +11,7 @@ namespace Domain.Statistics
         public int MoviesWatched { get; set; }
         //public int TotalHoursWatched { get; set; }
         //public List<> NumberAndTimePerCategory { get; set; } // Per category
-        public float AverageRating { get; set; }
+        public string AverageRating { get; set; }
         public int TotalHorror { get; set; }
         public int TotalComedy { get; set; }
         public int TotalAdventure { get; set; }
