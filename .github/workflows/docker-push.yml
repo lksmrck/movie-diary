@@ -56,4 +56,4 @@ jobs:
         run: cd ./API/ClientApp
       - name: Run cypress tests
         # run: npx cypress run
-        run: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v6
