@@ -2,7 +2,7 @@ describe("Navigate and succesfully login", () => {
   beforeEach(() => {
     cy.visit("/");
   });
-
+  const env = process.env.NODE_ENV;
   it("Should navigate to Movie Diary landing page, register and login", () => {
     cy.get("h4").contains("MOVIE D I A R Y");
     cy.contains("Register").click();
@@ -13,10 +13,15 @@ describe("Navigate and succesfully login", () => {
 
   it("Should succesfully login", () => {
     cy.contains("Sign In").click();
-    cy.get("input[name=username]").type(Cypress.env("username"));
-    cy.get("input[name=password]").type(Cypress.env("password"), {
-      log: false,
-    });
+    cy.get("input[name=username]").type(
+      env === "development" ? Cypress.env("username") : "Johny"
+    );
+    cy.get("input[name=password]").type(
+      env === "development" ? Cypress.env("password") : "Pa$$word1",
+      {
+        log: false,
+      }
+    );
     cy.contains("Login").click();
     cy.url().should("include", "/home");
   });

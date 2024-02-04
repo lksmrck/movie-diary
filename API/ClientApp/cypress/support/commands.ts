@@ -37,15 +37,21 @@
 // }
 
 Cypress.Commands.add("login", () => {
+  const env = process.env.NODE_ENV;
   cy.session(
     "user",
     () => {
       cy.visit("/");
       cy.contains("Sign In").click();
-      cy.get("input[name=username]").type(Cypress.env("username"));
-      cy.get("input[name=password]").type(Cypress.env("password"), {
-        log: false,
-      });
+      cy.get("input[name=username]").type(
+        env === "development" ? Cypress.env("username") : "Johny"
+      );
+      cy.get("input[name=password]").type(
+        env === "development" ? Cypress.env("password") : "Pa$$word1",
+        {
+          log: false,
+        }
+      );
       cy.contains("Login").click();
     },
     {
