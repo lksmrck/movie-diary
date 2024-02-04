@@ -16,3 +16,5 @@ jobs:
       - name: Run cypress tests
         # run: npx cypress run
         uses: cypress-io/github-action@v6
+        with:
+          project: ./API/ClientApp
