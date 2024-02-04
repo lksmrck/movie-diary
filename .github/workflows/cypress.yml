@@ -7,6 +7,9 @@ on:
 jobs:
   cypress:
     # needs: deploy
+    defaults:
+      run:
+        working-directory: ./API/ClientApp
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -16,5 +19,3 @@ jobs:
       - name: Run cypress tests
         # run: npx cypress run
         uses: cypress-io/github-action@v6
-        with:
-          project: ./API/ClientApp
