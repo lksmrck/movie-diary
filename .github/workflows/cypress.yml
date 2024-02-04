@@ -14,5 +14,5 @@ jobs:
       - name: cd to client
         run: cd ./API/ClientApp
       - name: Run cypress tests
-        run: npx cypress run
-        # uses: cypress-io/github-action@vk6
+        # run: npx cypress run
+        uses: cypress-io/github-action@v6
