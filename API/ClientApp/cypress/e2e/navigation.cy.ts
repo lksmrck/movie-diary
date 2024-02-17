@@ -13,15 +13,8 @@ describe("Navigate and succesfully login", () => {
 
   it("Should succesfully login", () => {
     cy.contains("Sign In").click();
-    cy.get("input[name=username]").type(
-      env === "development" ? Cypress.env("username") : "Johny"
-    );
-    cy.get("input[name=password]").type(
-      env === "development" ? Cypress.env("password") : "Pa$$word1",
-      {
-        log: false,
-      }
-    );
+    cy.get("input[name=username]").type("Johny");
+    cy.get("input[name=password]").type("Pa$$word1", { log: false });
     cy.contains("Login").click();
     cy.url().should("include", "/home");
   });
